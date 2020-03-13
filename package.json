@@ -1,0 +1,46 @@
+{
+  "name": "kame",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "bin": "dist/cli.js",
+  "dependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/generator": "^7.8.8",
+    "@babel/parser": "^7.8.8",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@babel/plugin-transform-flow-strip-types": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.8.3",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-react": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
+    "@babel/traverse": "^7.8.6",
+    "builtin-modules": "^3.1.0",
+    "commonjs-standalone": "^0.1.2",
+    "debug": "^4.1.1",
+    "mime-types": "^2.1.26",
+    "mkdirp": "^1.0.3",
+    "regenerator-runtime": "^0.13.5",
+    "resolve": "^1.15.1",
+    "yargs-parser": "^18.1.0"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.1.6",
+    "@types/debug": "^4.1.5",
+    "@types/mime-types": "^2.1.0",
+    "@types/mkdirp": "^1.0.0",
+    "@types/node": "^13.9.1",
+    "@types/resolve": "^1.14.0",
+    "@types/webpack": "^4.41.7",
+    "@types/yargs-parser": "^15.0.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc && chmod +x dist/cli.js"
+  }
+}
