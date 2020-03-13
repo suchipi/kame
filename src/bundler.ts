@@ -22,38 +22,6 @@ export default function makeBundler(config: Config) {
           const { node } = nodePath;
 
           if (
-            t.isImport(node.callee) &&
-            node.arguments.length === 1 &&
-            t.isStringLiteral(node.arguments[0])
-          ) {
-            // @ts-ignore
-            const source: NodePath<t.StringLiteral> = nodePath.get(
-              "arguments"
-            )[0];
-
-            const currentValue = source.node.value;
-
-            const newValueAbsolute = config.resolver(currentValue, filename);
-            const newValue = path.relative(process.cwd(), newValueAbsolute);
-
-            resolvedRequires.push(newValue);
-
-            nodePath.replaceWith(
-              t.callExpression(
-                t.memberExpression(
-                  t.identifier("Promise"),
-                  t.identifier("resolve")
-                ),
-                [
-                  t.callExpression(t.identifier("_kame_require_"), [
-                    t.stringLiteral(newValue),
-                  ]),
-                ]
-              )
-            );
-          }
-
-          if (
             t.isIdentifier(node.callee) &&
             node.callee.name === "require" &&
             node.arguments.length === 1 &&
@@ -87,20 +55,25 @@ export default function makeBundler(config: Config) {
     }
 
     bundle({
-      filename,
-      outputDirectory,
+      input,
+      output,
       globalName = "kameBundle",
     }: {
-      filename: string;
-      outputDirectory: string;
+      input: string;
+      output: string;
       globalName?: string;
     }) {
+      if (!path.isAbsolute(input)) {
+        input = path.resolve(process.cwd(), input);
+      }
+      if (!path.isAbsolute(output)) {
+        output = path.resolve(process.cwd(), output);
+      }
+
       const modules = {};
 
       const filesToProcess: Array<string> = [];
-      const relativeEntry = path.isAbsolute(filename)
-        ? path.relative(process.cwd(), filename)
-        : path.relative(process.cwd(), path.resolve(process.cwd(), filename));
+      const relativeEntry = path.relative(process.cwd(), input);
       filesToProcess.push(relativeEntry);
 
       let file: string | undefined;
@@ -122,8 +95,7 @@ export default function makeBundler(config: Config) {
         filesToProcess.push(...resolvedRequires);
       }
 
-      const output = `
-	(function (global, factory) {
+      const bundleCode = `(function (global, factory) {
 		if (typeof exports === 'object' && typeof module !== 'undefined') {
 			module.exports = factory();
 		} else if (typeof define === 'function' && define.amd) {
@@ -181,13 +153,8 @@ export default function makeBundler(config: Config) {
 	})));
 	`;
 
-      const outDir = path.isAbsolute(outputDirectory)
-        ? outputDirectory
-        : path.resolve(process.cwd(), outputDirectory);
-
-      mkdirp.sync(outDir);
-
-      fs.writeFileSync(path.join(outDir, "index.js"), output);
+      mkdirp.sync(path.dirname(output));
+      fs.writeFileSync(output, bundleCode);
     }
   };
 }

@@ -58,15 +58,23 @@ if (argv.help) {
   const kame = configure(inputConfig);
 
   if (argv._[0] === "run") {
+    const input = argv.input || argv._[1];
+    console.log(`Running ${input}`);
+
     const runtime = new kame.Runtime();
-    runtime.load(argv.input);
+    runtime.load(argv.input || argv._[1]);
   } else if (argv._[0] === "bundle") {
+    const input = argv.input || argv._[1];
+    const output = argv.output || argv._[2];
+    const globalName = argv.global;
+
     const bundler = new kame.Bundler();
     bundler.bundle({
-      filename: argv.input,
-      outputDirectory: argv.output,
-      globalName: argv.global,
+      input,
+      output,
+      globalName,
     });
+    console.log(`Wrote ${output}`);
   } else {
     console.log(`Unknown command: ${argv._[0]}\n`);
     console.log(usage);
