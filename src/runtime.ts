@@ -1,4 +1,5 @@
 import path from "path";
+import * as babel from "@babel/core";
 import { Module } from "commonjs-standalone";
 import { Config } from "./config";
 
@@ -31,7 +32,14 @@ export default function makeRuntime(config: Config) {
         return "";
       }
 
-      return config.loader(filepath);
+      const code = config.loader(filepath);
+
+      const babelResult = babel.transformSync(code, {
+        babelrc: false,
+        plugins: ["babel-plugin-dynamic-import-node"],
+      });
+
+      return babelResult?.code || code;
     },
 
     run(code, moduleEnv, filepath) {

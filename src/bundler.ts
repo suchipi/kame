@@ -1,32 +1,59 @@
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import mkdirp from "mkdirp";
+import chalk from "chalk";
 import { NodePath } from "@babel/core";
 import * as t from "@babel/types";
 import generate from "@babel/generator";
 import * as parser from "@babel/parser";
 import traverse from "@babel/traverse";
+import { codeFrameColumns } from "@babel/code-frame";
 import { Config } from "./config";
+import { entryWrapper, chunkWrapper } from "./bundle-wrapper";
+
+type Modules = { [id: string]: string };
 
 export default function makeBundler(config: Config) {
   return class Bundler {
-    private _instrumentRequires(
+    private _pendingChunks: Array<string> = [];
+    private _warnings: Array<string> = [];
+
+    private _transformRequires(
       filename: string,
       code: string
     ): { transformedCode: string; resolvedRequires: Array<string> } {
       const resolvedRequires: Array<string> = [];
+      const pendingChunks = this._pendingChunks;
+      const warnings = this._warnings;
 
       const ast = parser.parse(code);
       traverse(ast, {
         CallExpression(nodePath) {
           const { node } = nodePath;
 
-          if (
-            t.isIdentifier(node.callee) &&
-            node.callee.name === "require" &&
-            node.arguments.length === 1 &&
-            t.isStringLiteral(node.arguments[0])
-          ) {
+          const hasOneStringArg =
+            node.arguments.length === 1 && t.isStringLiteral(node.arguments[0]);
+
+          const isRequire =
+            t.isIdentifier(node.callee) && node.callee.name === "require";
+
+          const isImport = t.isImport(node.callee);
+
+          if (isRequire || isImport) {
+            if (!hasOneStringArg) {
+              warnings.push(
+                chalk.yellow(
+                  `Found a non-static ${
+                    isRequire ? "require" : "import"
+                  } in '${filename}'. This cannot be bundled, and will be left as-is.`
+                ) +
+                  "\n" +
+                  codeFrameColumns(code, node.loc, { highlightCode: true })
+              );
+              return;
+            }
+
             // @ts-ignore
             const source: NodePath<t.StringLiteral> = nodePath.get(
               "arguments"
@@ -34,16 +61,38 @@ export default function makeBundler(config: Config) {
 
             const currentValue = source.node.value;
 
-            const newValueAbsolute = config.resolver(currentValue, filename);
+            let newValueAbsolute: string;
+            try {
+              newValueAbsolute = config.resolver(currentValue, filename);
+            } catch (err) {
+              const newMessage =
+                `${chalk.red("Resolver failed in")} ${chalk.yellow(
+                  "'" + filename + "'"
+                )}: ` +
+                err.message +
+                "\n" +
+                codeFrameColumns(code, node.loc, { highlightCode: true });
+              Object.defineProperty(err, "message", { value: newMessage });
+              throw err;
+            }
             const newValue = path.relative(process.cwd(), newValueAbsolute);
 
-            resolvedRequires.push(newValue);
+            if (isRequire) {
+              resolvedRequires.push(newValue);
 
-            nodePath.replaceWith(
-              t.callExpression(t.identifier("_kame_require_"), [
-                t.stringLiteral(newValue),
-              ])
-            );
+              nodePath.replaceWith(
+                t.callExpression(t.identifier("_kame_require_"), [
+                  t.stringLiteral(newValue),
+                ])
+              );
+            } else {
+              pendingChunks.push(newValue);
+              nodePath.replaceWith(
+                t.callExpression(t.identifier("_kame_dynamic_import_"), [
+                  t.stringLiteral(newValue),
+                ])
+              );
+            }
           }
         },
       });
@@ -54,27 +103,11 @@ export default function makeBundler(config: Config) {
       };
     }
 
-    bundle({
-      input,
-      output,
-      globalName = "kameBundle",
-    }: {
-      input: string;
-      output: string;
-      globalName?: string;
-    }) {
-      if (!path.isAbsolute(input)) {
-        input = path.resolve(process.cwd(), input);
-      }
-      if (!path.isAbsolute(output)) {
-        output = path.resolve(process.cwd(), output);
-      }
-
-      const modules = {};
+    private _gatherModules(entry: string): Modules {
+      const modules: Modules = {};
 
       const filesToProcess: Array<string> = [];
-      const relativeEntry = path.relative(process.cwd(), input);
-      filesToProcess.push(relativeEntry);
+      filesToProcess.push(entry);
 
       let file: string | undefined;
       while ((file = filesToProcess.shift())) {
@@ -85,8 +118,20 @@ export default function makeBundler(config: Config) {
           continue;
         }
 
-        const code = config.loader(path.resolve(process.cwd(), file));
-        const { transformedCode, resolvedRequires } = this._instrumentRequires(
+        const absFile = path.resolve(process.cwd(), file);
+        let code: string;
+        try {
+          code = config.loader(absFile);
+        } catch (err) {
+          const newMessage =
+            `${chalk.red("Loader failed to load")} ${chalk.yellow(
+              "'" + absFile + "'"
+            )}: ` + err.message;
+          Object.defineProperty(err, "message", { value: newMessage });
+          throw err;
+        }
+
+        const { transformedCode, resolvedRequires } = this._transformRequires(
           file,
           code
         );
@@ -95,66 +140,82 @@ export default function makeBundler(config: Config) {
         filesToProcess.push(...resolvedRequires);
       }
 
-      const bundleCode = `(function (global, factory) {
-		if (typeof exports === 'object' && typeof module !== 'undefined') {
-			module.exports = factory();
-		} else if (typeof define === 'function' && define.amd) {
-			define([], factory)
-		} else {
-			global[${JSON.stringify(globalName)}] = factory();
-		}
-	}(this, (function () { 'use strict';
-		var __kame__ = {
-			basedir: typeof __dirname === 'string' ? __dirname : "",
-			cache: {},
-			runModule: function runModule(name, isMain) {
-				var exports = {};
-				var module = {
-					id: name,
-					exports: exports,
-				};
+      return modules;
+    }
 
-				__kame__.cache[name] = module;
+    bundle({
+      input,
+      output,
+      globalName,
+    }: {
+      input: string;
+      output: string;
+      globalName: string;
+    }) {
+      this._pendingChunks = [];
+      this._warnings = [];
 
-				var _kame_require_ = function require(id) {
-					if (__kame__.cache[id]) {
-						return __kame__.cache[id].exports;
-					} else {
-						__kame__.runModule(id, false);
-						return __kame__.cache[id].exports;
-					}
-				};
-				_kame_require_.cache = __kame__.cache;
+      const writtenFiles: Array<string> = [];
 
-				if (isMain) {
-					_kame_require_.main = module;
-				}
-
-				var __filename = __kame__.basedir + "/" + name;
-				var __dirname = __kame__.basedir + "/" + name.split("/").slice(0, -1).join("/");
-
-				__kame__.modules[name](exports, _kame_require_, module, __filename, __dirname);
-				return module.exports;
-			},
-			modules: {
-				${Object.keys(modules)
-          .map((key, index, all) => {
-            return `${JSON.stringify(
-              key
-            )}: (function (exports, _kame_require_, module, __filename, __dirname) {\n${
-              modules[key]
-            }\n})${index === all.length - 1 ? "" : ","}`;
-          })
-          .join("\n")}
-			}
-		};
-
-		return __kame__.runModule(${JSON.stringify(relativeEntry)}, true);
-	})));
-	`;
+      if (!path.isAbsolute(input)) {
+        input = path.resolve(process.cwd(), input);
+      }
+      if (!path.isAbsolute(output)) {
+        output = path.resolve(process.cwd(), output);
+      }
 
       mkdirp.sync(path.dirname(output));
-      fs.writeFileSync(output, bundleCode);
+
+      const relativeInput = path.relative(process.cwd(), input);
+      const entryModules = this._gatherModules(relativeInput);
+
+      const chunkUrls = {};
+
+      let pendingChunk: string | undefined;
+      while ((pendingChunk = this._pendingChunks.shift())) {
+        const chunkModules = this._gatherModules(pendingChunk);
+        Object.keys(chunkModules).forEach((key) => {
+          if (entryModules[key]) {
+            delete chunkModules[key];
+          }
+        });
+
+        const chunkHash = crypto
+          .createHash("md5")
+          .update(Object.values(chunkModules).join("\n"))
+          .digest("hex");
+
+        const chunkOutputFilename = `${chunkHash}.js`;
+        chunkUrls[pendingChunk] = chunkOutputFilename;
+        const chunkOutputPath = path.join(
+          path.dirname(output),
+          chunkOutputFilename
+        );
+
+        const chunkCode = chunkWrapper({
+          entryId: pendingChunk,
+          globalName,
+          modules: chunkModules,
+        });
+
+        fs.writeFileSync(chunkOutputPath, chunkCode);
+        writtenFiles.push(chunkOutputPath);
+      }
+
+      const entryCode = entryWrapper({
+        entryId: relativeInput,
+        globalName,
+        modules: entryModules,
+        chunkUrls,
+      });
+
+      fs.writeFileSync(output, entryCode);
+      writtenFiles.push(output);
+
+      return {
+        warnings: this._warnings,
+        writtenFiles,
+      };
     }
   };
 }

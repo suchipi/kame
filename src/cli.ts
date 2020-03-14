@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import path from "path";
+import chalk from "chalk";
 import yargsParser from "yargs-parser";
 import configure from "./index";
 import { InputConfig } from "./config";
@@ -59,6 +61,12 @@ if (argv.help) {
 
   if (argv._[0] === "run") {
     const input = argv.input || argv._[1];
+    if (!input) {
+      console.log(`No input file specified. Use --input to specify one.\n`);
+      console.log(usage);
+      process.exit(1);
+    }
+
     console.log(`Running ${input}`);
 
     const runtime = new kame.Runtime();
@@ -67,14 +75,36 @@ if (argv.help) {
     const input = argv.input || argv._[1];
     const output = argv.output || argv._[2];
     const globalName = argv.global;
+    if (!input) {
+      console.log(`No input file specified. Use --input to specify one.\n`);
+      console.log(usage);
+      process.exit(1);
+    }
+    if (!output) {
+      console.log(`No output file specified. Use --output to specify one.\n`);
+      console.log(usage);
+      process.exit(1);
+    }
+    if (!globalName) {
+      console.log(`No global name specified. Use --global to specify one.\n`);
+      console.log(usage);
+      process.exit(1);
+    }
 
     const bundler = new kame.Bundler();
-    bundler.bundle({
+    const { warnings, writtenFiles } = bundler.bundle({
       input,
       output,
       globalName,
     });
-    console.log(`Wrote ${output}`);
+
+    warnings.forEach((warning) => {
+      console.warn(warning);
+    });
+    console.log(chalk.blue("Files created:"));
+    writtenFiles.forEach((file) => {
+      console.log(path.relative(process.cwd(), file));
+    });
   } else {
     console.log(`Unknown command: ${argv._[0]}\n`);
     console.log(usage);

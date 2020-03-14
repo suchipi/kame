@@ -37,6 +37,7 @@ export default function defaultLoader(filename: string): string {
       }
 
       const config = {
+        sourceType: "unambiguous" as "unambiguous",
         presets: [
           ["@babel/preset-env", { modules: false }],
           "@babel/preset-react",
@@ -46,7 +47,6 @@ export default function defaultLoader(filename: string): string {
           "@babel/plugin-proposal-nullish-coalescing-operator",
           "@babel/plugin-proposal-optional-chaining",
           "@babel/plugin-transform-modules-commonjs",
-          "babel-plugin-dynamic-import-node",
         ],
       };
 
