@@ -21,7 +21,7 @@ export default function defaultLoader(filename: string): string {
     case ".css": {
       const content = fs.readFileSync(filename, "utf-8");
       return `
-        const style = document.createElement("style");
+        var style = document.createElement("style");
         style.type = "text/css";
         style.textContent = ${JSON.stringify(content)};
         document.head.appendChild(style);
