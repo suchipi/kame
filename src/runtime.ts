@@ -71,6 +71,8 @@ export default function makeRuntime(config: Config) {
     cache: { [key: string]: any } = {};
 
     load(filename: string) {
+      require("regenerator-runtime");
+
       if (!path.isAbsolute(filename)) {
         filename = path.join(process.cwd(), filename);
       }
