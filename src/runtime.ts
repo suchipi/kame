@@ -2,6 +2,7 @@ import path from "path";
 import * as babel from "@babel/core";
 import { Module } from "commonjs-standalone";
 import { Config } from "./config";
+import bakeNodeEnv from "./bake-node-env";
 
 type Exports = { [key: string]: any };
 
@@ -32,14 +33,17 @@ export default function makeRuntime(config: Config) {
         return "";
       }
 
-      const code = config.loader(filepath);
+      let code = config.loader(filepath);
 
       const babelResult = babel.transformSync(code, {
         babelrc: false,
         plugins: ["babel-plugin-dynamic-import-node"],
       });
 
-      return babelResult?.code || code;
+      code = babelResult?.code || code;
+      code = bakeNodeEnv(code, process.env.NODE_ENV || "development");
+
+      return code;
     },
 
     run(code, moduleEnv, filepath) {

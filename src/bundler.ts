@@ -11,6 +11,7 @@ import traverse from "@babel/traverse";
 import { codeFrameColumns } from "@babel/code-frame";
 import { Config } from "./config";
 import { entryWrapper, chunkWrapper } from "./bundle-wrapper";
+import bakeNodeEnv from "./bake-node-env";
 
 type Modules = { [id: string]: string };
 
@@ -130,6 +131,7 @@ export default function makeBundler(config: Config) {
           Object.defineProperty(err, "message", { value: newMessage });
           throw err;
         }
+        code = bakeNodeEnv(code, process.env.NODE_ENV || "production");
 
         const { transformedCode, resolvedRequires } = this._transformRequires(
           file,
