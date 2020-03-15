@@ -1,9 +1,9 @@
 {
   "name": "kame",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "license": "MIT",
   "main": "dist/index.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
   "bin": "dist/cli.js",
   "dependencies": {
     "@babel/code-frame": "^7.8.3",
@@ -44,6 +44,6 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc && chmod +x dist/cli.js"
+    "build": "rm -rf dist && tsc --declaration && chmod +x dist/cli.js"
   }
 }

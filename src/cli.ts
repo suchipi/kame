@@ -2,7 +2,7 @@
 import path from "path";
 import chalk from "chalk";
 import yargsParser from "yargs-parser";
-import configure from "./index";
+import { configure } from "./index";
 import { InputConfig } from "./config";
 
 const argv = yargsParser(process.argv.slice(2), {

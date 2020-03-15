@@ -20,7 +20,12 @@ type Delegate = {
   run(code: string, moduleEnv: ModuleEnv, filepath: string): void;
 };
 
-export default function makeRuntime(config: Config) {
+export interface IRuntime {
+  cache: { [key: string]: any };
+  load(filename: string): void;
+}
+
+export default function makeRuntime(config: Config): { new (): IRuntime } {
   const realRequire = require;
 
   const delegate: Delegate = {
@@ -71,7 +76,7 @@ export default function makeRuntime(config: Config) {
     },
   };
 
-  class Runtime {
+  class Runtime implements IRuntime {
     cache: { [key: string]: any } = {};
 
     load(filename: string) {

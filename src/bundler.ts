@@ -15,8 +15,23 @@ import bakeNodeEnv from "./bake-node-env";
 
 type Modules = { [id: string]: string };
 
-export default function makeBundler(config: Config) {
-  return class Bundler {
+export interface IBundler {
+  bundle({
+    input,
+    output,
+    globalName,
+  }: {
+    input: string;
+    output: string;
+    globalName: string;
+  }): {
+    warnings: string[];
+    writtenFiles: string[];
+  };
+}
+
+export default function makeBundler(config: Config): { new (): IBundler } {
+  return class Bundler implements IBundler {
     private _pendingChunks: Array<string> = [];
     private _warnings: Array<string> = [];
 
