@@ -57,6 +57,7 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc --declaration && chmod +x dist/cli.js"
+    "build": "rm -rf dist && tsc --declaration && chmod +x dist/cli.js",
+    "test": "jest"
   }
 }
