@@ -2,8 +2,9 @@ import makeBundler, { IBundler } from "./bundler";
 import makeRuntime, { IRuntime } from "./runtime";
 import { InputConfig, readConfig } from "./config";
 import defaultLoader from "./default-loader";
-import defaultResolver from "./default-resolver";
+import { resolve as defaultResolver } from "./default-resolver";
 import defaultRuntimeEval from "./default-runtime-eval";
+import { Runtime, Bundler } from "./default-instance";
 
 function configure(inputConfig: InputConfig = {}) {
   const config = readConfig(inputConfig);
@@ -16,10 +17,6 @@ function configure(inputConfig: InputConfig = {}) {
   };
 }
 
-const defaultInstance = configure();
-export const Runtime = defaultInstance.Runtime;
-export const Bundler = defaultInstance.Bundler;
-
 export {
   configure,
   defaultLoader,
@@ -27,4 +24,6 @@ export {
   defaultRuntimeEval,
   IBundler,
   IRuntime,
+  Runtime,
+  Bundler,
 };

@@ -1,15 +1,18 @@
 import path from "path";
 import builtins from "builtin-modules";
-import resolve from "resolve";
+import nodeResolve from "resolve";
 import makeDebug from "debug";
 
 const debug = makeDebug("kame/default-resolver");
 
 const allBuiltins = new Set(builtins);
 
-export default function defaultResolver(
+export const interfaceVersion = 2;
+
+export function resolve(
   id: string,
-  fromFilePath: string
+  fromFilePath: string,
+  _settings: {}
 ): string {
   debug(`Resolving '${id}' from '${fromFilePath}'`);
 
@@ -17,7 +20,7 @@ export default function defaultResolver(
     return "external:" + id;
   }
 
-  return resolve.sync(id, {
+  return nodeResolve.sync(id, {
     basedir: path.dirname(fromFilePath),
     preserveSymlinks: false,
     extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", ".node"],

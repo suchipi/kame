@@ -11,7 +11,7 @@ ${bodyCode}
 `;
 }
 
-function umdWrapper(globalName: string, bodyCode: string) {
+function umdWrapper(globalName: string | void, bodyCode: string) {
   return withGlobal(`
 function factory() {
 ${bodyCode}
@@ -22,7 +22,11 @@ if (typeof exports === 'object' && typeof module !== 'undefined') {
 } else if (typeof define === 'function' && define.amd) {
 	define([], factory);
 } else {
-	global[${JSON.stringify(globalName)}] = factory();
+	${
+    globalName == null
+      ? "factory()"
+      : `global[${JSON.stringify(globalName)}] = factory();`
+  }
 }
 `);
 }
@@ -42,14 +46,18 @@ function stringifyModules(modules: { [id: string]: string }) {
 export function entryWrapper({
   entryId,
   globalName,
+  codeSplittingId,
   modules,
   chunkUrls,
 }: {
   entryId: string;
-  globalName: string;
+  globalName?: string;
+  codeSplittingId: string;
   modules: { [id: string]: string };
   chunkUrls: { [id: string]: string };
 }) {
+  const hasChunks = Object.keys(chunkUrls).length > 0;
+
   return umdWrapper(
     globalName,
     `var modules = ${stringifyModules(modules)};
@@ -83,13 +91,22 @@ var __kame__ = {
 		var __filename = __kame__.basedir + "/" + name;
 		var __dirname = __kame__.basedir + "/" + name.split("/").slice(0, -1).join("/");
 
-		var _kame_dynamic_import_ = function dynamicImport(id) {
+		${
+      hasChunks
+        ? `var _kame_dynamic_import_ = function dynamicImport(id) {
 			return __kame__.loadChunk(id).then(function() { return _kame_require_(id) });
-		}
+		}`
+        : ""
+    }
 
-		__kame__.modules[name](exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_);
+		__kame__.modules[name](exports, _kame_require_, module, __filename, __dirname ${
+      hasChunks ? ", _kame_dynamic_import_" : ""
+    });
 		return module.exports;
 	},
+	${
+    hasChunks
+      ? `
 	chunkUrls: ${JSON.stringify(chunkUrls, null, 2)},
 	loadChunk: function loadChunk(id) {
 		var resolve, reject;
@@ -132,11 +149,20 @@ var __kame__ = {
 			__kame__.pendingChunks[id].resolve();
 		}
 	},
+
+	`
+      : ""
+  }
 	modules: modules,
 };
 
-global.__kame_instances__ = global.__kame_instances__ || {};
-global.__kame_instances__[${JSON.stringify(globalName)}] = __kame__;
+${
+  hasChunks
+    ? `global.__kame_instances__ = global.__kame_instances__ || {}; global.__kame_instances__[${JSON.stringify(
+        codeSplittingId
+      )}] = __kame__;`
+    : ""
+}
 
 return __kame__.runModule(${JSON.stringify(entryId)}, true);`
   );
@@ -145,15 +171,15 @@ return __kame__.runModule(${JSON.stringify(entryId)}, true);`
 export function chunkWrapper({
   entryId,
   modules,
-  globalName,
+  codeSplittingId,
 }: {
   entryId: string;
   modules: { [id: string]: string };
-  globalName: string;
+  codeSplittingId: string;
 }) {
   return withGlobal(`
 var modules = ${stringifyModules(modules)};
-var __kame__ = global.__kame_instances__[${JSON.stringify(globalName)}];
+var __kame__ = global.__kame_instances__[${JSON.stringify(codeSplittingId)}];
 
 for (var key in modules) {
 	if ({}.hasOwnProperty.call(modules, key)) {

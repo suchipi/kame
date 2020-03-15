@@ -3,6 +3,7 @@ import path from "path";
 import crypto from "crypto";
 import mkdirp from "mkdirp";
 import chalk from "chalk";
+import uid from "uid";
 import { NodePath } from "@babel/core";
 import * as t from "@babel/types";
 import generate from "@babel/generator";
@@ -20,10 +21,12 @@ export interface IBundler {
     input,
     output,
     globalName,
+    codeSplittingId,
   }: {
     input: string;
     output: string;
-    globalName: string;
+    globalName?: string;
+    codeSplittingId?: string;
   }): {
     warnings: string[];
     writtenFiles: string[];
@@ -79,7 +82,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
             let newValueAbsolute: string;
             try {
-              newValueAbsolute = config.resolver(currentValue, filename);
+              newValueAbsolute = config.resolver(currentValue, filename, {});
             } catch (err) {
               const newMessage =
                 `${chalk.red("Resolver failed in")} ${chalk.yellow(
@@ -164,10 +167,12 @@ export default function makeBundler(config: Config): { new (): IBundler } {
       input,
       output,
       globalName,
+      codeSplittingId = uid() + Date.now(),
     }: {
       input: string;
       output: string;
-      globalName: string;
+      globalName?: string;
+      codeSplittingId?: string;
     }) {
       this._pendingChunks = [];
       this._warnings = [];
@@ -200,7 +205,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
         const chunkHash = crypto
           .createHash("md5")
-          .update(Object.values(chunkModules).join("\n"))
+          .update(Object.values(chunkModules).join("\n") + codeSplittingId)
           .digest("hex");
 
         const chunkOutputFilename = `${chunkHash}.js`;
@@ -212,7 +217,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
         const chunkCode = chunkWrapper({
           entryId: pendingChunk,
-          globalName,
+          codeSplittingId,
           modules: chunkModules,
         });
 
@@ -227,6 +232,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
       let entryCode = entryWrapper({
         entryId: relativeInput,
         globalName,
+        codeSplittingId,
         modules: entryModules,
         chunkUrls,
       });

@@ -22,7 +22,7 @@ type Delegate = {
 
 export interface IRuntime {
   cache: { [key: string]: any };
-  load(filename: string): void;
+  load(filename: string): any;
 }
 
 export default function makeRuntime(config: Config): { new (): IRuntime } {
@@ -30,7 +30,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
 
   const delegate: Delegate = {
     resolve(id, fromFilePath) {
-      return config.resolver(id, fromFilePath);
+      return config.resolver(id, fromFilePath, {});
     },
 
     read(filepath) {
@@ -79,7 +79,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
   class Runtime implements IRuntime {
     cache: { [key: string]: any } = {};
 
-    load(filename: string) {
+    load(filename: string): any {
       require("regenerator-runtime");
 
       if (!path.isAbsolute(filename)) {
