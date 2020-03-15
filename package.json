@@ -58,6 +58,6 @@
   },
   "scripts": {
     "build": "rm -rf dist && tsc --declaration && chmod +x dist/cli.js",
-    "test": "jest"
+    "test": "jest --runInBand"
   }
 }
