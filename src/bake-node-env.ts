@@ -4,7 +4,14 @@ import * as parser from "@babel/parser";
 import traverse from "@babel/traverse";
 
 export default function bakeNodeEnv(code: string, env: string): string {
-  const ast = parser.parse(code);
+  const ast = parser.parse(code, {
+    allowImportExportEverywhere: true,
+    allowAwaitOutsideFunction: true,
+    allowReturnOutsideFunction: true,
+    allowSuperOutsideMethod: true,
+    allowUndeclaredExports: true,
+    sourceType: "unambiguous",
+  });
   traverse(ast, {
     MemberExpression(nodePath) {
       const { node } = nodePath;

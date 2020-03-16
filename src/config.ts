@@ -4,7 +4,6 @@ import makeDebug from "debug";
 import defaultLoader from "./default-loader";
 import * as defaultResolver from "./default-resolver";
 import defaultRuntimeEval from "./default-runtime-eval";
-import { Runtime } from "./default-instance";
 
 const debug = makeDebug("kame/config");
 
@@ -20,19 +19,30 @@ export type InputConfig = {
   resolver?: void | string | Config["resolver"];
 };
 
-let fileLoadingRuntime = new Runtime();
 function loadFile(filepath: string) {
-  const resolvedPath = defaultResolver.resolve(
-    filepath,
-    path.join(process.cwd(), "fake-cwd-file.js"),
-    {}
-  );
-  return fileLoadingRuntime.load(resolvedPath);
+  let resolvedPath: string;
+  try {
+    resolvedPath = defaultResolver.resolve(
+      filepath,
+      path.join(process.cwd(), "fake-cwd-file.js"),
+      {}
+    );
+  } catch (err) {
+    try {
+      resolvedPath = defaultResolver.resolve(
+        "./" + filepath,
+        path.join(process.cwd(), "fake-cwd-file.js"),
+        {}
+      );
+    } catch (err2) {
+      throw err;
+    }
+  }
+  return require(resolvedPath);
 }
 
 export function readConfig(inputConfig: InputConfig): Config {
   debug(`Parsing input config: ${util.inspect(inputConfig)}`);
-  fileLoadingRuntime.cache = {};
 
   // @ts-ignore
   const config: Config = {};

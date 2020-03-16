@@ -4,7 +4,13 @@ const { cli, path, read, write, remove } = require("../test-util");
 test("works", async () => {
   const run = firstBase.spawn(
     cli,
-    ["run", "--input", "./index.js", "--loader", "./loader.js"],
+    [
+      "run",
+      "--input",
+      "./index.js",
+      "--loader",
+      path(__dirname, "./loader.js"),
+    ],
     {
       cwd: __dirname,
     }

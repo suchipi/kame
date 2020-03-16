@@ -137,8 +137,7 @@ Options:
             Defaults to 'node_modules/kame/dist/default-resolver.js', which
             implements node's module resolution algorithm, and supports
             omitting the extension in the import/require for any of these
-            filetypes: ".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", and
-            ".node".
+            filetypes: ".js", ".json", ".mjs", ".jsx", ".ts", and ".tsx".
 
 --runtime-eval: The path to a file that exports an eval function, which kame
                 will use to execute code (in run mode only).

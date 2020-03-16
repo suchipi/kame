@@ -13,10 +13,7 @@ export default function defaultLoader(filename: string): string {
 
   switch (extension) {
     case ".json": {
-      return "module.exports = " + fs.readFileSync(filename);
-    }
-    case ".node": {
-      return require(filename);
+      return "module.exports = " + fs.readFileSync(filename, "utf-8");
     }
     case ".css": {
       const content = fs.readFileSync(filename, "utf-8");
@@ -32,7 +29,9 @@ export default function defaultLoader(filename: string): string {
     case ".mjs":
     case ".ts":
     case ".tsx": {
+      debug(`js case`);
       if (filename.match(/node_modules/)) {
+        debug(`js case uncompiled`);
         return fs.readFileSync(filename, "utf-8");
       }
 
@@ -48,6 +47,7 @@ export default function defaultLoader(filename: string): string {
           "@babel/plugin-proposal-optional-chaining",
           "@babel/plugin-transform-modules-commonjs",
         ],
+        filename,
       };
 
       if (extension === ".ts" || extension === ".tsx") {
@@ -57,10 +57,12 @@ export default function defaultLoader(filename: string): string {
       }
 
       const result = babel.transformFileSync(filename, config);
+      debug(`js case compiled`);
       return result?.code || "";
     }
 
     default: {
+      debug(`default case`);
       const type = mime.lookup(extension) || "application/octet-stream";
       const base64 = fs.readFileSync(filename, "base64");
       const url = `data:${type};base64,${base64}`;

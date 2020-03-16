@@ -62,7 +62,7 @@ test("works", async () => {
       Object {
         \\"code\\": 0,
         \\"error\\": false,
-        \\"stderr\\": \\"[34mFiles created:[39m
+        \\"stderr\\": \\"Files created:
       \\",
     <   \\"stdout\\": \\"dist/ea74def32cb1ed96794457e64b77a79d.js
     >   \\"stdout\\": \\"dist/3e57e1969256dfe43ed3774ec04d6618.js

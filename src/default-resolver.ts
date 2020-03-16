@@ -23,6 +23,6 @@ export function resolve(
   return nodeResolve.sync(id, {
     basedir: path.dirname(fromFilePath),
     preserveSymlinks: false,
-    extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", ".node"],
+    extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx"],
   });
 }

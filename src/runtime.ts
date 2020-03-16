@@ -1,4 +1,5 @@
 import path from "path";
+import chalk from "chalk";
 import * as babel from "@babel/core";
 import { Module } from "commonjs-standalone";
 import { Config } from "./config";
@@ -40,13 +41,32 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
 
       let code = config.loader(filepath);
 
-      const babelResult = babel.transformSync(code, {
-        babelrc: false,
-        plugins: ["babel-plugin-dynamic-import-node"],
-      });
+      let babelResult: ReturnType<typeof babel.transformSync>;
+      try {
+        babelResult = babel.transformSync(code, {
+          babelrc: false,
+          plugins: ["babel-plugin-dynamic-import-node"],
+          sourceType: "unambiguous",
+          filename: filepath,
+        });
+        code = babelResult?.code || code;
+      } catch (err) {
+        console.warn(
+          chalk.yellow(
+            `Warning: Kame runtime failed to convert dynamic imports to requires in the generated code for '${filepath}'\n${err}.`
+          )
+        );
+      }
 
-      code = babelResult?.code || code;
-      code = bakeNodeEnv(code, process.env.NODE_ENV || "development");
+      try {
+        code = bakeNodeEnv(code, process.env.NODE_ENV || "development");
+      } catch (err) {
+        console.warn(
+          chalk.yellow(
+            `Warning: Kame runtime failed to bake process.env.NODE_ENV into the generated code for '${filepath}'.\n${err}`
+          )
+        );
+      }
 
       return code;
     },

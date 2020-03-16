@@ -24,7 +24,7 @@ test("works", async () => {
     Object {
       "code": 0,
       "error": false,
-      "stderr": "[34mFiles created:[39m
+      "stderr": "Files created:
     ",
       "stdout": "dist/c5076b265d67c7e0e4b04ee5f499162c.js
     dist/index.js

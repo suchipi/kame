@@ -149,7 +149,15 @@ export default function makeBundler(config: Config): { new (): IBundler } {
           Object.defineProperty(err, "message", { value: newMessage });
           throw err;
         }
-        code = bakeNodeEnv(code, process.env.NODE_ENV || "production");
+        try {
+          code = bakeNodeEnv(code, process.env.NODE_ENV || "production");
+        } catch (err) {
+          this._warnings.push(
+            chalk.yellow(
+              `Warning: Kame bundler failed to bake process.env.NODE_ENV into the generated code for '${absFile}'.\n${err}`
+            )
+          );
+        }
 
         const { transformedCode, resolvedRequires } = this._transformRequires(
           file,
