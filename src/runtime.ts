@@ -3,7 +3,6 @@ import chalk from "chalk";
 import * as babel from "@babel/core";
 import { Module } from "commonjs-standalone";
 import { Config } from "./config";
-import bakeNodeEnv from "./bake-node-env";
 
 type Exports = { [key: string]: any };
 
@@ -41,31 +40,26 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
 
       let code = config.loader(filepath);
 
-      let babelResult: ReturnType<typeof babel.transformSync>;
-      try {
-        babelResult = babel.transformSync(code, {
-          babelrc: false,
-          plugins: ["babel-plugin-dynamic-import-node"],
-          sourceType: "unambiguous",
-          filename: filepath,
-        });
-        code = babelResult?.code || code;
-      } catch (err) {
-        console.warn(
-          chalk.yellow(
-            `Warning: Kame runtime failed to convert dynamic imports to requires in the generated code for '${filepath}'\n${err}.`
-          )
-        );
-      }
+      if (code.match(/import\s*\(/)) {
+        let babelResult: ReturnType<typeof babel.transformSync>;
+        try {
+          babelResult = babel.transformSync(code, {
+            babelrc: false,
+            plugins: ["babel-plugin-dynamic-import-node"],
+            sourceType: "unambiguous",
+            filename: filepath,
 
-      try {
-        code = bakeNodeEnv(code, process.env.NODE_ENV || "development");
-      } catch (err) {
-        console.warn(
-          chalk.yellow(
-            `Warning: Kame runtime failed to bake process.env.NODE_ENV into the generated code for '${filepath}'.\n${err}`
-          )
-        );
+            // Same effect as default value but silences warning
+            compact: code.length > 500 * 1024,
+          });
+          code = babelResult?.code || code;
+        } catch (err) {
+          console.warn(
+            chalk.yellow(
+              `Warning: Kame runtime failed to convert dynamic imports to requires in the generated code for '${filepath}'\n${err}.`
+            )
+          );
+        }
       }
 
       return code;

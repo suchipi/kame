@@ -30,5 +30,10 @@ export default function bakeNodeEnv(code: string, env: string): string {
     },
   });
 
-  return generate(ast).code || code;
+  return (
+    generate(ast, {
+      // Same effect as default value but silences warning
+      compact: code.length > 500 * 1024,
+    }).code || code
+  );
 }
