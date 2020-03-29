@@ -3,6 +3,7 @@ src
 .prettierrc
 tsconfig.json
 yarn.lock
+api-tests
 cli-tests
 .eslintrc
 jest.config.js
