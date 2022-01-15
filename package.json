@@ -31,6 +31,8 @@
     "debug": "^4.1.1",
     "mime-types": "^2.1.26",
     "mkdirp": "^1.0.3",
+    "nan": "^2.15.0",
+    "node-gyp": "^8.4.1",
     "regenerator-runtime": "^0.13.5",
     "resolve": "^1.15.1",
     "uid": "^1.0.0",

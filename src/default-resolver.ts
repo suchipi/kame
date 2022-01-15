@@ -20,9 +20,15 @@ export function resolve(
     return "external:" + id;
   }
 
-  return nodeResolve.sync(id, {
+  const result = nodeResolve.sync(id, {
     basedir: path.dirname(fromFilePath),
     preserveSymlinks: false,
     extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx"],
   });
+
+  if (result.endsWith(".node")) {
+    return "external:" + result;
+  }
+
+  return result;
 }

@@ -43,7 +43,7 @@ test("works", async () => {
       };
     }
 
-    console.log(_react[\\"default\\"].createElement(\\"div\\", null));
+    console.log( /*#__PURE__*/_react[\\"default\\"].createElement(\\"div\\", null));
     }),
     /* --- ../../node_modules/react/index.js --- */
     \\"../../node_modules/react/index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
@@ -2463,7 +2463,8 @@ test("works", async () => {
       var ReactPropTypesSecret = _kame_require_(\\"../../node_modules/prop-types/lib/ReactPropTypesSecret.js\\");
 
       var loggedTypeFailures = {};
-      var has = Function.call.bind(Object.prototype.hasOwnProperty);
+
+      var has = _kame_require_(\\"../../node_modules/prop-types/lib/has.js\\");
 
       printWarning = function (text) {
         var message = 'Warning: ' + text;
@@ -2477,7 +2478,9 @@ test("works", async () => {
           // This error was thrown as a convenience so that you can use this stack
           // to find the callsite that caused this warning to fire.
           throw new Error(message);
-        } catch (x) {}
+        } catch (x) {
+          /**/
+        }
       };
     }
     /**
@@ -2505,7 +2508,7 @@ test("works", async () => {
               // This is intentionally an invariant that gets caught. It's the same
               // behavior as without this statement except with a better message.
               if (typeof typeSpecs[typeSpecName] !== 'function') {
-                var err = Error((componentName || 'React class') + ': ' + location + ' type \`' + typeSpecName + '\` is invalid; ' + 'it must be a function, usually from the \`prop-types\` package, but received \`' + typeof typeSpecs[typeSpecName] + '\`.');
+                var err = Error((componentName || 'React class') + ': ' + location + ' type \`' + typeSpecName + '\` is invalid; ' + 'it must be a function, usually from the \`prop-types\` package, but received \`' + typeof typeSpecs[typeSpecName] + '\`.' + 'This often happens because of typos such as \`PropTypes.function\` instead of \`PropTypes.func\`.');
                 err.name = 'Invariant Violation';
                 throw err;
               }
@@ -2557,6 +2560,10 @@ test("works", async () => {
 
     var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
     module.exports = ReactPropTypesSecret;
+    }),
+    /* --- ../../node_modules/prop-types/lib/has.js --- */
+    \\"../../node_modules/prop-types/lib/has.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    module.exports = Function.call.bind(Object.prototype.hasOwnProperty);
     })
     /* --- end of modules --- */};
 
@@ -2627,20 +2634,20 @@ test("works", async () => {
   await run2.completion;
 
   expect(run2.result).toMatchInlineSnapshot(`
-Object {
-  "code": 0,
-  "error": false,
-  "stderr": "",
-  "stdout": "{ '$$typeof': Symbol(react.element),
-  type: 'div',
-  key: null,
-  ref: null,
-  props: {},
-  _owner: null,
-  _store: {} }
-",
-}
-`);
+    Object {
+      "code": 0,
+      "error": false,
+      "stderr": "",
+      "stdout": "{ '$$typeof': Symbol(react.element),
+      type: 'div',
+      key: null,
+      ref: null,
+      props: {},
+      _owner: null,
+      _store: {} }
+    ",
+    }
+  `);
 
   remove(__dirname, "dist");
 });

@@ -81,9 +81,10 @@ export default function makeBundler(config: Config): { new (): IBundler } {
             const currentValue = source.node.value;
 
             let newValueAbsolute: string;
+            // prettier-ignore
             try {
               newValueAbsolute = config.resolver(currentValue, filename, {});
-            } catch (err) {
+            } catch (err: any) {
               const newMessage =
                 `${chalk.red("Resolver failed in")} ${chalk.yellow(
                   "'" + filename + "'"
@@ -139,9 +140,10 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
         const absFile = path.resolve(process.cwd(), file);
         let code: string;
+        // prettier-ignore
         try {
           code = config.loader(absFile);
-        } catch (err) {
+        } catch (err: any) {
           const newMessage =
             `${chalk.red("Loader failed to load")} ${chalk.yellow(
               "'" + absFile + "'"

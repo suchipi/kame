@@ -3,7 +3,9 @@ const path = require("path");
 const rimraf = require("rimraf");
 const mkdirp = require("mkdirp");
 
-const cli = path.resolve(__dirname, "..", "dist", "cli.js");
+const rootDir = (...parts) => path.resolve(__dirname, "..", ...parts);
+
+const cli = rootDir("dist", "cli.js");
 
 function joinPath(...parts) {
   return path.resolve(...parts);
@@ -43,4 +45,5 @@ module.exports = {
   remove,
   write,
   read,
+  rootDir,
 };
