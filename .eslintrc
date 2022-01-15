@@ -1,10 +1,5 @@
 {
-  "extends": [
-    "unobtrusive",
-    "unobtrusive/import",
-    "unobtrusive/react",
-    "unobtrusive/flowtype"
-  ],
+  "extends": ["unobtrusive", "unobtrusive/import", "unobtrusive/react"],
   "env": {
     "node": true,
     "es6": true,
