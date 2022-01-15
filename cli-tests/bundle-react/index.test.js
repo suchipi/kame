@@ -57,7 +57,7 @@ test("works", async () => {
     }),
     /* --- ../../node_modules/react/cjs/react.production.min.js --- */
     \\"../../node_modules/react/cjs/react.production.min.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    /** @license React v16.13.0
+    /** @license React v16.14.0
      * react.production.min.js
      *
      * Copyright (c) Facebook, Inc. and its affiliates.
@@ -468,11 +468,11 @@ test("works", async () => {
       return Z().useState(a);
     };
 
-    exports.version = \\"16.13.0\\";
+    exports.version = \\"16.14.0\\";
     }),
     /* --- ../../node_modules/react/cjs/react.development.js --- */
     \\"../../node_modules/react/cjs/react.development.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    /** @license React v16.13.0
+    /** @license React v16.14.0
      * react.development.js
      *
      * Copyright (c) Facebook, Inc. and its affiliates.
@@ -490,7 +490,7 @@ test("works", async () => {
 
         var checkPropTypes = _kame_require_(\\"../../node_modules/prop-types/checkPropTypes.js\\");
 
-        var ReactVersion = '16.13.0'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+        var ReactVersion = '16.14.0'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
         // nor polyfill, then a plain number is used for performance.
 
         var hasSymbol = typeof Symbol === 'function' && Symbol.for;
