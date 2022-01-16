@@ -30,7 +30,7 @@ export default function defaultLoader(filename: string): string {
     case ".ts":
     case ".tsx": {
       debug(`js case`);
-      if (filename.match(/node_modules/)) {
+      if (extension === ".js" && filename.match(/node_modules/)) {
         debug(`js case uncompiled`);
         return fs.readFileSync(filename, "utf-8");
       }
