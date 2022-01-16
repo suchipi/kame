@@ -9,7 +9,7 @@ const debug = makeDebug("kame/config");
 
 export type Config = {
   loader: (filename: string) => string;
-  resolver: (id: string, fromFilePath: string, settings: any) => string;
+  resolver: (id: string, fromFilePath: string) => string;
   runtimeEval: (code: string, filename: string) => any;
 };
 
@@ -24,15 +24,13 @@ function loadFile(filepath: string) {
   try {
     resolvedPath = defaultResolver.resolve(
       filepath,
-      path.join(process.cwd(), "fake-cwd-file.js"),
-      {}
+      path.join(process.cwd(), "fake-cwd-file.js")
     );
   } catch (err) {
     try {
       resolvedPath = defaultResolver.resolve(
         "./" + filepath,
-        path.join(process.cwd(), "fake-cwd-file.js"),
-        {}
+        path.join(process.cwd(), "fake-cwd-file.js")
       );
     } catch (err2) {
       throw err;

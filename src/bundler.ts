@@ -83,7 +83,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
             let newValueAbsolute: string;
             // prettier-ignore
             try {
-              newValueAbsolute = config.resolver(currentValue, filename, {});
+              newValueAbsolute = config.resolver(currentValue, filename);
             } catch (err: any) {
               const newMessage =
                 `${chalk.red("Resolver failed in")} ${chalk.yellow(

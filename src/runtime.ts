@@ -30,7 +30,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
 
   const delegate: Delegate = {
     resolve(id, fromFilePath) {
-      return config.resolver(id, fromFilePath, {});
+      return config.resolver(id, fromFilePath);
     },
 
     read(filepath) {
