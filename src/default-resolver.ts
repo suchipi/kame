@@ -19,7 +19,7 @@ export function resolve(id: string, fromFilePath: string): string {
   const result = nodeResolve.sync(id, {
     basedir: path.dirname(fromFilePath),
     preserveSymlinks: false,
-    extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx"],
+    extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", ".node"],
   });
 
   if (result.endsWith(".node")) {
