@@ -30,35 +30,40 @@ export default function defaultLoader(filename: string): string {
     case ".ts":
     case ".tsx": {
       debug(`js case`);
+
+      let code = "";
       if (extension === ".js" && filename.match(/node_modules/)) {
         debug(`js case uncompiled`);
-        return fs.readFileSync(filename, "utf-8");
-      }
-
-      const config = {
-        sourceType: "unambiguous" as "unambiguous",
-        presets: [
-          ["@babel/preset-env", { modules: false }],
-          "@babel/preset-react",
-        ],
-        plugins: [
-          "@babel/plugin-proposal-class-properties",
-          "@babel/plugin-proposal-nullish-coalescing-operator",
-          "@babel/plugin-proposal-optional-chaining",
-          "@babel/plugin-transform-modules-commonjs",
-        ],
-        filename,
-      };
-
-      if (extension === ".ts" || extension === ".tsx") {
-        config.presets.push("@babel/preset-typescript");
+        code = fs.readFileSync(filename, "utf-8");
       } else {
-        config.plugins.push("@babel/plugin-transform-flow-strip-types");
+        const config = {
+          sourceType: "unambiguous" as "unambiguous",
+          presets: [
+            ["@babel/preset-env", { modules: false }],
+            "@babel/preset-react",
+          ],
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "@babel/plugin-proposal-nullish-coalescing-operator",
+            "@babel/plugin-proposal-optional-chaining",
+            "@babel/plugin-transform-modules-commonjs",
+          ],
+          filename,
+        };
+
+        if (extension === ".ts" || extension === ".tsx") {
+          config.presets.push("@babel/preset-typescript");
+        } else {
+          config.plugins.push("@babel/plugin-transform-flow-strip-types");
+        }
+
+        const result = babel.transformFileSync(filename, config);
+        debug(`js case compiled`);
+        code = result?.code || "";
       }
 
-      const result = babel.transformFileSync(filename, config);
-      debug(`js case compiled`);
-      return result?.code || "";
+      const codeWithoutShebang = code.replace(/^#![^\r\n]*/, "");
+      return codeWithoutShebang;
     }
 
     default: {
