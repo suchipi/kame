@@ -38,6 +38,20 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         return "";
       }
 
+      if (filepath.startsWith("unresolved:")) {
+        const [fromFilePath, id] = filepath
+          .replace(/^unresolved:/, "")
+          .split("|");
+
+        return `throw new Error(
+          ${JSON.stringify(
+            `Module not found: Tried to load ${JSON.stringify(
+              id
+            )} from ${JSON.stringify(fromFilePath)}`
+          )}
+        );`;
+      }
+
       let code = config.loader(filepath);
 
       if (code.match(/import\s*\(/)) {
@@ -45,7 +59,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         try {
           babelResult = babel.transformSync(code, {
             babelrc: false,
-            plugins: ["babel-plugin-dynamic-import-node"],
+            plugins: [require("babel-plugin-dynamic-import-node")],
             sourceType: "unambiguous",
             filename: filepath,
 

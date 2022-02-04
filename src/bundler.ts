@@ -138,7 +138,22 @@ export default function makeBundler(config: Config): { new (): IBundler } {
           continue;
         }
 
-        const absFile = path.resolve(process.cwd(), file);
+        if (file.startsWith("unresolved:")) {
+          const [fromFilePath, id] = file
+            .replace(/^unresolved:/, "")
+            .split("|");
+
+          modules[file] = `throw new Error(${JSON.stringify(
+            `Module wasn't found at bundle time: Tried to load ${JSON.stringify(
+              id
+            )} from ${JSON.stringify(
+              path.relative(this._pathsRelativeTo, fromFilePath)
+            )}`
+          )});`;
+          continue;
+        }
+
+        const absFile = path.resolve(this._pathsRelativeTo, file);
         let code: string;
         // prettier-ignore
         try {
@@ -196,15 +211,15 @@ export default function makeBundler(config: Config): { new (): IBundler } {
       const writtenFiles: Array<string> = [];
 
       if (!path.isAbsolute(input)) {
-        input = path.resolve(process.cwd(), input);
+        input = path.resolve(pathsRelativeTo, input);
       }
       if (!path.isAbsolute(output)) {
-        output = path.resolve(process.cwd(), output);
+        output = path.resolve(pathsRelativeTo, output);
       }
 
       mkdirp.sync(path.dirname(output));
 
-      const relativeInput = path.relative(process.cwd(), input);
+      const relativeInput = path.relative(pathsRelativeTo, input);
       const entryModules = this._gatherModules(relativeInput);
 
       const chunkUrls = {};

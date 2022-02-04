@@ -39,22 +39,25 @@ export default function defaultLoader(filename: string): string {
         const config = {
           sourceType: "unambiguous" as "unambiguous",
           presets: [
-            ["@babel/preset-env", { modules: false }],
-            "@babel/preset-react",
+            [require("@babel/preset-env").default, { modules: false }],
+            require("@babel/preset-react").default,
           ],
           plugins: [
-            "@babel/plugin-proposal-class-properties",
-            "@babel/plugin-proposal-nullish-coalescing-operator",
-            "@babel/plugin-proposal-optional-chaining",
-            "@babel/plugin-transform-modules-commonjs",
+            require("@babel/plugin-proposal-class-properties").default,
+            require("@babel/plugin-proposal-nullish-coalescing-operator")
+              .default,
+            require("@babel/plugin-proposal-optional-chaining").default,
+            require("@babel/plugin-transform-modules-commonjs").default,
           ],
           filename,
         };
 
         if (extension === ".ts" || extension === ".tsx") {
-          config.presets.push("@babel/preset-typescript");
+          config.presets.push(require("@babel/preset-typescript").default);
         } else {
-          config.plugins.push("@babel/plugin-transform-flow-strip-types");
+          config.plugins.push(
+            require("@babel/plugin-transform-flow-strip-types").default
+          );
         }
 
         const result = babel.transformFileSync(filename, config);

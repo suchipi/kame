@@ -16,11 +16,21 @@ export function resolve(id: string, fromFilePath: string): string {
     return "external:" + id;
   }
 
-  const result = nodeResolve.sync(id, {
-    basedir: path.dirname(fromFilePath),
-    preserveSymlinks: false,
-    extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", ".node"],
-  });
+  let result: string;
+  try {
+    result = nodeResolve.sync(id, {
+      basedir: path.dirname(fromFilePath),
+      preserveSymlinks: false,
+      extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", ".node"],
+    });
+  } catch (err) {
+    // TODO make this a CLI option or something, or at least document it
+    if (process.env.KAME_ALLOW_UNRESOLVED === "true") {
+      return "unresolved:" + fromFilePath + "|" + id;
+    } else {
+      throw err;
+    }
+  }
 
   if (result.endsWith(".node")) {
     return "external:" + result;
