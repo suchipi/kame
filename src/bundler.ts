@@ -17,16 +17,12 @@ import bakeNodeEnv from "./bake-node-env";
 type Modules = { [id: string]: string };
 
 export interface IBundler {
-  bundle({
-    input,
-    output,
-    globalName,
-    codeSplittingId,
-  }: {
+  bundle(options: {
     input: string;
     output: string;
     globalName?: string;
     codeSplittingId?: string;
+    pathsRelativeTo?: string;
   }): {
     warnings: string[];
     writtenFiles: string[];
@@ -37,6 +33,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
   return class Bundler implements IBundler {
     private _pendingChunks: Array<string> = [];
     private _warnings: Array<string> = [];
+    private _pathsRelativeTo: string = "";
 
     private _transformRequires(
       filename: string,
@@ -45,6 +42,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
       const resolvedRequires: Array<string> = [];
       const pendingChunks = this._pendingChunks;
       const warnings = this._warnings;
+      const pathsRelativeTo = this._pathsRelativeTo;
 
       const ast = parser.parse(code);
       traverse(ast, {
@@ -95,7 +93,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
               Object.defineProperty(err, "message", { value: newMessage });
               throw err;
             }
-            const newValue = path.relative(process.cwd(), newValueAbsolute);
+            const newValue = path.relative(pathsRelativeTo, newValueAbsolute);
 
             if (isRequire) {
               resolvedRequires.push(newValue);
@@ -131,6 +129,8 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
       let file: string | undefined;
       while ((file = filesToProcess.shift())) {
+        if (modules[file]) continue;
+
         if (file.startsWith("external:")) {
           modules[file] = `module.exports = require(${JSON.stringify(
             file.replace(/^external:/, "")
@@ -167,7 +167,10 @@ export default function makeBundler(config: Config): { new (): IBundler } {
         );
         modules[file] = transformedCode;
 
-        filesToProcess.push(...resolvedRequires);
+        const newResolvedRequires = resolvedRequires.filter(
+          (reqPath) => !modules.hasOwnProperty(reqPath)
+        );
+        filesToProcess.push(...newResolvedRequires);
       }
 
       return modules;
@@ -178,14 +181,17 @@ export default function makeBundler(config: Config): { new (): IBundler } {
       output,
       globalName,
       codeSplittingId = uid() + Date.now(),
+      pathsRelativeTo = process.cwd(),
     }: {
       input: string;
       output: string;
       globalName?: string;
       codeSplittingId?: string;
+      pathsRelativeTo?: string;
     }) {
       this._pendingChunks = [];
       this._warnings = [];
+      this._pathsRelativeTo = pathsRelativeTo;
 
       const writtenFiles: Array<string> = [];
 
