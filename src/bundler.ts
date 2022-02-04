@@ -29,6 +29,64 @@ export interface IBundler {
   };
 }
 
+function parsePath(
+  somepath: string
+):
+  | { kind: "external"; id: string }
+  | { kind: "unresolved"; id: string; fromFilePath: string }
+  | { kind: "normal"; path: string } {
+  const matches = somepath.match(/^(external|unresolved):/);
+  if (matches) {
+    const protocol = matches[1];
+    switch (protocol) {
+      case "external": {
+        return {
+          kind: "external",
+          id: somepath.replace("external:", ""),
+        };
+      }
+      case "unresolved": {
+        const [fromFilePath, id] = somepath
+          .replace("unresolved:", "")
+          .split("|");
+
+        return {
+          kind: "unresolved",
+          fromFilePath,
+          id,
+        };
+      }
+      default: {
+        throw new Error(
+          "Unhandled protocol in resolved path string: " + protocol
+        );
+      }
+    }
+  } else {
+    return { kind: "normal", path: somepath };
+  }
+}
+
+function makeRelative(context: string, filepath: string) {
+  const parsedPath = parsePath(filepath);
+  switch (parsedPath.kind) {
+    case "normal": {
+      return path.relative(context, filepath);
+    }
+    case "external": {
+      return filepath;
+    }
+    case "unresolved": {
+      return (
+        "unresolved:" +
+        path.relative(context, parsedPath.fromFilePath) +
+        "|" +
+        parsedPath.id
+      );
+    }
+  }
+}
+
 export default function makeBundler(config: Config): { new (): IBundler } {
   return class Bundler implements IBundler {
     private _pendingChunks: Array<string> = [];
@@ -94,20 +152,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
               throw err;
             }
 
-            let protocol = "";
-            let resolvedPath = resolverResult;
-
-            const matches = resolverResult.match(/^(external:|unresolved:)/);
-            if (matches) {
-              protocol = matches[1];
-              resolvedPath = resolvedPath.replace(
-                new RegExp("^" + protocol),
-                ""
-              );
-            }
-
-            const newValue =
-              protocol + path.relative(pathsRelativeTo, resolvedPath);
+            const newValue = makeRelative(pathsRelativeTo, resolverResult);
 
             if (isRequire) {
               resolvedRequires.push(newValue);
@@ -231,7 +276,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
       mkdirp.sync(path.dirname(output));
 
-      const relativeInput = path.relative(pathsRelativeTo, input);
+      const relativeInput = makeRelative(pathsRelativeTo, input);
       const entryModules = this._gatherModules(relativeInput);
 
       const chunkUrls = {};
