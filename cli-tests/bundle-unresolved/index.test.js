@@ -43,9 +43,7 @@ test("works", async () => {
     }),
     /* --- unresolved:index.js|./not-there --- */
     \\"unresolved:index.js|./not-there\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    throw new Error(
-                \\"Module wasn't found at bundle time: Tried to load \\\\\\"./not-there\\\\\\" from \\\\\\"index.js\\\\\\"\\"
-              );
+    throw new Error(\\"Module wasn't found at bundle time: Tried to load \\\\\\"./not-there\\\\\\" from \\\\\\"index.js\\\\\\"\\");
     })
     /* --- end of modules --- */};
 
@@ -125,18 +123,18 @@ test("works", async () => {
       "code": 1,
       "error": false,
       "stderr": "<cwd>/cli-tests/bundle-unresolved/dist/index.js:12
-    throw new Error(
+    throw new Error(\\"Module wasn't found at bundle time: Tried to load \\\\\\"./not-there\\\\\\" from \\\\\\"index.js\\\\\\"\\");
     ^
 
     Error: Module wasn't found at bundle time: Tried to load \\"./not-there\\" from \\"index.js\\"
         at Object.unresolved:index.js|./not-there (<cwd>/cli-tests/bundle-unresolved/dist/index.js:12:7)
-        at Object.runModule (<cwd>/cli-tests/bundle-unresolved/dist/index.js:49:25)
-        at require (<cwd>/cli-tests/bundle-unresolved/dist/index.js:34:14)
+        at Object.runModule (<cwd>/cli-tests/bundle-unresolved/dist/index.js:47:25)
+        at require (<cwd>/cli-tests/bundle-unresolved/dist/index.js:32:14)
         at Object.index.js (<cwd>/cli-tests/bundle-unresolved/dist/index.js:8:1)
-        at Object.runModule (<cwd>/cli-tests/bundle-unresolved/dist/index.js:49:25)
-        at factory (<cwd>/cli-tests/bundle-unresolved/dist/index.js:58:17)
-        at <cwd>/cli-tests/bundle-unresolved/dist/index.js:62:19
-        at Object.<anonymous> (<cwd>/cli-tests/bundle-unresolved/dist/index.js:69:3)
+        at Object.runModule (<cwd>/cli-tests/bundle-unresolved/dist/index.js:47:25)
+        at factory (<cwd>/cli-tests/bundle-unresolved/dist/index.js:56:17)
+        at <cwd>/cli-tests/bundle-unresolved/dist/index.js:60:19
+        at Object.<anonymous> (<cwd>/cli-tests/bundle-unresolved/dist/index.js:67:3)
         at Module._compile (internal/modules/cjs/loader.js:778:30)
         at Object.Module._extensions..js (internal/modules/cjs/loader.js:789:10)
     ",

@@ -78,10 +78,10 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
             const currentValue = source.node.value;
 
-            let newValueAbsolute: string;
+            let resolverResult: string;
             // prettier-ignore
             try {
-              newValueAbsolute = config.resolver(currentValue, filename);
+              resolverResult = config.resolver(currentValue, filename);
             } catch (err: any) {
               const newMessage =
                 `${chalk.red("Resolver failed in")} ${chalk.yellow(
@@ -93,7 +93,21 @@ export default function makeBundler(config: Config): { new (): IBundler } {
               Object.defineProperty(err, "message", { value: newMessage });
               throw err;
             }
-            const newValue = path.relative(pathsRelativeTo, newValueAbsolute);
+
+            let protocol = "";
+            let resolvedPath = resolverResult;
+
+            const matches = resolverResult.match(/^(external:|unresolved:)/);
+            if (matches) {
+              protocol = matches[1];
+              resolvedPath = resolvedPath.replace(
+                new RegExp("^" + protocol),
+                ""
+              );
+            }
+
+            const newValue =
+              protocol + path.relative(pathsRelativeTo, resolvedPath);
 
             if (isRequire) {
               resolvedRequires.push(newValue);
@@ -146,9 +160,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
           modules[file] = `throw new Error(${JSON.stringify(
             `Module wasn't found at bundle time: Tried to load ${JSON.stringify(
               id
-            )} from ${JSON.stringify(
-              path.relative(this._pathsRelativeTo, fromFilePath)
-            )}`
+            )} from ${JSON.stringify(fromFilePath)}`
           )});`;
           continue;
         }
