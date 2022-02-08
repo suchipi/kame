@@ -12,7 +12,7 @@ export const interfaceVersion = 2;
 export function resolve(id: string, fromFilePath: string): string {
   debug(`Resolving '${id}' from '${fromFilePath}'`);
 
-  if (allBuiltins.has(id)) {
+  if (allBuiltins.has(id.split("/")[0])) {
     return "external:" + id;
   }
 
