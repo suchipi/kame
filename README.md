@@ -95,6 +95,6 @@ export type Config = {
 
 ---
 
-TODO: finish the readme. talk about how using normal functions for this makes understanding, editing, and overriding configs way easier, and explain how to use the kame CLI and node API./
+TODO: finish the readme. talk about how using normal functions for this makes understanding, editing, and overriding configs way easier, and explain how to use the kame CLI and node API.
 
 If the unfinished readme has you intrigued, try running `npx kame --help` for more info.
