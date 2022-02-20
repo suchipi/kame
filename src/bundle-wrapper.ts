@@ -1,3 +1,5 @@
+import * as changeCase from "change-case";
+
 function withGlobal(bodyCode: string) {
   return `(function(global) {
 ${bodyCode}
@@ -189,4 +191,26 @@ for (var key in modules) {
 
 __kame__.resolveChunk(${JSON.stringify(entryId)});
 `);
+}
+
+export function externalWrapper(external: string) {
+  const normalPath = external.replace(/^external:/, "");
+  const env = process.env.NODE_ENV || "production";
+  const varName = changeCase.camelCase(normalPath);
+  const capVarName = changeCase.pascalCase(varName);
+
+  return `if (typeof require === "function") {
+	module.exports = require(${JSON.stringify(normalPath)});
+} else if (typeof ${varName} !== "undefined") {
+	module.exports = ${varName};
+} else if (typeof ${capVarName} !== "undefined") {
+	module.exports = ${capVarName};
+} else {
+	if (${JSON.stringify(env)} !== "production") {
+		console.warn("Failed to load external " + ${JSON.stringify(
+      normalPath
+    )} + ". An empty module will be used instead, but this might cause problems in your code. Consider using a custom resolver to shim this external.");
+	}
+	module.exports = {};
+}`;
 }

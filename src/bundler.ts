@@ -11,7 +11,7 @@ import * as parser from "@babel/parser";
 import traverse from "@babel/traverse";
 import { codeFrameColumns } from "@babel/code-frame";
 import { Config } from "./config";
-import { entryWrapper, chunkWrapper } from "./bundle-wrapper";
+import { entryWrapper, chunkWrapper, externalWrapper } from "./bundle-wrapper";
 import bakeNodeEnv from "./bake-node-env";
 
 type Modules = { [id: string]: string };
@@ -191,9 +191,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
         if (modules[file]) continue;
 
         if (file.startsWith("external:")) {
-          modules[file] = `module.exports = require(${JSON.stringify(
-            file.replace(/^external:/, "")
-          )})`;
+          modules[file] = externalWrapper(file);
           continue;
         }
 
