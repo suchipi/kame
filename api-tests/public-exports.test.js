@@ -6,9 +6,15 @@ test("public exports", () => {
       "Bundler": [Function],
       "Runtime": [Function],
       "configure": [Function],
-      "defaultLoader": [Function],
-      "defaultResolver": [Function],
-      "defaultRuntimeEval": [Function],
+      "defaultLoader": Object {
+        "load": [Function],
+      },
+      "defaultResolver": Object {
+        "resolve": [Function],
+      },
+      "defaultRuntimeEval": Object {
+        "evaluate": [Function],
+      },
     }
   `);
 });

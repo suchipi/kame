@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-module.exports = (filename) => {
+exports.load = (filename) => {
   const code = fs.readFileSync(filename, "utf-8");
   return code.replace(/hi/, "yo");
 };

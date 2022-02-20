@@ -1,5 +1,5 @@
 src
-.nvmrc
+.node-version
 .prettierrc
 tsconfig.json
 yarn.lock

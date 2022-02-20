@@ -6,7 +6,7 @@ import makeDebug from "debug";
 
 const debug = makeDebug("kame/default-loader");
 
-export default function defaultLoader(filename: string): string {
+function defaultLoader(filename: string): string {
   debug(`Loading ${filename}`);
 
   const extension = path.extname(filename);
@@ -78,3 +78,5 @@ export default function defaultLoader(filename: string): string {
     }
   }
 }
+
+export const load = defaultLoader;

@@ -25,12 +25,14 @@ test("works", async () => {
       "code": 0,
       "error": false,
       "stderr": "",
-      "stdout": "{ configure: [Function: configure],
-      defaultLoader: [Function: defaultLoader],
-      defaultResolver: [Getter],
-      defaultRuntimeEval: [Function: defaultRuntimeEval],
+      "stdout": "{
+      configure: [Function: configure],
+      defaultLoader: { load: [Function: defaultLoader] },
+      defaultResolver: { resolve: [Function: defaultResolver] },
+      defaultRuntimeEval: { evaluate: [Function: defaultRuntimeEval] },
       Runtime: [Getter],
-      Bundler: [Getter] }
+      Bundler: [Getter]
+    }
     ",
     }
   `);

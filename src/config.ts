@@ -1,9 +1,10 @@
 import path from "path";
 import util from "util";
 import makeDebug from "debug";
-import defaultLoader from "./default-loader";
+import { Runtime } from "./default-instance";
+import * as defaultLoader from "./default-loader";
 import * as defaultResolver from "./default-resolver";
-import defaultRuntimeEval from "./default-runtime-eval";
+import * as defaultRuntimeEval from "./default-runtime-eval";
 
 const debug = makeDebug("kame/config");
 
@@ -18,6 +19,8 @@ export type InputConfig = {
   runtimeEval?: void | string | Config["runtimeEval"];
   resolver?: void | string | Config["resolver"];
 };
+
+const configLoaderRuntime = new Runtime();
 
 function loadFile(filepath: string) {
   let resolvedPath: string;
@@ -36,7 +39,8 @@ function loadFile(filepath: string) {
       throw err;
     }
   }
-  return require(resolvedPath);
+
+  return configLoaderRuntime.load(resolvedPath);
 }
 
 export function readConfig(inputConfig: InputConfig): Config {
@@ -47,20 +51,18 @@ export function readConfig(inputConfig: InputConfig): Config {
 
   if (typeof inputConfig.loader === "string") {
     const mod = loadFile(inputConfig.loader);
-    if (typeof mod === "object" && mod != null && mod.__esModule) {
-      config.loader = mod.default;
-    } else {
-      config.loader = mod;
+    if (typeof mod === "object" && mod != null) {
+      config.loader = mod.load;
     }
-    if (typeof config.loader !== "function") {
+    if (typeof mod.load !== "function") {
       throw new Error(
-        `'${inputConfig.loader}' did not export a function as either its default export or module.exports. Loader modules should export a function that receives an absolute path string and returns a JavaScript code string.`
+        `'${inputConfig.loader}' did not export a 'load' function as a named export. Loader modules should export a function that receives an absolute path string and returns a JavaScript code string. See \`kame --help\` for more info.`
       );
     }
   } else if (typeof inputConfig.loader === "function") {
     config.loader = inputConfig.loader;
   } else {
-    config.loader = defaultLoader;
+    config.loader = defaultLoader.load;
   }
 
   if (typeof inputConfig.resolver === "string") {
@@ -70,7 +72,7 @@ export function readConfig(inputConfig: InputConfig): Config {
     }
     if (typeof config.resolver !== "function") {
       throw new Error(
-        `'${inputConfig.resolver}' did not export a function as its 'resolve' named export. Resolver modules should adhere to the eslint-plugin-import resolver spec v2 as defined at https://github.com/benmosher/eslint-plugin-import/blob/b916ed2b574a107e62f819663b8c300f82d82d8d/resolvers/README.md.`
+        `'${inputConfig.resolver}' did not export a 'resolve' function as a named export. Resolver modules should export a function that receives the source import/require string and the filename it appeared in, and returns the absolute path to the targeted file. See \`kame --help\` for more info.`
       );
     }
   } else if (typeof inputConfig === "function") {
@@ -81,20 +83,18 @@ export function readConfig(inputConfig: InputConfig): Config {
 
   if (typeof inputConfig.runtimeEval === "string") {
     const mod = loadFile(inputConfig.runtimeEval);
-    if (typeof mod === "object" && mod != null && mod.__esModule) {
-      config.runtimeEval = mod.default;
-    } else {
-      config.runtimeEval = mod;
+    if (typeof mod === "object" && mod != null) {
+      config.runtimeEval = mod.evaluate;
     }
     if (typeof config.runtimeEval !== "function") {
       throw new Error(
-        `'${inputConfig.runtimeEval}' did not export a function as either its default export or module.exports. Runtime eval modules should export a function that receives a code string and an absolute path string and returns the result of evaluating that code string as an expression.`
+        `'${inputConfig.runtimeEval}' did not export an 'evaluate' function as a named export. Runtime eval modules should export a function that receives a code string and an absolute path string and returns the result of evaluating that code string as an expression. See \`kame --help\` for more info.`
       );
     }
   } else if (typeof inputConfig.runtimeEval === "function") {
     config.runtimeEval = inputConfig.runtimeEval;
   } else {
-    config.runtimeEval = defaultRuntimeEval;
+    config.runtimeEval = defaultRuntimeEval.evaluate;
   }
 
   debug(`Parsed input config: ${util.inspect(config)}`);

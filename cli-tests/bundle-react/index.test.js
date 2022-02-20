@@ -2638,13 +2638,15 @@ test("works", async () => {
       "code": 0,
       "error": false,
       "stderr": "",
-      "stdout": "{ '$$typeof': Symbol(react.element),
+      "stdout": "{
+      '$$typeof': Symbol(react.element),
       type: 'div',
       key: null,
       ref: null,
       props: {},
       _owner: null,
-      _store: {} }
+      _store: {}
+    }
     ",
     }
   `);

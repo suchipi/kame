@@ -7,9 +7,7 @@ const debug = makeDebug("kame/default-resolver");
 
 const allBuiltins = new Set(builtins);
 
-export const interfaceVersion = 2;
-
-export function resolve(id: string, fromFilePath: string): string {
+function defaultResolver(id: string, fromFilePath: string): string {
   debug(`Resolving '${id}' from '${fromFilePath}'`);
 
   if (allBuiltins.has(id.split("/")[0])) {
@@ -38,3 +36,5 @@ export function resolve(id: string, fromFilePath: string): string {
 
   return result;
 }
+
+export const resolve = defaultResolver;

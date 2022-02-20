@@ -116,34 +116,59 @@ Options:
 --loader: The path to a file that exports a loader function, which kame will
           use to read modules from disk and convert them to JavaScript.
 
-          A loader module should export a function that receives a
-          string (the file to load), and returns a string (the code to
-           execute in the browser). Loader modules must be synchronous,
-           because they're called when 'require' is called.
+          A loader module should export a function named "load" that
+          receives a string (the file to load), and returns a string (the code
+          to execute). Loader modules must be synchronous, because they're
+          called when 'require' is called.
 
           Defaults to 'node_modules/kame/dist/default-loader.js',
-          which supports ES2020, React, TypeScript, and Flow.
+          which supports ES2020, React, TypeScript, Flow, CSS, images, and
+          more.
+
+          If you want to write a loader that adds additional functionality
+          on top of the default loader, you can require the default loader
+          into your loader module and call it as desired:
+
+          \`\`\`
+          const {defaultLoader} = require("kame");
+
+          const codeString = defaultLoader.load("/absolute/path/to/some/file");
+          \`\`\`
 
 --resolver: The path to a file that exports a resolver function, which kame
             will use to convert the strings appearing in requires and imports
             into absolute paths to files on disk.
 
-            The resolver function should be defined according to the
-            eslint-plugin-import resolver spec v2 as defined at the
-            following url:
-
-            https://github.com/benmosher/eslint-plugin-import/blob/b916ed2b574a107e62f819663b8c300f82d82d8d/resolvers/README.md
+            A resolver module should export a function named "resolve" that
+            receives two arguments:
+            - The string that appeared in the require/import
+            - The absolute path to the file that that require/import was found
+              in (string)
 
             Defaults to 'node_modules/kame/dist/default-resolver.js', which
             implements node's module resolution algorithm, and supports
             omitting the extension in the import/require for any of these
             filetypes: ".js", ".json", ".mjs", ".jsx", ".ts", and ".tsx".
 
+            If you want to write a resolver that adds additional functionality
+            on top of the default resolver, you can require the default
+            resolver into your resolver module and call it as desired:
+
+            \`\`\`
+            const {defaultResolver} = require("kame");
+
+            const absolutePath = defaultLoader.resolve("./something", "/absolute/path/to/calling/file");
+            \`\`\`
+
 --runtime-eval: The path to a file that exports an eval function, which kame
                 will use to execute code (in run mode only).
 
-                The eval function will receive:
-                - A code string (always an expression)
+                Note that this file won't be used when bundling code, only when
+                using \`kame run\`.
+
+                An eval module should export a function named "evaluate" that
+                receives two arguments:
+                - A code string (it will always be an expression)
                 - The absolute path to the file where the code came from
 
                 And should return:
@@ -151,6 +176,17 @@ Options:
 
                 Defaults to 'node_modules/kame/dist/default-runtime-eval.js',
                 which uses node's builtin \`vm\` module to run code.
+
+                If you want to write an eval module that adds additional
+                functionality on top of kame's default eval function, you can
+                require kame's default eval function into your code and
+                call it as desired:
+
+                \`\`\`
+                const {defaultRuntimeEval} = require("kame");
+
+                const four = defaultRuntimeEval.evaluate("2 + 2");
+                \`\`\`
 
 --code-splitting-id: A globally-unique id used to tie code-split chunks from
                      this bundle to the correct kame instance.

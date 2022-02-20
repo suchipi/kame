@@ -1,9 +1,9 @@
 import makeBundler, { IBundler } from "./bundler";
 import makeRuntime, { IRuntime } from "./runtime";
 import { InputConfig, readConfig } from "./config";
-import defaultLoader from "./default-loader";
-import { resolve as defaultResolver } from "./default-resolver";
-import defaultRuntimeEval from "./default-runtime-eval";
+import * as defaultLoader from "./default-loader";
+import * as defaultResolver from "./default-resolver";
+import * as defaultRuntimeEval from "./default-runtime-eval";
 import { Runtime, Bundler } from "./default-instance";
 
 function configure(inputConfig: InputConfig = {}) {
