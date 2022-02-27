@@ -6,7 +6,10 @@ import makeDebug from "debug";
 
 const debug = makeDebug("kame/default-loader");
 
-function defaultLoader(filename: string): string {
+function defaultLoader(
+  filename: string,
+  babelEnvOptions: { [key: string]: any } = {}
+): string {
   debug(`Loading ${filename}`);
 
   const extension = path.extname(filename);
@@ -39,7 +42,10 @@ function defaultLoader(filename: string): string {
         const config = {
           sourceType: "unambiguous" as "unambiguous",
           presets: [
-            [require("@babel/preset-env").default, { modules: false }],
+            [
+              require("@babel/preset-env").default,
+              { modules: false, ...babelEnvOptions },
+            ],
             require("@babel/preset-react").default,
           ],
           plugins: [
