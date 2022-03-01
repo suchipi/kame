@@ -105,7 +105,10 @@ function defaultLoader(
     case ".cjs":
     case ".ts":
     case ".tsx": {
-      if (extension === ".js" && filename.match(/node_modules/)) {
+      if (
+        (extension === ".js" || extension === ".cjs") &&
+        filename.match(/node_modules/)
+      ) {
         return loadJsUncompiled(filename);
       } else {
         return loadJsCompiled(filename, babelEnvOptions);
