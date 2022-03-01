@@ -39,7 +39,8 @@ function defaultLoader(
         debug(`js case uncompiled`);
         code = fs.readFileSync(filename, "utf-8");
       } else {
-        const config = {
+        const config: babel.TransformOptions = {
+          babelrc: false,
           sourceType: "unambiguous" as "unambiguous",
           presets: [
             [
@@ -59,9 +60,9 @@ function defaultLoader(
         };
 
         if (extension === ".ts" || extension === ".tsx") {
-          config.presets.push(require("@babel/preset-typescript").default);
+          config.presets!.push(require("@babel/preset-typescript").default);
         } else {
-          config.plugins.push(
+          config.plugins!.push(
             require("@babel/plugin-transform-flow-strip-types").default
           );
         }
