@@ -102,6 +102,7 @@ function defaultLoader(
     case ".js":
     case ".jsx":
     case ".mjs":
+    case ".cjs":
     case ".ts":
     case ".tsx": {
       if (extension === ".js" && filename.match(/node_modules/)) {
