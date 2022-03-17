@@ -1,8 +1,13 @@
 import path from "path";
+import util from "util";
 import chalk from "chalk";
 import * as babel from "@babel/core";
 import { Module } from "commonjs-standalone";
 import { Config } from "./config";
+import { applySourceMapsToError, SourceMap } from "./source-maps";
+import makeDebug from "debug";
+
+const debug = makeDebug("kame/runtime");
 
 type Exports = { [key: string]: any };
 
@@ -28,6 +33,9 @@ export interface IRuntime {
 export default function makeRuntime(config: Config): { new (): IRuntime } {
   const realRequire = require;
 
+  // keys here are absolute filepaths
+  const sourceMaps: { [key: string]: SourceMap } = {};
+
   const delegate: Delegate = {
     resolve(id, fromFilePath) {
       return config.resolver(id, fromFilePath);
@@ -52,7 +60,24 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         );`;
       }
 
-      let code = config.loader(filepath);
+      const loaderResult = config.loader(filepath);
+      debug(
+        `Loader result for ${filepath}: ---------\n${util.inspect(
+          loaderResult,
+          { colors: true }
+        )}\n---------`
+      );
+
+      let code: string;
+      let map: any;
+
+      if (typeof loaderResult === "string") {
+        code = loaderResult;
+        map = null;
+      } else {
+        code = loaderResult.code;
+        map = loaderResult.map;
+      }
 
       if (code.match(/import\s*\(/)) {
         let babelResult: ReturnType<typeof babel.transformSync>;
@@ -63,10 +88,25 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
             sourceType: "unambiguous",
             filename: filepath,
 
+            inputSourceMap: map,
+
             // Same effect as default value but silences warning
             compact: code.length > 500 * 1024,
           });
-          code = babelResult?.code || code;
+
+          if (babelResult == null) {
+            throw new Error("babel.transformSync returned null");
+          }
+
+          if (babelResult.code == null) {
+            throw new Error(
+              "The result from babel.transformSync had no code on it: " +
+                util.inspect(babelResult)
+            );
+          }
+
+          code = babelResult.code;
+          map = babelResult.map;
         } catch (err) {
           console.warn(
             chalk.yellow(
@@ -74,6 +114,10 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
             )
           );
         }
+      }
+
+      if (map != null) {
+        sourceMaps[filepath] = map;
       }
 
       return code;
@@ -114,7 +158,11 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         filename = path.join(process.cwd(), filename);
       }
 
-      return Module._load(filename, delegate, this.cache);
+      try {
+        return Module._load(filename, delegate, this.cache);
+      } catch (err) {
+        throw applySourceMapsToError(sourceMaps, err);
+      }
     }
   }
 

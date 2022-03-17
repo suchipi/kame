@@ -1,6 +1,7 @@
 import path from "path";
 import util from "util";
 import makeDebug from "debug";
+import { SourceMap } from "./source-maps";
 import { Runtime } from "./default-instance";
 import * as defaultLoader from "./default-loader";
 import * as defaultResolver from "./default-resolver";
@@ -9,7 +10,7 @@ import * as defaultRuntimeEval from "./default-runtime-eval";
 const debug = makeDebug("kame/config");
 
 export type Config = {
-  loader: (filename: string) => string;
+  loader: (filename: string) => string | { code: string; map: SourceMap };
   resolver: (id: string, fromFilePath: string) => string;
   runtimeEval: (code: string, filename: string) => any;
 };

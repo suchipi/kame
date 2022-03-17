@@ -212,7 +212,12 @@ export default function makeBundler(config: Config): { new (): IBundler } {
         let code: string;
         // prettier-ignore
         try {
-          code = config.loader(absFile);
+          const result = config.loader(absFile);
+          if (typeof result === "string") {
+            code = result;
+          } else {
+            code = result.code;
+          }
         } catch (err: any) {
           const newMessage =
             `${chalk.red("Loader failed to load")} ${chalk.yellow(

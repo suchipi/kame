@@ -68,10 +68,18 @@ export function loadJsCompiled(
     );
   }
 
-  const result = babel.transformFileSync(filename, config);
+  const result = babel.transformFileSync(filename, {
+    ...config,
+    sourceMaps: true,
+  });
   const code = result?.code || "";
 
-  return stripShebang(code);
+  const map = result?.map || null;
+
+  return {
+    code: stripShebang(code),
+    map,
+  };
 }
 
 export function loadFile(filename: string) {
@@ -88,7 +96,7 @@ export function loadFile(filename: string) {
 function defaultLoader(
   filename: string,
   babelEnvOptions: { [key: string]: any } = {}
-): string {
+): string | { code: string; map: any } {
   debug(`Loading ${filename}`);
   const extension = path.extname(filename);
 
