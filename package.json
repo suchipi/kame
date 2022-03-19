@@ -33,7 +33,6 @@
     "nan": "^2.15.0",
     "node-gyp": "^8.4.1",
     "pheno": "^0.4.0",
-    "regenerator-runtime": "^0.13.9",
     "resolve": "^1.21.0",
     "source-map": "^0.6.1",
     "uid": "^1.0.0",

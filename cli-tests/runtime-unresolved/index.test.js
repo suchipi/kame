@@ -21,7 +21,7 @@ test("works", async () => {
       "code": 1,
       "error": false,
       "stderr": "Running ./index.js
-    <cwd>/dist/runtime.js:134
+    <cwd>/dist/runtime.js:133
                     throw (0, source_maps_1.applySourceMapsToError)(sourceMaps, err);
                     ^
 
@@ -33,7 +33,7 @@ test("works", async () => {
       at <cwd>/cli-tests/runtime-unresolved/index.js:2:1
       at Object.run (<cwd>/dist/runtime.js:118:13)
       at Function._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:57:16)
-      at Runtime.load (<cwd>/dist/runtime.js:131:53)
+      at Runtime.load (<cwd>/dist/runtime.js:130:53)
       at Object.<anonymous> (<cwd>/dist/cli.js:84:17)
       at Module._compile (node:internal/modules/cjs/loader:1101:14)]
     ",
