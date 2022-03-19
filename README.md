@@ -77,10 +77,11 @@ export type Config = {
   resolver: (id: string, fromFilePath: string) => string;
 
   /*
-   * A function that, given the absolute path to a file on disk, reads that file,
-   * transforms it into JS (if necessary), and returns a string containing JS source code.
+   * A function that, given the absolute path to a file on disk, reads that
+   * file, transforms it into JS (if necessary), and returns a string
+   * containing JS source code (and, optionally, a source map).
    */
-  loader: (filename: string) => string;
+  loader: (filename: string) => string | { code: string; map: any };
 
   /*
    * (USED BY RUNTIME ONLY, NOT BUNDLER)
@@ -93,8 +94,107 @@ export type Config = {
 };
 ```
 
----
+Because kame's configuration uses JavaScript functions instead of huge nested JSON-serializable structures or complicated order-dependent plugin systems, you can extend or modify its behavior by calling, wrapping, or replacing functions.
 
-TODO: finish the readme. talk about how using normal functions for this makes understanding, editing, and overriding configs way easier, and explain how to use the kame CLI and node API.
+kame's default resolver, loader, and runtimeEval implementations can be required from kame directly:
 
-If the unfinished readme has you intrigued, try running `npx kame --help` for more info.
+```ts
+const { defaultResolver, defaultLoader, defaultRuntimeEval } = require("kame");
+```
+
+As such, implementing your own changes on top of the defaults involves simply wrapping the default functions:
+
+```ts
+const { defaultLoader } = require("kame");
+
+const myConfig = {
+  loader: function load(filename: string) {
+    if (filename.endsWith(".css")) {
+      // handle css your own way
+      return myJsCodeString;
+    }
+
+    return defaultLoader.load(filename);
+  },
+};
+```
+
+## Okay, I'm intrigued. How do I use it?
+
+First, install kame via npm (or yarn):
+
+```sh
+npm install kame
+```
+
+Then, you can use it either via the node API, or via the command-line interface (CLI).
+
+### Node API
+
+If you just want to use the default config:
+
+```ts
+const { Runtime, Bundler } = require("kame");
+
+// Running code
+const runtime = new Runtime();
+const result = runtime.load("./index.ts");
+
+// Bundling code
+const bundler = new Bundler();
+const { warnings, writtenFiles } = bundler.bundle({
+  input: "./index.ts",
+  output: "./dist/index.js",
+});
+```
+
+If you want to use a custom config:
+
+```ts
+const { configure } = require("kame");
+
+const { Runtime, Bundler } = configure({
+  // Provide your custom config here
+  resolver: myResolverFunction,
+});
+
+// Then use `Runtime` and `Bundler` the same way as in the above code block
+```
+
+### CLI
+
+Examples:
+
+```sh
+# Runs ./src/index.{tsx,ts,jsx,js} or ./index.{tsx,ts,jsx,js}, whichever exists
+kame run
+
+# Runs ./my-script.ts
+kame run ./my-script.ts
+
+# Runs ./my-script.ts (same as above)
+kame run --input ./my-script.ts
+
+# Bundles:
+#   ./src/index.{tsx,ts,jsx,js} or ./index.{tsx,ts,jsx,js}, whichever exists
+# into
+#  ./dist/index.js
+kame bundle
+
+# Bundles ./my-library.ts into ./dist/my-library, and sets up the bundle so
+# that if it's loaded in an environment without CommonJS/AMD (eg a browser),
+# the exports of ./my-library.ts are put on the global 'MyLibrary'
+kame bundle ./my-library.ts ./dist/my-library.js --global MyLibrary
+
+# Run ./my-script.ts, using a custom loader (see \`--loader\` below)
+kame run --loader ./my-loader.js --input ./my-script.ts
+
+# Bundle ./my-script.ts, using a custom loader (see \`--loader\` below)
+kame bundle --loader ./my-loader.js --input ./my-script.ts
+```
+
+For more info/options, run `kame --help`.
+
+## License
+
+MIT
