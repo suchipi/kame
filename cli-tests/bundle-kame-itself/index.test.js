@@ -27,7 +27,15 @@ test("works", async () => {
       "stderr": "",
       "stdout": "{
       configure: [Function: configure],
-      defaultLoader: { load: [Function: defaultLoader] },
+      defaultLoader: {
+        stripShebang: [Function: stripShebang],
+        loadJson: [Function: loadJson],
+        loadCss: [Function: loadCss],
+        loadJsUncompiled: [Function: loadJsUncompiled],
+        loadJsCompiled: [Function: loadJsCompiled],
+        loadFile: [Function: loadFile],
+        load: [Function: defaultLoader]
+      },
       defaultResolver: { resolve: [Function: defaultResolver] },
       defaultRuntimeEval: { evaluate: [Function: defaultRuntimeEval] },
       Runtime: [Getter],

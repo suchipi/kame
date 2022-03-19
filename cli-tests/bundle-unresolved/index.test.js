@@ -135,8 +135,8 @@ test("works", async () => {
         at factory (<cwd>/cli-tests/bundle-unresolved/dist/index.js:56:17)
         at <cwd>/cli-tests/bundle-unresolved/dist/index.js:60:19
         at Object.<anonymous> (<cwd>/cli-tests/bundle-unresolved/dist/index.js:67:3)
-        at Module._compile (node:internal/modules/cjs/loader:1103:14)
-        at Object.Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+        at Module._compile (node:internal/modules/cjs/loader:1101:14)
+        at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
     ",
       "stdout": "",
     }

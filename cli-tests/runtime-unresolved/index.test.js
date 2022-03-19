@@ -21,21 +21,21 @@ test("works", async () => {
       "code": 1,
       "error": false,
       "stderr": "Running ./index.js
-    <cwd>/node_modules/commonjs-standalone/dist/index.js:61
-          throw err;
-          ^
+    <cwd>/dist/runtime.js:134
+                    throw (0, source_maps_1.applySourceMapsToError)(sourceMaps, err);
+                    ^
 
-    Error: Module not found: Tried to load \\"./not-there\\" from \\"<cwd>/cli-tests/runtime-unresolved/index.js\\"
-        at unresolved:<cwd>/cli-tests/runtime-unresolved/index.js|./not-there:1:69
-        at Object.run (<cwd>/dist/runtime.js:89:13)
-        at Function._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:57:16)
-        at Module.require (<cwd>/node_modules/commonjs-standalone/dist/index.js:72:19)
-        at <cwd>/cli-tests/runtime-unresolved/index.js:2:1
-        at Object.run (<cwd>/dist/runtime.js:89:13)
-        at Function._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:57:16)
-        at Runtime.load (<cwd>/dist/runtime.js:101:49)
-        at Object.<anonymous> (<cwd>/dist/cli.js:84:17)
-        at Module._compile (node:internal/modules/cjs/loader:1103:14)
+    [Error: Module not found: Tried to load \\"./not-there\\" from \\"<cwd>/cli-tests/runtime-unresolved/index.js\\"
+      at unresolved:<cwd>/cli-tests/runtime-unresolved/index.js|./not-there:1:69
+      at Object.run (<cwd>/dist/runtime.js:118:13)
+      at Function._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:57:16)
+      at Module.require (<cwd>/node_modules/commonjs-standalone/dist/index.js:72:19)
+      at <cwd>/cli-tests/runtime-unresolved/index.js:2:1
+      at Object.run (<cwd>/dist/runtime.js:118:13)
+      at Function._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:57:16)
+      at Runtime.load (<cwd>/dist/runtime.js:131:53)
+      at Object.<anonymous> (<cwd>/dist/cli.js:84:17)
+      at Module._compile (node:internal/modules/cjs/loader:1101:14)]
     ",
       "stdout": "",
     }
