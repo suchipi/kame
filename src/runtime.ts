@@ -88,7 +88,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
             sourceType: "unambiguous",
             filename: filepath,
 
-            inputSourceMap: map,
+            inputSourceMap: map ? map : undefined,
 
             // Same effect as default value but silences warning
             compact: code.length > 500 * 1024,
