@@ -283,7 +283,6 @@ export default function makeBundler(config: Config): { new (): IBundler } {
       const entryModules = this._gatherModules(relativeInput);
 
       const chunkUrls = {};
-      let needsRegenerator = false;
 
       let pendingChunk: string | undefined;
       while ((pendingChunk = this._pendingChunks.shift())) {
@@ -312,10 +311,6 @@ export default function makeBundler(config: Config): { new (): IBundler } {
           modules: chunkModules,
         });
 
-        if (chunkCode.match(/regeneratorRuntime/)) {
-          needsRegenerator = true;
-        }
-
         fs.writeFileSync(chunkOutputPath, chunkCode);
         writtenFiles.push(chunkOutputPath);
       }
@@ -327,18 +322,6 @@ export default function makeBundler(config: Config): { new (): IBundler } {
         modules: entryModules,
         chunkUrls,
       });
-
-      if (entryCode.match(/regeneratorRuntime/)) {
-        needsRegenerator = true;
-      }
-
-      if (needsRegenerator) {
-        const regeneratorCode = fs.readFileSync(
-          require.resolve("regenerator-runtime"),
-          "utf-8"
-        );
-        entryCode = regeneratorCode + ";\n" + entryCode;
-      }
 
       fs.writeFileSync(output, entryCode);
       writtenFiles.push(output);
