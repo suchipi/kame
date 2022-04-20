@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import fs from "fs";
 import path from "path";
 import yargsParser from "yargs-parser";
@@ -6,17 +5,19 @@ import { InputConfig } from "../config";
 
 export type ParsedArgv = {
   cmd: string | undefined;
+  watch: boolean;
+  isWatchChild: boolean;
   help: boolean;
   globalName: string | undefined;
   codeSplittingId: string;
   inputConfig: InputConfig;
   getInput: () => string;
-  getOutput: () => string;
+  getOutput: (shouldLog: boolean) => string;
 };
 
 export default function parseArgv(input: Array<string>): ParsedArgv {
   const argvObj = yargsParser(input, {
-    boolean: ["help"],
+    boolean: ["help", "watch", "is-watch-child", "isWatchChild"],
     string: [
       "input",
       "output",
@@ -74,13 +75,15 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     return input;
   }
 
-  function getOutput(): string {
+  function getOutput(shouldLog: boolean): string {
     let output = argvObj.output || argvObj._[2];
     if (!output) {
       output = path.join(process.cwd(), "dist", "index.js");
-      console.warn(
-        `Using default output path of './dist/index.js'. Use --output to override.`
-      );
+      if (shouldLog) {
+        console.warn(
+          `Using default output path of './dist/index.js'. Use --output to override.`
+        );
+      }
     }
 
     return output;
@@ -88,6 +91,8 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
 
   return {
     cmd: argvObj._[0],
+    watch: argvObj.watch || false,
+    isWatchChild: argvObj.isWatchChild || false,
     help: argvObj.help || false,
     globalName: argvObj.global === "null" ? null : argvObj.global,
     codeSplittingId: argvObj.codeSplittingId,

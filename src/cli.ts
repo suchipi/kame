@@ -1,53 +1,95 @@
 #!/usr/bin/env node
 import path from "path";
 import chalk from "chalk";
-import { configure } from "./index";
+import chokidar from "chokidar";
+import child_process from "child_process";
+import * as childUtils from "./cli/child-process-utils";
 import parseArgv from "./cli/parse-argv";
 import usage from "./cli/usage";
 
-const parsedArgv = parseArgv(process.argv.slice(2));
+const inputArgv = process.argv.slice(2);
+const parsedArgv = parseArgv(inputArgv);
+
+function spawnWatchChild(
+  scriptPath: string,
+  filter: (filepath: string) => boolean
+) {
+  let child: child_process.ChildProcess;
+
+  const spawn = () => {
+    child = child_process.spawn(
+      process.argv[0],
+      [scriptPath, "--is-watch-child", ...inputArgv],
+      { stdio: "inherit" }
+    );
+
+    child.on("error", (error) => {
+      console.warn(chalk.yellow("    process errored:"));
+      console.warn(error);
+
+      console.warn(chalk.dim("    process will re-run on next file change."));
+    });
+
+    child.on("close", (code, signal) => {
+      console.warn(
+        chalk.cyan("    process exited: " + JSON.stringify({ code, signal }))
+      );
+      console.warn(chalk.dim("    process will re-run on next file change."));
+    });
+  };
+
+  spawn();
+
+  let isRestarting = false;
+  chokidar
+    .watch(".", { ignoreInitial: true, persistent: true })
+    .on("all", (eventName, filepath) => {
+      if (isRestarting) return;
+      if (!filter(filepath)) return;
+
+      console.warn(chalk.cyan(`    ${eventName}: ${filepath}`));
+
+      isRestarting = true;
+      childUtils.kill(child.pid).then(() => {
+        spawn();
+        isRestarting = false;
+      });
+    });
+}
 
 if (parsedArgv.help) {
   console.log(usage);
   process.exitCode = 1;
 } else {
-  const kame = configure(parsedArgv.inputConfig);
+  switch (parsedArgv.cmd) {
+    case "run": {
+      if (parsedArgv.watch && !parsedArgv.isWatchChild) {
+        spawnWatchChild(require.resolve("./cli/cmd-run"), () => true);
+      } else {
+        require("./cli/cmd-run");
+      }
+      break;
+    }
+    case "bundle": {
+      if (parsedArgv.watch && !parsedArgv.isWatchChild) {
+        let output = parsedArgv.getOutput(false);
+        if (!path.isAbsolute(output)) {
+          output = path.resolve(process.cwd(), output);
+        }
 
-  if (parsedArgv.cmd === "run") {
-    const input = parsedArgv.getInput();
-
-    console.warn(
-      `Running ${
-        path.isAbsolute(input) ? path.relative(process.cwd(), input) : input
-      }`
-    );
-
-    const runtime = new kame.Runtime();
-    runtime.load(input);
-  } else if (parsedArgv.cmd === "bundle") {
-    const input = parsedArgv.getInput();
-    const output = parsedArgv.getOutput();
-    const globalName = parsedArgv.globalName;
-    const codeSplittingId = parsedArgv.codeSplittingId || undefined;
-
-    const bundler = new kame.Bundler();
-    const { warnings, writtenFiles } = bundler.bundle({
-      input,
-      output,
-      globalName,
-      codeSplittingId,
-    });
-
-    warnings.forEach((warning) => {
-      console.warn(warning);
-    });
-    console.warn(chalk.blue("Files created:"));
-    writtenFiles.forEach((file) => {
-      console.log(path.relative(process.cwd(), file));
-    });
-  } else {
-    console.error(`Unknown command: ${parsedArgv.cmd}\n`);
-    console.error(usage);
-    process.exitCode = 1;
+        spawnWatchChild(
+          require.resolve("./cli/cmd-bundle"),
+          (filepath) => filepath !== output
+        );
+      } else {
+        require("./cli/cmd-bundle");
+      }
+      break;
+    }
+    default: {
+      console.error(`Unknown command: ${parsedArgv.cmd}\n`);
+      console.error(usage);
+      process.exitCode = 1;
+    }
   }
 }
