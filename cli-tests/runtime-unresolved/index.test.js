@@ -34,7 +34,7 @@ test("works", async () => {
       at Object.run (<cwd>/dist/runtime.js:118:13)
       at Function._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:57:16)
       at Runtime.load (<cwd>/dist/runtime.js:130:53)
-      at Object.<anonymous> (<cwd>/dist/cli.js:84:17)
+      at Object.<anonymous> (<cwd>/dist/cli.js:23:17)
       at Module._compile (node:internal/modules/cjs/loader:1101:14)]
     ",
       "stdout": "",
