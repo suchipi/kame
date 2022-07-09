@@ -1,6 +1,6 @@
 # kame
 
-Kame (pronounced `kah-may`) is an extensible app runtime and bundler for JavaScript. It seeks to improve the user experience of using new JavaScript syntax features, "compiles-to-JavaScript" languages (like TypeScript, Flow, Coffeescript), and filetype loaders (like importing CSS/PNG/TTF files).
+Kame (pronounced `kah-may`) is an extensible nodejs-based app runtime and bundler for JavaScript. It seeks to improve the user experience of using new JavaScript syntax features, "compiles-to-JavaScript" languages (like TypeScript, Flow, Coffeescript), and filetype loaders (like importing CSS/PNG/TTF files).
 
 ## Here's why I made it
 
