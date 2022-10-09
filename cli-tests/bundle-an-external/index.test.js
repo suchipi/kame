@@ -13,7 +13,7 @@ test("works", async () => {
   await run.completion;
 
   expect(run.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "Files created:
@@ -26,47 +26,47 @@ test("works", async () => {
   const output = read(__dirname, "dist");
 
   expect(output).toMatchInlineSnapshot(`
-    Object {
+    {
       "index.js": "(function(global) {
 
     function factory() {
     var modules = {
     /* --- index.js --- */
-    \\"index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    var fs = _kame_require_(\\"external:fs\\");
+    "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    var fs = _kame_require_("external:fs");
 
-    console.log(\\"fs:\\", fs);
+    console.log("fs:", fs);
 
-    var child_process = _kame_require_(\\"external:child_process\\");
+    var child_process = _kame_require_("external:child_process");
 
-    console.log(\\"child_process\\", child_process);
+    console.log("child_process", child_process);
     }),
     /* --- external:fs --- */
-    \\"external:fs\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    if (typeof require === \\"function\\") {
-    	module.exports = require(\\"fs\\");
-    } else if (typeof fs !== \\"undefined\\") {
+    "external:fs": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    if (typeof require === "function") {
+    	module.exports = require("fs");
+    } else if (typeof fs !== "undefined") {
     	module.exports = fs;
-    } else if (typeof Fs !== \\"undefined\\") {
+    } else if (typeof Fs !== "undefined") {
     	module.exports = Fs;
     } else {
-    	if (\\"test\\" !== \\"production\\") {
-    		console.warn(\\"Failed to load external \\" + \\"fs\\" + \\". An empty module will be used instead, but this might cause problems in your code. Consider using a custom resolver to shim this external.\\");
+    	if ("test" !== "production") {
+    		console.warn("Failed to load external " + "fs" + ". An empty module will be used instead, but this might cause problems in your code. Consider using a custom resolver to shim this external.");
     	}
     	module.exports = {};
     }
     }),
     /* --- external:child_process --- */
-    \\"external:child_process\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    if (typeof require === \\"function\\") {
-    	module.exports = require(\\"child_process\\");
-    } else if (typeof childProcess !== \\"undefined\\") {
+    "external:child_process": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    if (typeof require === "function") {
+    	module.exports = require("child_process");
+    } else if (typeof childProcess !== "undefined") {
     	module.exports = childProcess;
-    } else if (typeof ChildProcess !== \\"undefined\\") {
+    } else if (typeof ChildProcess !== "undefined") {
     	module.exports = ChildProcess;
     } else {
-    	if (\\"test\\" !== \\"production\\") {
-    		console.warn(\\"Failed to load external \\" + \\"child_process\\" + \\". An empty module will be used instead, but this might cause problems in your code. Consider using a custom resolver to shim this external.\\");
+    	if ("test" !== "production") {
+    		console.warn("Failed to load external " + "child_process" + ". An empty module will be used instead, but this might cause problems in your code. Consider using a custom resolver to shim this external.");
     	}
     	module.exports = {};
     }
@@ -74,7 +74,7 @@ test("works", async () => {
     /* --- end of modules --- */};
 
     var __kame__ = {
-    	basedir: typeof __dirname === 'string' ? __dirname : \\"\\",
+    	basedir: typeof __dirname === 'string' ? __dirname : "",
     	cache: {},
     	runModule: function runModule(name, isMain) {
     		var exports = {};
@@ -99,8 +99,8 @@ test("works", async () => {
     			_kame_require_.main = module;
     		}
 
-    		var __filename = __kame__.basedir + \\"/\\" + name;
-    		var __dirname = __kame__.basedir + \\"/\\" + name.split(\\"/\\").slice(0, -1).join(\\"/\\");
+    		var __filename = __kame__.basedir + "/" + name;
+    		var __dirname = __kame__.basedir + "/" + name.split("/").slice(0, -1).join("/");
 
     		
 
@@ -113,7 +113,7 @@ test("works", async () => {
 
 
 
-    return __kame__.runModule(\\"index.js\\", true);
+    return __kame__.runModule("index.js", true);
     }
 
     if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -125,11 +125,11 @@ test("works", async () => {
     }
 
     })(
-    	typeof global !== \\"undefined\\" ? global :
-    	typeof window !== \\"undefined\\" ? window :
-    	typeof self !== \\"undefined\\" ? self :
-    	typeof this === \\"object\\" ? this :
-    	new Function(\\"return this\\")()
+    	typeof global !== "undefined" ? global :
+    	typeof window !== "undefined" ? window :
+    	typeof self !== "undefined" ? self :
+    	typeof this === "object" ? this :
+    	new Function("return this")()
     );
     ",
     }
@@ -140,7 +140,7 @@ test("works", async () => {
   await run2.completion;
 
   expect(run2.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "",

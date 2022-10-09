@@ -21,7 +21,7 @@ test("works", async () => {
   await run.completion;
 
   expect(run.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "Files created:
@@ -34,19 +34,19 @@ test("works", async () => {
   const output = read(__dirname, "dist");
 
   expect(output).toMatchInlineSnapshot(`
-    Object {
+    {
       "index.js": "(function(global) {
 
     function factory() {
     var modules = {
     /* --- index.js --- */
-    \\"index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    console.log(\\"yo\\");
+    "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    console.log("yo");
     })
     /* --- end of modules --- */};
 
     var __kame__ = {
-    	basedir: typeof __dirname === 'string' ? __dirname : \\"\\",
+    	basedir: typeof __dirname === 'string' ? __dirname : "",
     	cache: {},
     	runModule: function runModule(name, isMain) {
     		var exports = {};
@@ -71,8 +71,8 @@ test("works", async () => {
     			_kame_require_.main = module;
     		}
 
-    		var __filename = __kame__.basedir + \\"/\\" + name;
-    		var __dirname = __kame__.basedir + \\"/\\" + name.split(\\"/\\").slice(0, -1).join(\\"/\\");
+    		var __filename = __kame__.basedir + "/" + name;
+    		var __dirname = __kame__.basedir + "/" + name.split("/").slice(0, -1).join("/");
 
     		
 
@@ -85,7 +85,7 @@ test("works", async () => {
 
 
 
-    return __kame__.runModule(\\"index.js\\", true);
+    return __kame__.runModule("index.js", true);
     }
 
     if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -97,11 +97,11 @@ test("works", async () => {
     }
 
     })(
-    	typeof global !== \\"undefined\\" ? global :
-    	typeof window !== \\"undefined\\" ? window :
-    	typeof self !== \\"undefined\\" ? self :
-    	typeof this === \\"object\\" ? this :
-    	new Function(\\"return this\\")()
+    	typeof global !== "undefined" ? global :
+    	typeof window !== "undefined" ? window :
+    	typeof self !== "undefined" ? self :
+    	typeof this === "object" ? this :
+    	new Function("return this")()
     );
     ",
     }
@@ -112,7 +112,7 @@ test("works", async () => {
   await run2.completion;
 
   expect(run2.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "",

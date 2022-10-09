@@ -2,11 +2,11 @@ const kame = require("..");
 
 test("public exports", () => {
   expect(kame).toMatchInlineSnapshot(`
-    Object {
+    {
       "Bundler": [Function],
       "Runtime": [Function],
       "configure": [Function],
-      "defaultLoader": Object {
+      "defaultLoader": {
         "load": [Function],
         "loadCss": [Function],
         "loadFile": [Function],
@@ -15,10 +15,10 @@ test("public exports", () => {
         "loadJson": [Function],
         "stripShebang": [Function],
       },
-      "defaultResolver": Object {
+      "defaultResolver": {
         "resolve": [Function],
       },
-      "defaultRuntimeEval": Object {
+      "defaultRuntimeEval": {
         "evaluate": [Function],
       },
     }

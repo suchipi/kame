@@ -21,7 +21,7 @@ test("works", async () => {
   await run.completion;
 
   expect(run.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "Files created:
@@ -35,16 +35,16 @@ test("works", async () => {
   const output = read(__dirname, "dist");
 
   expect(output).toMatchInlineSnapshot(`
-    Object {
+    {
       "c5076b265d67c7e0e4b04ee5f499162c.js": "(function(global) {
 
     var modules = {
     /* --- src/other.js --- */
-    \\"src/other.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    console.log(\\"hi from other\\");
+    "src/other.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    console.log("hi from other");
     })
     /* --- end of modules --- */};
-    var __kame__ = global.__kame_instances__[\\"test-id\\"];
+    var __kame__ = global.__kame_instances__["test-id"];
 
     for (var key in modules) {
     	if ({}.hasOwnProperty.call(modules, key)) {
@@ -52,14 +52,14 @@ test("works", async () => {
     	}
     }
 
-    __kame__.resolveChunk(\\"src/other.js\\");
+    __kame__.resolveChunk("src/other.js");
 
     })(
-    	typeof global !== \\"undefined\\" ? global :
-    	typeof window !== \\"undefined\\" ? window :
-    	typeof self !== \\"undefined\\" ? self :
-    	typeof this === \\"object\\" ? this :
-    	new Function(\\"return this\\")()
+    	typeof global !== "undefined" ? global :
+    	typeof window !== "undefined" ? window :
+    	typeof self !== "undefined" ? self :
+    	typeof this === "object" ? this :
+    	new Function("return this")()
     );
     ",
       "index.js": "(function(global) {
@@ -67,15 +67,15 @@ test("works", async () => {
     function factory() {
     var modules = {
     /* --- src/index.js --- */
-    \\"src/index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    console.log(\\"hi\\");
+    "src/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    console.log("hi");
 
-    _kame_dynamic_import_(\\"src/other.js\\");
+    _kame_dynamic_import_("src/other.js");
     })
     /* --- end of modules --- */};
 
     var __kame__ = {
-    	basedir: typeof __dirname === 'string' ? __dirname : \\"\\",
+    	basedir: typeof __dirname === 'string' ? __dirname : "",
     	cache: {},
     	runModule: function runModule(name, isMain) {
     		var exports = {};
@@ -100,8 +100,8 @@ test("works", async () => {
     			_kame_require_.main = module;
     		}
 
-    		var __filename = __kame__.basedir + \\"/\\" + name;
-    		var __dirname = __kame__.basedir + \\"/\\" + name.split(\\"/\\").slice(0, -1).join(\\"/\\");
+    		var __filename = __kame__.basedir + "/" + name;
+    		var __dirname = __kame__.basedir + "/" + name.split("/").slice(0, -1).join("/");
 
     		var _kame_dynamic_import_ = function dynamicImport(id) {
     			return __kame__.loadChunk(id).then(function() { return _kame_require_(id) });
@@ -112,7 +112,7 @@ test("works", async () => {
     	},
     	
     	chunkUrls: {
-      \\"src/other.js\\": \\"c5076b265d67c7e0e4b04ee5f499162c.js\\"
+      "src/other.js": "c5076b265d67c7e0e4b04ee5f499162c.js"
     },
     	loadChunk: function loadChunk(id) {
     		var resolve, reject;
@@ -125,10 +125,10 @@ test("works", async () => {
     		};
 
     		var url = __kame__.basedir
-    			? __kame__.basedir + \\"/\\" + __kame__.chunkUrls[id]
+    			? __kame__.basedir + "/" + __kame__.chunkUrls[id]
     			: __kame__.chunkUrls[id];
 
-    		if (typeof require !== \\"undefined\\") {
+    		if (typeof require !== "undefined") {
     			try {
     				Promise.resolve().then(function () {
     					return require(url);
@@ -160,9 +160,9 @@ test("works", async () => {
     	modules: modules,
     };
 
-    global.__kame_instances__ = global.__kame_instances__ || {}; global.__kame_instances__[\\"test-id\\"] = __kame__;
+    global.__kame_instances__ = global.__kame_instances__ || {}; global.__kame_instances__["test-id"] = __kame__;
 
-    return __kame__.runModule(\\"src/index.js\\", true);
+    return __kame__.runModule("src/index.js", true);
     }
 
     if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -174,11 +174,11 @@ test("works", async () => {
     }
 
     })(
-    	typeof global !== \\"undefined\\" ? global :
-    	typeof window !== \\"undefined\\" ? window :
-    	typeof self !== \\"undefined\\" ? self :
-    	typeof this === \\"object\\" ? this :
-    	new Function(\\"return this\\")()
+    	typeof global !== "undefined" ? global :
+    	typeof window !== "undefined" ? window :
+    	typeof self !== "undefined" ? self :
+    	typeof this === "object" ? this :
+    	new Function("return this")()
     );
     ",
     }
@@ -189,15 +189,15 @@ test("works", async () => {
   await run2.completion;
 
   expect(run2.result).toMatchInlineSnapshot(`
-Object {
-  "code": 0,
-  "error": false,
-  "stderr": "",
-  "stdout": "hi
-hi from other
-",
-}
-`);
+    {
+      "code": 0,
+      "error": false,
+      "stderr": "",
+      "stdout": "hi
+    hi from other
+    ",
+    }
+  `);
 
   remove(__dirname, "dist");
 });

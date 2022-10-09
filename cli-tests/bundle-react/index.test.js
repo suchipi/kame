@@ -13,7 +13,7 @@ test("works", async () => {
   await run.completion;
 
   expect(run.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "Files created:
@@ -26,37 +26,37 @@ test("works", async () => {
   const output = read(__dirname, "dist");
 
   expect(output).toMatchInlineSnapshot(`
-    Object {
+    {
       "index.js": "(function(global) {
 
     function factory() {
     var modules = {
     /* --- index.js --- */
-    \\"index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    \\"use strict\\";
+    "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "use strict";
 
-    var _react = _interopRequireDefault(_kame_require_(\\"../../node_modules/react/index.js\\"));
+    var _react = _interopRequireDefault(_kame_require_("../../node_modules/react/index.js"));
 
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : {
-        \\"default\\": obj
+        "default": obj
       };
     }
 
-    console.log( /*#__PURE__*/_react[\\"default\\"].createElement(\\"div\\", null));
+    console.log( /*#__PURE__*/_react["default"].createElement("div", null));
     }),
     /* --- ../../node_modules/react/index.js --- */
-    \\"../../node_modules/react/index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "../../node_modules/react/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     'use strict';
 
-    if (\\"test\\" === 'production') {
-      module.exports = _kame_require_(\\"../../node_modules/react/cjs/react.production.min.js\\");
+    if ("test" === 'production') {
+      module.exports = _kame_require_("../../node_modules/react/cjs/react.production.min.js");
     } else {
-      module.exports = _kame_require_(\\"../../node_modules/react/cjs/react.development.js\\");
+      module.exports = _kame_require_("../../node_modules/react/cjs/react.development.js");
     }
     }),
     /* --- ../../node_modules/react/cjs/react.production.min.js --- */
-    \\"../../node_modules/react/cjs/react.production.min.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "../../node_modules/react/cjs/react.production.min.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     /** @license React v16.14.0
      * react.production.min.js
      *
@@ -67,25 +67,25 @@ test("works", async () => {
      */
     'use strict';
 
-    var l = _kame_require_(\\"../../node_modules/object-assign/index.js\\"),
-        n = \\"function\\" === typeof Symbol && Symbol.for,
-        p = n ? Symbol.for(\\"react.element\\") : 60103,
-        q = n ? Symbol.for(\\"react.portal\\") : 60106,
-        r = n ? Symbol.for(\\"react.fragment\\") : 60107,
-        t = n ? Symbol.for(\\"react.strict_mode\\") : 60108,
-        u = n ? Symbol.for(\\"react.profiler\\") : 60114,
-        v = n ? Symbol.for(\\"react.provider\\") : 60109,
-        w = n ? Symbol.for(\\"react.context\\") : 60110,
-        x = n ? Symbol.for(\\"react.forward_ref\\") : 60112,
-        y = n ? Symbol.for(\\"react.suspense\\") : 60113,
-        z = n ? Symbol.for(\\"react.memo\\") : 60115,
-        A = n ? Symbol.for(\\"react.lazy\\") : 60116,
-        B = \\"function\\" === typeof Symbol && Symbol.iterator;
+    var l = _kame_require_("../../node_modules/object-assign/index.js"),
+        n = "function" === typeof Symbol && Symbol.for,
+        p = n ? Symbol.for("react.element") : 60103,
+        q = n ? Symbol.for("react.portal") : 60106,
+        r = n ? Symbol.for("react.fragment") : 60107,
+        t = n ? Symbol.for("react.strict_mode") : 60108,
+        u = n ? Symbol.for("react.profiler") : 60114,
+        v = n ? Symbol.for("react.provider") : 60109,
+        w = n ? Symbol.for("react.context") : 60110,
+        x = n ? Symbol.for("react.forward_ref") : 60112,
+        y = n ? Symbol.for("react.suspense") : 60113,
+        z = n ? Symbol.for("react.memo") : 60115,
+        A = n ? Symbol.for("react.lazy") : 60116,
+        B = "function" === typeof Symbol && Symbol.iterator;
 
     function C(a) {
-      for (var b = \\"https://reactjs.org/docs/error-decoder.html?invariant=\\" + a, c = 1; c < arguments.length; c++) b += \\"&args[]=\\" + encodeURIComponent(arguments[c]);
+      for (var b = "https://reactjs.org/docs/error-decoder.html?invariant=" + a, c = 1; c < arguments.length; c++) b += "&args[]=" + encodeURIComponent(arguments[c]);
 
-      return \\"Minified React error #\\" + a + \\"; visit \\" + b + \\" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\\";
+      return "Minified React error #" + a + "; visit " + b + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
     }
 
     var D = {
@@ -108,12 +108,12 @@ test("works", async () => {
     F.prototype.isReactComponent = {};
 
     F.prototype.setState = function (a, b) {
-      if (\\"object\\" !== typeof a && \\"function\\" !== typeof a && null != a) throw Error(C(85));
-      this.updater.enqueueSetState(this, a, b, \\"setState\\");
+      if ("object" !== typeof a && "function" !== typeof a && null != a) throw Error(C(85));
+      this.updater.enqueueSetState(this, a, b, "setState");
     };
 
     F.prototype.forceUpdate = function (a) {
-      this.updater.enqueueForceUpdate(this, a, \\"forceUpdate\\");
+      this.updater.enqueueForceUpdate(this, a, "forceUpdate");
     };
 
     function G() {}
@@ -147,7 +147,7 @@ test("works", async () => {
           d = {},
           g = null,
           k = null;
-      if (null != b) for (e in void 0 !== b.ref && (k = b.ref), void 0 !== b.key && (g = \\"\\" + b.key), b) K.call(b, e) && !L.hasOwnProperty(e) && (d[e] = b[e]);
+      if (null != b) for (e in void 0 !== b.ref && (k = b.ref), void 0 !== b.key && (g = "" + b.key), b) K.call(b, e) && !L.hasOwnProperty(e) && (d[e] = b[e]);
       var f = arguments.length - 2;
       if (1 === f) d.children = c;else if (1 < f) {
         for (var h = Array(f), m = 0; m < f; m++) h[m] = arguments[m + 2];
@@ -177,20 +177,20 @@ test("works", async () => {
     }
 
     function O(a) {
-      return \\"object\\" === typeof a && null !== a && a.$$typeof === p;
+      return "object" === typeof a && null !== a && a.$$typeof === p;
     }
 
     function escape(a) {
       var b = {
-        \\"=\\": \\"=0\\",
-        \\":\\": \\"=2\\"
+        "=": "=0",
+        ":": "=2"
       };
-      return \\"$\\" + (\\"\\" + a).replace(/[=:]/g, function (a) {
+      return "$" + ("" + a).replace(/[=:]/g, function (a) {
         return b[a];
       });
     }
 
-    var P = /\\\\/+/g,
+    var P = /\\/+/g,
         Q = [];
 
     function R(a, b, c, e) {
@@ -224,15 +224,15 @@ test("works", async () => {
 
     function T(a, b, c, e) {
       var d = typeof a;
-      if (\\"undefined\\" === d || \\"boolean\\" === d) a = null;
+      if ("undefined" === d || "boolean" === d) a = null;
       var g = !1;
       if (null === a) g = !0;else switch (d) {
-        case \\"string\\":
-        case \\"number\\":
+        case "string":
+        case "number":
           g = !0;
           break;
 
-        case \\"object\\":
+        case "object":
           switch (a.$$typeof) {
             case p:
             case q:
@@ -240,23 +240,23 @@ test("works", async () => {
           }
 
       }
-      if (g) return c(e, a, \\"\\" === b ? \\".\\" + U(a, 0) : b), 1;
+      if (g) return c(e, a, "" === b ? "." + U(a, 0) : b), 1;
       g = 0;
-      b = \\"\\" === b ? \\".\\" : b + \\":\\";
+      b = "" === b ? "." : b + ":";
       if (Array.isArray(a)) for (var k = 0; k < a.length; k++) {
         d = a[k];
         var f = b + U(d, k);
         g += T(d, f, c, e);
-      } else if (null === a || \\"object\\" !== typeof a ? f = null : (f = B && a[B] || a[\\"@@iterator\\"], f = \\"function\\" === typeof f ? f : null), \\"function\\" === typeof f) for (a = f.call(a), k = 0; !(d = a.next()).done;) d = d.value, f = b + U(d, k++), g += T(d, f, c, e);else if (\\"object\\" === d) throw c = \\"\\" + a, Error(C(31, \\"[object Object]\\" === c ? \\"object with keys {\\" + Object.keys(a).join(\\", \\") + \\"}\\" : c, \\"\\"));
+      } else if (null === a || "object" !== typeof a ? f = null : (f = B && a[B] || a["@@iterator"], f = "function" === typeof f ? f : null), "function" === typeof f) for (a = f.call(a), k = 0; !(d = a.next()).done;) d = d.value, f = b + U(d, k++), g += T(d, f, c, e);else if ("object" === d) throw c = "" + a, Error(C(31, "[object Object]" === c ? "object with keys {" + Object.keys(a).join(", ") + "}" : c, ""));
       return g;
     }
 
     function V(a, b, c) {
-      return null == a ? 0 : T(a, \\"\\", b, c);
+      return null == a ? 0 : T(a, "", b, c);
     }
 
     function U(a, b) {
-      return \\"object\\" === typeof a && null !== a && null != a.key ? escape(a.key) : b.toString(36);
+      return "object" === typeof a && null !== a && null != a.key ? escape(a.key) : b.toString(36);
     }
 
     function W(a, b) {
@@ -269,12 +269,12 @@ test("works", async () => {
       a = a.func.call(a.context, b, a.count++);
       Array.isArray(a) ? X(a, e, c, function (a) {
         return a;
-      }) : null != a && (O(a) && (a = N(a, d + (!a.key || b && b.key === a.key ? \\"\\" : (\\"\\" + a.key).replace(P, \\"$&/\\") + \\"/\\") + c)), e.push(a));
+      }) : null != a && (O(a) && (a = N(a, d + (!a.key || b && b.key === a.key ? "" : ("" + a.key).replace(P, "$&/") + "/") + c)), e.push(a));
     }
 
     function X(a, b, c, e, d) {
-      var g = \\"\\";
-      null != c && (g = (\\"\\" + c).replace(P, \\"$&/\\") + \\"/\\");
+      var g = "";
+      null != c && (g = ("" + c).replace(P, "$&/") + "/");
       b = R(b, g, e, d);
       V(a, aa, b);
       S(b);
@@ -348,7 +348,7 @@ test("works", async () => {
 
       if (null != b) {
         void 0 !== b.ref && (g = b.ref, k = J.current);
-        void 0 !== b.key && (d = \\"\\" + b.key);
+        void 0 !== b.key && (d = "" + b.key);
         if (a.type && a.type.defaultProps) var f = a.type.defaultProps;
 
         for (h in b) K.call(b, h) && !L.hasOwnProperty(h) && (e[h] = void 0 === b[h] && void 0 !== f ? f[h] : b[h]);
@@ -468,10 +468,10 @@ test("works", async () => {
       return Z().useState(a);
     };
 
-    exports.version = \\"16.14.0\\";
+    exports.version = "16.14.0";
     }),
     /* --- ../../node_modules/react/cjs/react.development.js --- */
-    \\"../../node_modules/react/cjs/react.development.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "../../node_modules/react/cjs/react.development.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     /** @license React v16.14.0
      * react.development.js
      *
@@ -482,13 +482,13 @@ test("works", async () => {
      */
     'use strict';
 
-    if (\\"test\\" !== \\"production\\") {
+    if ("test" !== "production") {
       (function () {
         'use strict';
 
-        var _assign = _kame_require_(\\"../../node_modules/object-assign/index.js\\");
+        var _assign = _kame_require_("../../node_modules/object-assign/index.js");
 
-        var checkPropTypes = _kame_require_(\\"../../node_modules/prop-types/checkPropTypes.js\\");
+        var checkPropTypes = _kame_require_("../../node_modules/prop-types/checkPropTypes.js");
 
         var ReactVersion = '16.14.0'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
         // nor polyfill, then a plain number is used for performance.
@@ -562,7 +562,7 @@ test("works", async () => {
            */
           current: null
         };
-        var BEFORE_SLASH_RE = /^(.*)[\\\\\\\\\\\\/]/;
+        var BEFORE_SLASH_RE = /^(.*)[\\\\\\/]/;
 
         function describeComponentFrame(name, source, ownerName) {
           var sourceInfo = '';
@@ -572,8 +572,8 @@ test("works", async () => {
             var fileName = path.replace(BEFORE_SLASH_RE, '');
             {
               // In DEV, include code for a common special case:
-              // prefer \\"folder/index.js\\" instead of just \\"index.js\\".
-              if (/^index\\\\./.test(fileName)) {
+              // prefer "folder/index.js" instead of just "index.js".
+              if (/^index\\./.test(fileName)) {
                 var match = path.match(BEFORE_SLASH_RE);
 
                 if (match) {
@@ -591,7 +591,7 @@ test("works", async () => {
             sourceInfo = ' (created by ' + ownerName + ')';
           }
 
-          return '\\\\n    in ' + (name || 'Unknown') + sourceInfo;
+          return '\\n    in ' + (name || 'Unknown') + sourceInfo;
         }
 
         var Resolved = 1;
@@ -602,7 +602,7 @@ test("works", async () => {
 
         function getWrappedName(outerType, innerType, wrapperName) {
           var functionName = innerType.displayName || innerType.name || '';
-          return outerType.displayName || (functionName !== '' ? wrapperName + \\"(\\" + functionName + \\")\\" : wrapperName);
+          return outerType.displayName || (functionName !== '' ? wrapperName + "(" + functionName + ")" : wrapperName);
         }
 
         function getComponentName(type) {
@@ -633,7 +633,7 @@ test("works", async () => {
               return 'Portal';
 
             case REACT_PROFILER_TYPE:
-              return \\"Profiler\\";
+              return "Profiler";
 
             case REACT_STRICT_MODE_TYPE:
               return 'StrictMode';
@@ -763,7 +763,7 @@ test("works", async () => {
           // When changing this logic, you might want to also
           // update consoleWithStackDev.www.js as well.
           {
-            var hasExistingStack = args.length > 0 && typeof args[args.length - 1] === 'string' && args[args.length - 1].indexOf('\\\\n    in') === 0;
+            var hasExistingStack = args.length > 0 && typeof args[args.length - 1] === 'string' && args[args.length - 1].indexOf('\\n    in') === 0;
 
             if (!hasExistingStack) {
               var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
@@ -804,13 +804,13 @@ test("works", async () => {
           {
             var _constructor = publicInstance.constructor;
             var componentName = _constructor && (_constructor.displayName || _constructor.name) || 'ReactClass';
-            var warningKey = componentName + \\".\\" + callerName;
+            var warningKey = componentName + "." + callerName;
 
             if (didWarnStateUpdateForUnmountedComponent[warningKey]) {
               return;
             }
 
-            error(\\"Can't call %s on a component that is not yet mounted. \\" + 'This is a no-op, but it might indicate a bug in your application. ' + 'Instead, assign to \`this.state\` directly or define a \`state = {};\` ' + 'class property with the desired state in the %s component.', callerName, componentName);
+            error("Can't call %s on a component that is not yet mounted. " + 'This is a no-op, but it might indicate a bug in your application. ' + 'Instead, assign to \`this.state\` directly or define a \`state = {};\` ' + 'class property with the desired state in the %s component.', callerName, componentName);
             didWarnStateUpdateForUnmountedComponent[warningKey] = true;
           }
         }
@@ -931,7 +931,7 @@ test("works", async () => {
         Component.prototype.setState = function (partialState, callback) {
           if (!(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null)) {
             {
-              throw Error(\\"setState(...): takes an object of state variables to update or a function which returns an object of state variables.\\");
+              throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");
             }
           }
 
@@ -1095,7 +1095,7 @@ test("works", async () => {
               var componentName = getComponentName(ReactCurrentOwner.current.type);
 
               if (!didWarnAboutStringRefs[componentName]) {
-                error('Component \\"%s\\" contains the string ref \\"%s\\". ' + 'Support for string refs will be removed in a future major release. ' + 'This case cannot be automatically converted to an arrow function. ' + 'We ask you to manually fix this case by using useRef() or createRef() instead. ' + 'Learn more about using refs safely here: ' + 'https://fb.me/react-strict-mode-string-ref', getComponentName(ReactCurrentOwner.current.type), config.ref);
+                error('Component "%s" contains the string ref "%s". ' + 'Support for string refs will be removed in a future major release. ' + 'This case cannot be automatically converted to an arrow function. ' + 'We ask you to manually fix this case by using useRef() or createRef() instead. ' + 'Learn more about using refs safely here: ' + 'https://fb.me/react-strict-mode-string-ref', getComponentName(ReactCurrentOwner.current.type), config.ref);
                 didWarnAboutStringRefs[componentName] = true;
               }
             }
@@ -1272,7 +1272,7 @@ test("works", async () => {
         function cloneElement(element, config, children) {
           if (!!(element === null || element === undefined)) {
             {
-              throw Error(\\"React.cloneElement(...): The argument must be a React element, but you passed \\" + element + \\".\\");
+              throw Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + ".");
             }
           }
 
@@ -1380,7 +1380,7 @@ test("works", async () => {
 
 
         var didWarnAboutMaps = false;
-        var userProvidedKeyEscapeRegex = /\\\\/+/g;
+        var userProvidedKeyEscapeRegex = /\\/+/g;
 
         function escapeUserProvidedKey(text) {
           return ('' + text).replace(userProvidedKeyEscapeRegex, '$&/');
@@ -1509,7 +1509,7 @@ test("works", async () => {
               var childrenString = '' + children;
               {
                 {
-                  throw Error(\\"Objects are not valid as a React child (found: \\" + (childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString) + \\").\\" + addendum);
+                  throw Error("Objects are not valid as a React child (found: " + (childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString) + ")." + addendum);
                 }
               }
             }
@@ -1699,7 +1699,7 @@ test("works", async () => {
         function onlyChild(children) {
           if (!isValidElement(children)) {
             {
-              throw Error(\\"React.Children.only expected to receive a single React element child.\\");
+              throw Error("React.Children.only expected to receive a single React element child.");
             }
           }
 
@@ -1902,7 +1902,7 @@ test("works", async () => {
 
           if (!(dispatcher !== null)) {
             {
-              throw Error(\\"Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\\\\n1. You might have mismatching versions of React and the renderer (such as React DOM)\\\\n2. You might be breaking the Rules of Hooks\\\\n3. You might have more than one copy of React in the same app\\\\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.\\");
+              throw Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\\n1. You might have mismatching versions of React and the renderer (such as React DOM)\\n2. You might be breaking the Rules of Hooks\\n3. You might have more than one copy of React in the same app\\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.");
             }
           }
 
@@ -1913,7 +1913,7 @@ test("works", async () => {
           var dispatcher = resolveDispatcher();
           {
             if (unstable_observedBits !== undefined) {
-              error('useContext() second argument is reserved for future ' + 'use in React. Passing it is not supported. ' + 'You passed: %s.%s', unstable_observedBits, typeof unstable_observedBits === 'number' && Array.isArray(arguments[2]) ? '\\\\n\\\\nDid you call array.map(useContext)? ' + 'Calling Hooks inside a loop is not supported. ' + 'Learn more at https://fb.me/rules-of-hooks' : '');
+              error('useContext() second argument is reserved for future ' + 'use in React. Passing it is not supported. ' + 'You passed: %s.%s', unstable_observedBits, typeof unstable_observedBits === 'number' && Array.isArray(arguments[2]) ? '\\n\\nDid you call array.map(useContext)? ' + 'Calling Hooks inside a loop is not supported. ' + 'Learn more at https://fb.me/rules-of-hooks' : '');
             } // TODO: add a more generic warning for invalid values.
 
 
@@ -1988,7 +1988,7 @@ test("works", async () => {
             var name = getComponentName(ReactCurrentOwner.current.type);
 
             if (name) {
-              return '\\\\n\\\\nCheck the render method of \`' + name + '\`.';
+              return '\\n\\nCheck the render method of \`' + name + '\`.';
             }
           }
 
@@ -1997,9 +1997,9 @@ test("works", async () => {
 
         function getSourceInfoErrorAddendum(source) {
           if (source !== undefined) {
-            var fileName = source.fileName.replace(/^.*[\\\\\\\\\\\\/]/, '');
+            var fileName = source.fileName.replace(/^.*[\\\\\\/]/, '');
             var lineNumber = source.lineNumber;
-            return '\\\\n\\\\nCheck your code at ' + fileName + ':' + lineNumber + '.';
+            return '\\n\\nCheck your code at ' + fileName + ':' + lineNumber + '.';
           }
 
           return '';
@@ -2028,7 +2028,7 @@ test("works", async () => {
             var parentName = typeof parentType === 'string' ? parentType : parentType.displayName || parentType.name;
 
             if (parentName) {
-              info = \\"\\\\n\\\\nCheck the top-level render call using <\\" + parentName + \\">.\\";
+              info = "\\n\\nCheck the top-level render call using <" + parentName + ">.";
             }
           }
 
@@ -2038,7 +2038,7 @@ test("works", async () => {
          * Warn if the element doesn't have an explicit key assigned to it.
          * This element is in an array. The array could grow and shrink or be
          * reordered. All children that haven't already been validated are required to
-         * have a \\"key\\" property assigned to it. Error statuses are cached so a warning
+         * have a "key" property assigned to it. Error statuses are cached so a warning
          * will only be shown once.
          *
          * @internal
@@ -2067,12 +2067,12 @@ test("works", async () => {
 
           if (element && element._owner && element._owner !== ReactCurrentOwner.current) {
             // Give the component that originally created this child.
-            childOwner = \\" It was passed a child from \\" + getComponentName(element._owner.type) + \\".\\";
+            childOwner = " It was passed a child from " + getComponentName(element._owner.type) + ".";
           }
 
           setCurrentlyValidatingElement(element);
           {
-            error('Each child in a list should have a unique \\"key\\" prop.' + '%s%s See https://fb.me/react-warning-keys for more information.', currentComponentErrorInfo, childOwner);
+            error('Each child in a list should have a unique "key" prop.' + '%s%s See https://fb.me/react-warning-keys for more information.', currentComponentErrorInfo, childOwner);
           }
           setCurrentlyValidatingElement(null);
         }
@@ -2203,7 +2203,7 @@ test("works", async () => {
             var info = '';
 
             if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
-              info += ' You likely forgot to export your component from the file ' + \\"it's defined in, or you might have mixed up default and named imports.\\";
+              info += ' You likely forgot to export your component from the file ' + "it's defined in, or you might have mixed up default and named imports.";
             }
 
             var sourceInfo = getSourceInfoErrorAddendumForProps(props);
@@ -2221,7 +2221,7 @@ test("works", async () => {
             } else if (Array.isArray(type)) {
               typeString = 'array';
             } else if (type !== undefined && type.$$typeof === REACT_ELEMENT_TYPE) {
-              typeString = \\"<\\" + (getComponentName(type.type) || 'Unknown') + \\" />\\";
+              typeString = "<" + (getComponentName(type.type) || 'Unknown') + " />";
               info = ' Did you accidentally export a JSX literal instead of a component?';
             } else {
               typeString = typeof type;
@@ -2350,7 +2350,7 @@ test("works", async () => {
     }
     }),
     /* --- ../../node_modules/object-assign/index.js --- */
-    \\"../../node_modules/object-assign/index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "../../node_modules/object-assign/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     /*
     object-assign
     (c) Sindre Sorhus
@@ -2448,7 +2448,7 @@ test("works", async () => {
     };
     }),
     /* --- ../../node_modules/prop-types/checkPropTypes.js --- */
-    \\"../../node_modules/prop-types/checkPropTypes.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "../../node_modules/prop-types/checkPropTypes.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     /**
      * Copyright (c) 2013-present, Facebook, Inc.
      *
@@ -2459,12 +2459,12 @@ test("works", async () => {
 
     var printWarning = function () {};
 
-    if (\\"test\\" !== 'production') {
-      var ReactPropTypesSecret = _kame_require_(\\"../../node_modules/prop-types/lib/ReactPropTypesSecret.js\\");
+    if ("test" !== 'production') {
+      var ReactPropTypesSecret = _kame_require_("../../node_modules/prop-types/lib/ReactPropTypesSecret.js");
 
       var loggedTypeFailures = {};
 
-      var has = _kame_require_(\\"../../node_modules/prop-types/lib/has.js\\");
+      var has = _kame_require_("../../node_modules/prop-types/lib/has.js");
 
       printWarning = function (text) {
         var message = 'Warning: ' + text;
@@ -2489,7 +2489,7 @@ test("works", async () => {
      *
      * @param {object} typeSpecs Map of name to a ReactPropType
      * @param {object} values Runtime values that need to be type-checked
-     * @param {string} location e.g. \\"prop\\", \\"context\\", \\"child context\\"
+     * @param {string} location e.g. "prop", "context", "child context"
      * @param {string} componentName Name of the component for error messages.
      * @param {?Function} getStack Returns the component stack.
      * @private
@@ -2497,7 +2497,7 @@ test("works", async () => {
 
 
     function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-      if (\\"test\\" !== 'production') {
+      if ("test" !== 'production') {
         for (var typeSpecName in typeSpecs) {
           if (has(typeSpecs, typeSpecName)) {
             var error; // Prop type validation may throw. In case they do, we don't want to
@@ -2541,7 +2541,7 @@ test("works", async () => {
 
 
     checkPropTypes.resetWarningCache = function () {
-      if (\\"test\\" !== 'production') {
+      if ("test" !== 'production') {
         loggedTypeFailures = {};
       }
     };
@@ -2549,7 +2549,7 @@ test("works", async () => {
     module.exports = checkPropTypes;
     }),
     /* --- ../../node_modules/prop-types/lib/ReactPropTypesSecret.js --- */
-    \\"../../node_modules/prop-types/lib/ReactPropTypesSecret.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "../../node_modules/prop-types/lib/ReactPropTypesSecret.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     /**
      * Copyright (c) 2013-present, Facebook, Inc.
      *
@@ -2562,13 +2562,13 @@ test("works", async () => {
     module.exports = ReactPropTypesSecret;
     }),
     /* --- ../../node_modules/prop-types/lib/has.js --- */
-    \\"../../node_modules/prop-types/lib/has.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "../../node_modules/prop-types/lib/has.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     module.exports = Function.call.bind(Object.prototype.hasOwnProperty);
     })
     /* --- end of modules --- */};
 
     var __kame__ = {
-    	basedir: typeof __dirname === 'string' ? __dirname : \\"\\",
+    	basedir: typeof __dirname === 'string' ? __dirname : "",
     	cache: {},
     	runModule: function runModule(name, isMain) {
     		var exports = {};
@@ -2593,8 +2593,8 @@ test("works", async () => {
     			_kame_require_.main = module;
     		}
 
-    		var __filename = __kame__.basedir + \\"/\\" + name;
-    		var __dirname = __kame__.basedir + \\"/\\" + name.split(\\"/\\").slice(0, -1).join(\\"/\\");
+    		var __filename = __kame__.basedir + "/" + name;
+    		var __dirname = __kame__.basedir + "/" + name.split("/").slice(0, -1).join("/");
 
     		
 
@@ -2607,7 +2607,7 @@ test("works", async () => {
 
 
 
-    return __kame__.runModule(\\"index.js\\", true);
+    return __kame__.runModule("index.js", true);
     }
 
     if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -2619,11 +2619,11 @@ test("works", async () => {
     }
 
     })(
-    	typeof global !== \\"undefined\\" ? global :
-    	typeof window !== \\"undefined\\" ? window :
-    	typeof self !== \\"undefined\\" ? self :
-    	typeof this === \\"object\\" ? this :
-    	new Function(\\"return this\\")()
+    	typeof global !== "undefined" ? global :
+    	typeof window !== "undefined" ? window :
+    	typeof self !== "undefined" ? self :
+    	typeof this === "object" ? this :
+    	new Function("return this")()
     );
     ",
     }
@@ -2634,7 +2634,7 @@ test("works", async () => {
   await run2.completion;
 
   expect(run2.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "",

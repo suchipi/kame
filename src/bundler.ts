@@ -4,7 +4,7 @@ import crypto from "crypto";
 import mkdirp from "mkdirp";
 import chalk from "chalk";
 import uid from "uid";
-import { NodePath } from "@babel/core";
+import type { NodePath } from "@babel/core";
 import * as t from "@babel/types";
 import generate from "@babel/generator";
 import * as parser from "@babel/parser";

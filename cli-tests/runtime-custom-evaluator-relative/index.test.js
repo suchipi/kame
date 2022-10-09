@@ -13,13 +13,12 @@ test("works", async () => {
   await run.completion;
 
   expect(run.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
-      "stderr": "Running ./index.js
-    ",
+      "stderr": "",
       "stdout": "Code from index.js:
-    (function (exports, require, module, __filename, __dirname) { console.log(\\"hi\\");
+    (function (exports, require, module, __filename, __dirname) { console.log("hi");
     })
 
 

@@ -9,11 +9,10 @@ test("works", async () => {
   await run.completion;
 
   expect(run.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
-      "stderr": "Running ./index.js
-    ",
+      "stderr": "",
       "stdout": "hi
     hi from other
     ",

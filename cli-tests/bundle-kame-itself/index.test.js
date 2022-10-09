@@ -21,7 +21,7 @@ test("works", async () => {
   await run2.completion;
 
   expect(run2.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "",

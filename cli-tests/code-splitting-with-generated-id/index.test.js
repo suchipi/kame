@@ -1,6 +1,6 @@
 const firstBase = require("first-base");
 const { cli, path, read, write, remove } = require("../test-util");
-const diff = require("jest-diff").default;
+const { diff } = require("jest-diff");
 
 test("works", async () => {
   remove(__dirname, "dist");

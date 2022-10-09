@@ -18,7 +18,7 @@ test("works", async () => {
   await run.completion;
 
   expect(run.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 0,
       "error": false,
       "stderr": "Files created:
@@ -31,24 +31,24 @@ test("works", async () => {
   const output = read(__dirname, "dist");
 
   expect(output).toMatchInlineSnapshot(`
-    Object {
+    {
       "index.js": "(function(global) {
 
     function factory() {
     var modules = {
     /* --- index.js --- */
-    \\"index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     /* eslint-disable */
-    _kame_require_(\\"unresolved:index.js|./not-there\\");
+    _kame_require_("unresolved:index.js|./not-there");
     }),
     /* --- unresolved:index.js|./not-there --- */
-    \\"unresolved:index.js|./not-there\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    throw new Error(\\"Module wasn't found at bundle time: Tried to load \\\\\\"./not-there\\\\\\" from \\\\\\"index.js\\\\\\"\\");
+    "unresolved:index.js|./not-there": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    throw new Error("Module wasn't found at bundle time: Tried to load \\"./not-there\\" from \\"index.js\\"");
     })
     /* --- end of modules --- */};
 
     var __kame__ = {
-    	basedir: typeof __dirname === 'string' ? __dirname : \\"\\",
+    	basedir: typeof __dirname === 'string' ? __dirname : "",
     	cache: {},
     	runModule: function runModule(name, isMain) {
     		var exports = {};
@@ -73,8 +73,8 @@ test("works", async () => {
     			_kame_require_.main = module;
     		}
 
-    		var __filename = __kame__.basedir + \\"/\\" + name;
-    		var __dirname = __kame__.basedir + \\"/\\" + name.split(\\"/\\").slice(0, -1).join(\\"/\\");
+    		var __filename = __kame__.basedir + "/" + name;
+    		var __dirname = __kame__.basedir + "/" + name.split("/").slice(0, -1).join("/");
 
     		
 
@@ -87,7 +87,7 @@ test("works", async () => {
 
 
 
-    return __kame__.runModule(\\"index.js\\", true);
+    return __kame__.runModule("index.js", true);
     }
 
     if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -99,11 +99,11 @@ test("works", async () => {
     }
 
     })(
-    	typeof global !== \\"undefined\\" ? global :
-    	typeof window !== \\"undefined\\" ? window :
-    	typeof self !== \\"undefined\\" ? self :
-    	typeof this === \\"object\\" ? this :
-    	new Function(\\"return this\\")()
+    	typeof global !== "undefined" ? global :
+    	typeof window !== "undefined" ? window :
+    	typeof self !== "undefined" ? self :
+    	typeof this === "object" ? this :
+    	new Function("return this")()
     );
     ",
     }
@@ -119,14 +119,14 @@ test("works", async () => {
   );
 
   expect(run2.result).toMatchInlineSnapshot(`
-    Object {
+    {
       "code": 1,
       "error": false,
       "stderr": "<cwd>/cli-tests/bundle-unresolved/dist/index.js:12
-    throw new Error(\\"Module wasn't found at bundle time: Tried to load \\\\\\"./not-there\\\\\\" from \\\\\\"index.js\\\\\\"\\");
+    throw new Error("Module wasn't found at bundle time: Tried to load \\"./not-there\\" from \\"index.js\\"");
     ^
 
-    Error: Module wasn't found at bundle time: Tried to load \\"./not-there\\" from \\"index.js\\"
+    Error: Module wasn't found at bundle time: Tried to load "./not-there" from "index.js"
         at Object.unresolved:index.js|./not-there (<cwd>/cli-tests/bundle-unresolved/dist/index.js:12:7)
         at Object.runModule (<cwd>/cli-tests/bundle-unresolved/dist/index.js:47:25)
         at require (<cwd>/cli-tests/bundle-unresolved/dist/index.js:32:14)
@@ -135,8 +135,8 @@ test("works", async () => {
         at factory (<cwd>/cli-tests/bundle-unresolved/dist/index.js:56:17)
         at <cwd>/cli-tests/bundle-unresolved/dist/index.js:60:19
         at Object.<anonymous> (<cwd>/cli-tests/bundle-unresolved/dist/index.js:67:3)
-        at Module._compile (node:internal/modules/cjs/loader:1101:14)
-        at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+        at Module._compile (node:internal/modules/cjs/loader:1103:14)
+        at Object.Module._extensions..js (node:internal/modules/cjs/loader:1157:10)
     ",
       "stdout": "",
     }
