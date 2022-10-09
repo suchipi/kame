@@ -58,8 +58,10 @@ function spawnWatchChild(
 }
 
 if (parsedArgv.help) {
-  console.log(usage);
+  console.log(usage());
   process.exitCode = 1;
+} else if (parsedArgv.version) {
+  console.log(require("../package.json").version);
 } else {
   switch (parsedArgv.cmd) {
     case "run": {
@@ -88,7 +90,7 @@ if (parsedArgv.help) {
     }
     default: {
       console.error(`Unknown command: ${parsedArgv.cmd}\n`);
-      console.error(usage);
+      console.error(usage());
       process.exitCode = 1;
     }
   }

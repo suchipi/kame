@@ -8,6 +8,7 @@ export type ParsedArgv = {
   watch: boolean;
   isWatchChild: boolean;
   help: boolean;
+  version: boolean;
   globalName: string | undefined;
   codeSplittingId: string;
   inputConfig: InputConfig;
@@ -17,7 +18,15 @@ export type ParsedArgv = {
 
 export default function parseArgv(input: Array<string>): ParsedArgv {
   const argvObj = yargsParser(input, {
-    boolean: ["help", "watch", "is-watch-child", "isWatchChild"],
+    boolean: [
+      "help",
+      "h",
+      "version",
+      "v",
+      "watch",
+      "is-watch-child",
+      "isWatchChild",
+    ],
     string: [
       "input",
       "output",
@@ -93,7 +102,8 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     cmd: argvObj._[0],
     watch: argvObj.watch || false,
     isWatchChild: argvObj.isWatchChild || false,
-    help: argvObj.help || false,
+    help: argvObj.help || argvObj.h || false,
+    version: argvObj.version || argvObj.v || false,
     globalName: argvObj.global === "null" ? null : argvObj.global,
     codeSplittingId: argvObj.codeSplittingId,
     inputConfig: {
