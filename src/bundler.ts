@@ -3,7 +3,7 @@ import path from "path";
 import crypto from "crypto";
 import mkdirp from "mkdirp";
 import chalk from "chalk";
-import uid from "uid";
+import { uid } from "uid";
 import type { NodePath } from "@babel/core";
 import * as t from "@babel/types";
 import generate from "@babel/generator";
@@ -130,9 +130,8 @@ export default function makeBundler(config: Config): { new (): IBundler } {
             }
 
             // @ts-ignore
-            const source: NodePath<t.StringLiteral> = nodePath.get(
-              "arguments"
-            )[0];
+            const source: NodePath<t.StringLiteral> =
+              nodePath.get("arguments")[0];
 
             const currentValue = source.node.value;
 

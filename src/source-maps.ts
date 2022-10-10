@@ -45,7 +45,7 @@ export function applySourceMapsToError(
   err: unknown
 ) {
   let error: Error;
-  if (!pheno.isOfType(err, pheno.Error_)) {
+  if (!pheno.isOfType(err, pheno.Error)) {
     error = new Error("Non-error value was thrown: " + util.inspect(err));
   } else {
     error = err;

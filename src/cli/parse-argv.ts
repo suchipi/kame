@@ -99,7 +99,7 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
   }
 
   return {
-    cmd: argvObj._[0],
+    cmd: argvObj._[0] ? String(argvObj._[0]) : undefined,
     watch: argvObj.watch || false,
     isWatchChild: argvObj.isWatchChild || false,
     help: argvObj.help || argvObj.h || false,

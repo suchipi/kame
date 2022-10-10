@@ -43,17 +43,20 @@ function spawnWatchChild(
   let isRestarting = false;
   chokidar
     .watch(".", { ignoreInitial: true, persistent: true })
-    .on("all", (eventName, filepath) => {
+    .on("all", async (eventName, filepath) => {
       if (isRestarting) return;
       if (!filter(filepath)) return;
 
       console.warn(chalk.cyan(`    ${eventName}: ${filepath}`));
 
       isRestarting = true;
-      childUtils.kill(child.pid).then(() => {
-        spawn();
-        isRestarting = false;
-      });
+
+      if (child.pid != null) {
+        await childUtils.kill(child.pid);
+      }
+
+      spawn();
+      isRestarting = false;
     });
 }
 
