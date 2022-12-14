@@ -11,10 +11,9 @@ test("works", async () => {
 
   await run.completion;
 
-  run.result.stderr = run.result.stderr.replace(
-    new RegExp(process.cwd(), "g"),
-    "<cwd>"
-  );
+  run.result.stderr = run.result.stderr
+    .replace(new RegExp(process.cwd(), "g"), "<cwd>")
+    .replace(/\(node:internal[^\n]+/g, "(node:internal)");
 
   expect(run.result).toMatchInlineSnapshot(`
     {
@@ -34,7 +33,7 @@ test("works", async () => {
       at Function.Module._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:43:22)
       at Runtime.load (<cwd>/dist/runtime.js:134:53)
       at Object.<anonymous> (<cwd>/dist/cli/cmd-run.js:13:9)
-      at Module._compile (node:internal/modules/cjs/loader:1103:14)]
+      at Module._compile (node:internal)
     ",
       "stdout": "",
     }
