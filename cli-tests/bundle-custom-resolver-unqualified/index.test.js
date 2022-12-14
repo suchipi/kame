@@ -41,8 +41,8 @@ test("works", async () => {
     var modules = {
     /* --- src/index.js --- */
     "src/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    console.log("hi"); // eslint-disable-next-line import/no-unresolved
-
+    console.log("hi");
+    // eslint-disable-next-line import/no-unresolved
     _kame_require_("outside-src/something.js");
     }),
     /* --- outside-src/something.js --- */

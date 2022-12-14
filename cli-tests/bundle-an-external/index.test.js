@@ -34,11 +34,8 @@ test("works", async () => {
     /* --- index.js --- */
     "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     var fs = _kame_require_("external:fs");
-
     console.log("fs:", Object.keys(fs));
-
     var child_process = _kame_require_("external:child_process");
-
     console.log("child_process", child_process);
     }),
     /* --- external:fs --- */

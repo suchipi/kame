@@ -34,7 +34,6 @@ test("works", async () => {
     /* --- index.js --- */
     "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     console.log("hi");
-
     _kame_require_("another.js");
     }),
     /* --- another.js --- */
