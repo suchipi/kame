@@ -2,21 +2,24 @@ const path = require("path");
 const kame = require("..");
 
 const rootDir = path.resolve(__dirname, "..");
+function replaceRootDir(input) {
+  return input.replaceAll(rootDir, "<rootDir>");
+}
 
 test("input config", () => {
   const calls = [];
 
   const myConfig = {
     loader: (filename) => {
-      calls.push(["loader", filename.replace(rootDir, "<rootDir>")]);
+      calls.push(["loader", replaceRootDir(filename)]);
       return kame.defaultLoader.load(filename);
     },
     resolver: (id, fromFilePath) => {
-      calls.push(["resolver", id, fromFilePath.replace(rootDir, "<rootDir>")]);
+      calls.push(["resolver", id, replaceRootDir(fromFilePath)]);
       return kame.defaultResolver.resolve(id, fromFilePath);
     },
     runtimeEval: (code, filename) => {
-      calls.push(["runtimeEval", code, filename.replace(rootDir, "<rootDir>")]);
+      calls.push(["runtimeEval", code, replaceRootDir(filename)]);
       return kame.defaultRuntimeEval.evaluate(code, filename);
     },
   };
@@ -29,6 +32,11 @@ test("input config", () => {
 
   expect(calls).toMatchInlineSnapshot(`
     [
+      [
+        "resolver",
+        "/Users/suchipi/Code/kame/api-tests/fixture.ts",
+        "<rootDir>/__kame-runtime-load.js",
+      ],
       [
         "loader",
         "<rootDir>/api-tests/fixture.ts",

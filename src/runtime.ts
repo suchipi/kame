@@ -152,12 +152,13 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
     cache: { [key: string]: any } = {};
 
     load(filename: string): any {
-      if (!path.isAbsolute(filename)) {
-        filename = path.join(process.cwd(), filename);
-      }
+      const resolvedFilename = config.resolver(
+        filename,
+        path.join(process.cwd(), "__kame-runtime-load.js")
+      );
 
       try {
-        return Module._load(filename, delegate, this.cache);
+        return Module._load(resolvedFilename, delegate, this.cache);
       } catch (err) {
         throw applySourceMapsToError(sourceMaps, err);
       }
