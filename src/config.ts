@@ -76,8 +76,8 @@ export function readConfig(inputConfig: InputConfig): Config {
         `'${inputConfig.resolver}' did not export a 'resolve' function as a named export. Resolver modules should export a function that receives the source import/require string and the filename it appeared in, and returns the absolute path to the targeted file. See \`kame --help\` for more info.`
       );
     }
-  } else if (typeof inputConfig === "function") {
-    config.resolver = inputConfig;
+  } else if (typeof inputConfig.resolver === "function") {
+    config.resolver = inputConfig.resolver;
   } else {
     config.resolver = defaultResolver.resolve;
   }
