@@ -1,7 +1,9 @@
 import fs from "fs";
 import path from "path";
-import * as babel from "@babel/core";
+import util from "util";
 import mime from "mime-types";
+import chalk from "chalk";
+import * as esbuild from "esbuild";
 import makeDebug from "debug";
 
 const debug = makeDebug("kame/default-loader");
@@ -36,46 +38,60 @@ export function loadJsUncompiled(filename: string) {
 
 export function loadJsCompiled(
   filename: string,
-  babelEnvOptions: { [key: string]: any } = {}
+  esbuildOptions: { [key: string]: any } = {}
 ) {
   debug(`loadJsCompiled`);
   const extension = path.extname(filename);
+  const content = fs.readFileSync(filename);
 
-  const config: babel.TransformOptions = {
-    babelrc: false,
-    sourceType: "unambiguous",
-    presets: [
-      [
-        require("@babel/preset-env").default,
-        { modules: false, ...babelEnvOptions },
-      ],
-      require("@babel/preset-react").default,
-    ],
-    plugins: [
-      require("@babel/plugin-proposal-class-properties").default,
-      require("@babel/plugin-proposal-nullish-coalescing-operator").default,
-      require("@babel/plugin-proposal-optional-chaining").default,
-      require("@babel/plugin-transform-modules-commonjs").default,
-      require("@babel/plugin-transform-runtime").default,
-    ],
-    filename,
-  };
+  let loader;
+  switch (extension) {
+    case ".mts":
+    case ".cts":
+    case ".ts": {
+      loader = "ts";
+      break;
+    }
+    case ".mtsx":
+    case ".ctsx":
+    case ".tsx": {
+      loader = "tsx";
+      break;
+    }
 
-  if (extension === ".ts" || extension === ".tsx") {
-    config.presets!.push(require("@babel/preset-typescript").default);
-  } else {
-    config.plugins!.push(
-      require("@babel/plugin-transform-flow-strip-types").default
-    );
+    case ".mjsx":
+    case ".cjsx":
+    case ".jsx": {
+      loader = "jsx";
+      break;
+    }
+
+    case ".js":
+    case ".cjs":
+    case ".mjs":
+    default: {
+      loader = "js";
+      break;
+    }
   }
 
-  const result = babel.transformFileSync(filename, {
-    ...config,
-    sourceMaps: true,
+  const result = esbuild.transformSync(content, {
+    sourcefile: filename,
+    sourcemap: "inline",
+    loader,
+    format: "cjs",
+    ...esbuildOptions,
   });
   const code = result?.code || "";
 
   const map = result?.map || null;
+
+  for (const warning of result.warnings) {
+    console.warn(
+      chalk.yellow("warning from esbuild:"),
+      util.inspect(warning, { depth: 12, colors: true })
+    );
+  }
 
   return {
     code: stripShebang(code),
@@ -108,12 +124,19 @@ function defaultLoader(
     case ".css": {
       return loadCss(filename);
     }
+
     case ".js":
     case ".jsx":
-    case ".mjs":
     case ".cjs":
+    case ".mjs":
+    case ".mjsx":
+    case ".cjsx":
     case ".ts":
-    case ".tsx": {
+    case ".tsx":
+    case ".mts":
+    case ".cts":
+    case ".mtsx":
+    case ".ctsx": {
       if (
         (extension === ".js" || extension === ".cjs") &&
         filename.match(/node_modules/)
