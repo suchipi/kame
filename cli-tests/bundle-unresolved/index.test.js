@@ -127,16 +127,18 @@ test("works", async () => {
     ^
 
     Error: Module wasn't found at bundle time: Tried to load "./not-there" from "index.js"
-        at Object.unresolved:index.js|./not-there (<cwd>/cli-tests/bundle-unresolved/dist/index.js:13:7)
+        at unresolved:index.js|./not-there (<cwd>/cli-tests/bundle-unresolved/dist/index.js:13:7)
         at Object.runModule (<cwd>/cli-tests/bundle-unresolved/dist/index.js:48:25)
         at require (<cwd>/cli-tests/bundle-unresolved/dist/index.js:33:14)
-        at Object.index.js (<cwd>/cli-tests/bundle-unresolved/dist/index.js:9:1)
+        at index.js (<cwd>/cli-tests/bundle-unresolved/dist/index.js:9:1)
         at Object.runModule (<cwd>/cli-tests/bundle-unresolved/dist/index.js:48:25)
         at factory (<cwd>/cli-tests/bundle-unresolved/dist/index.js:57:17)
         at <cwd>/cli-tests/bundle-unresolved/dist/index.js:61:19
         at Object.<anonymous> (<cwd>/cli-tests/bundle-unresolved/dist/index.js:68:3)
         at Module._compile (node:internal)
-        at Object.Module._extensions..js (node:internal)
+        at Module._extensions..js (node:internal)
+
+    Node.js v18.17.1
     ",
       "stdout": "",
     }

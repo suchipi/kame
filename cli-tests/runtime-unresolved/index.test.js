@@ -26,14 +26,16 @@ test("works", async () => {
     [Error: Module not found: Tried to load "./not-there" from "<cwd>/cli-tests/runtime-unresolved/index.js"
       at unresolved:<cwd>/cli-tests/runtime-unresolved/index.js|./not-there:1:69
       at Object.run (<cwd>/dist/runtime.js:132:13)
-      at Function.Module._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:43:22)
+      at Module._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:43:22)
       at Module.require (<cwd>/node_modules/commonjs-standalone/dist/index.js:56:23)
       at <cwd>/cli-tests/runtime-unresolved/index.js:2:1
       at Object.run (<cwd>/dist/runtime.js:132:13)
-      at Function.Module._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:43:22)
+      at Module._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:43:22)
       at Runtime.load (<cwd>/dist/runtime.js:142:53)
       at Object.<anonymous> (<cwd>/dist/cli/cmd-run.js:13:9)
       at Module._compile (node:internal)
+
+    Node.js v18.17.1
     ",
       "stdout": "",
     }
