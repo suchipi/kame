@@ -26,7 +26,7 @@ test("works", async () => {
       "error": false,
       "stderr": "Files created:
     ",
-      "stdout": "dist/c5076b265d67c7e0e4b04ee5f499162c.js
+      "stdout": "dist/23ebbb40cd74880b1e3163c63d317d3f.js
     dist/index.js
     ",
     }
@@ -36,11 +36,13 @@ test("works", async () => {
 
   expect(output).toMatchInlineSnapshot(`
     {
-      "c5076b265d67c7e0e4b04ee5f499162c.js": "(function(global) {
+      "23ebbb40cd74880b1e3163c63d317d3f.js": "(function(global) {
 
     var modules = {
     /* --- src/other.js --- */
     "src/other.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "use strict";
+
     console.log("hi from other");
     })
     /* --- end of modules --- */};
@@ -68,6 +70,8 @@ test("works", async () => {
     var modules = {
     /* --- src/index.js --- */
     "src/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "use strict";
+
     console.log("hi");
     _kame_dynamic_import_("src/other.js");
     })
@@ -111,7 +115,7 @@ test("works", async () => {
     	},
     	
     	chunkUrls: {
-      "src/other.js": "c5076b265d67c7e0e4b04ee5f499162c.js"
+      "src/other.js": "23ebbb40cd74880b1e3163c63d317d3f.js"
     },
     	loadChunk: function loadChunk(id) {
     		var resolve, reject;

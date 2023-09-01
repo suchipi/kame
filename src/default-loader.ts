@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import * as babel from "@babel/core";
 import mime from "mime-types";
+import * as swc from "@swc/core";
 import makeDebug from "debug";
 
 const debug = makeDebug("kame/default-loader");
@@ -36,46 +36,66 @@ export function loadJsUncompiled(filename: string) {
 
 export function loadJsCompiled(
   filename: string,
-  babelEnvOptions: { [key: string]: any } = {}
+  {
+    target = "es5",
+  }: {
+    target?:
+      | "es3"
+      | "es5"
+      | "es2015"
+      | "es2016"
+      | "es2017"
+      | "es2018"
+      | "es2019"
+      | "es2020"
+      | "es2021"
+      | "es2022"
+      | "esnext";
+  } = {}
 ) {
   debug(`loadJsCompiled`);
   const extension = path.extname(filename);
 
-  const config: babel.TransformOptions = {
-    babelrc: false,
-    sourceType: "unambiguous",
-    presets: [
-      [
-        require("@babel/preset-env").default,
-        { modules: false, ...babelEnvOptions },
-      ],
-      require("@babel/preset-react").default,
-    ],
-    plugins: [
-      require("@babel/plugin-proposal-class-properties").default,
-      require("@babel/plugin-proposal-nullish-coalescing-operator").default,
-      require("@babel/plugin-proposal-optional-chaining").default,
-      require("@babel/plugin-transform-modules-commonjs").default,
-      require("@babel/plugin-transform-runtime").default,
-    ],
-    filename,
-  };
-
-  if (extension === ".ts" || extension === ".tsx") {
-    config.presets!.push(require("@babel/preset-typescript").default);
+  let mode: "ts" | "js";
+  if (/\.[cm]?tsx?$/.test(extension)) {
+    mode = "ts";
   } else {
-    config.plugins!.push(
-      require("@babel/plugin-transform-flow-strip-types").default
-    );
+    mode = "js";
   }
 
-  const result = babel.transformFileSync(filename, {
-    ...config,
+  const result = swc.transformFileSync(filename, {
+    swcrc: false,
+    filename,
     sourceMaps: true,
+    module: {
+      type: "commonjs",
+      ignoreDynamic: true,
+    },
+    jsc: {
+      target,
+      externalHelpers: true,
+      parser:
+        mode === "ts"
+          ? {
+              syntax: "typescript",
+              tsx: true,
+              decorators: true,
+              dynamicImport: true,
+            }
+          : {
+              syntax: "ecmascript",
+              jsx: true,
+              functionBind: true,
+              decorators: true,
+              decoratorsBeforeExport: true,
+              exportDefaultFrom: true,
+              importAssertions: true,
+            },
+    },
   });
-  const code = result?.code || "";
 
-  const map = result?.map || null;
+  const code = result?.code || "";
+  const map = result?.map ? JSON.parse(result.map) : null;
 
   return {
     code: stripShebang(code),
@@ -96,7 +116,22 @@ export function loadFile(filename: string) {
 
 function defaultLoader(
   filename: string,
-  babelEnvOptions: { [key: string]: any } = {}
+  {
+    target = "es5",
+  }: {
+    target?:
+      | "es3"
+      | "es5"
+      | "es2015"
+      | "es2016"
+      | "es2017"
+      | "es2018"
+      | "es2019"
+      | "es2020"
+      | "es2021"
+      | "es2022"
+      | "esnext";
+  } = {}
 ): string | { code: string; map: any } {
   debug(`Loading ${filename}`);
   const extension = path.extname(filename);
@@ -108,19 +143,26 @@ function defaultLoader(
     case ".css": {
       return loadCss(filename);
     }
+
     case ".js":
     case ".jsx":
-    case ".mjs":
     case ".cjs":
+    case ".mjs":
+    case ".mjsx":
+    case ".cjsx":
     case ".ts":
-    case ".tsx": {
+    case ".tsx":
+    case ".mts":
+    case ".cts":
+    case ".mtsx":
+    case ".ctsx": {
       if (
         (extension === ".js" || extension === ".cjs") &&
         filename.match(/node_modules/)
       ) {
         return loadJsUncompiled(filename);
       } else {
-        return loadJsCompiled(filename, babelEnvOptions);
+        return loadJsCompiled(filename, { target });
       }
     }
 

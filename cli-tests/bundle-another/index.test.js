@@ -33,12 +33,14 @@ test("works", async () => {
     var modules = {
     /* --- index.js --- */
     "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "use strict";
+
     console.log("hi");
     _kame_require_("another.js");
     }),
     /* --- another.js --- */
     "another.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-
+    "use strict";
     })
     /* --- end of modules --- */};
 

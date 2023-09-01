@@ -35,18 +35,23 @@ test("works", async () => {
     "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     "use strict";
 
-    var _interopRequireDefault = _kame_require_("../../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-    var _react = _interopRequireDefault(_kame_require_("../../node_modules/react/index.js"));
-    console.log( /*#__PURE__*/_react["default"].createElement("div", null));
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    var _interop_require_default = _kame_require_("../../node_modules/@swc/helpers/cjs/_interop_require_default.cjs");
+    var _react = /*#__PURE__*/_interop_require_default._(_kame_require_("../../node_modules/react/index.js"));
+    console.log( /*#__PURE__*/_react.default.createElement("div", null));
     }),
-    /* --- ../../node_modules/@babel/runtime/helpers/interopRequireDefault.js --- */
-    "../../node_modules/@babel/runtime/helpers/interopRequireDefault.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    function _interopRequireDefault(obj) {
+    /* --- ../../node_modules/@swc/helpers/cjs/_interop_require_default.cjs --- */
+    "../../node_modules/@swc/helpers/cjs/_interop_require_default.cjs": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    "use strict";
+
+    exports._ = exports._interop_require_default = _interop_require_default;
+    function _interop_require_default(obj) {
       return obj && obj.__esModule ? obj : {
-        "default": obj
+        default: obj
       };
     }
-    module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
     }),
     /* --- ../../node_modules/react/index.js --- */
     "../../node_modules/react/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {

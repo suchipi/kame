@@ -33,14 +33,13 @@ test("works", async () => {
     var modules = {
     /* --- index.ts --- */
     "index.ts": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    // Use some TypeScript-specific syntax in this file to make sure TypeScript gets compiled..
+    // Make sure the syntax isn't also parseable as Flow.
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    // Use some TypeScript-specific syntax in this file to make sure TypeScript gets compiled..
-    // Make sure the syntax isn't also parseable as Flow.
-
     console.log("hi");
     })
     /* --- end of modules --- */};

@@ -44,40 +44,45 @@ test("input config", () => {
       [
         "runtimeEval",
         "(function (exports, require, module, __filename, __dirname) { "use strict";
-
-    var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
     Object.defineProperty(exports, "__esModule", {
-      value: true
+        value: true
     });
-    exports.four = void 0;
-    var _path = _interopRequireDefault(require("path"));
-    _path["default"].basename(__filename);
+    Object.defineProperty(exports, "four", {
+        enumerable: true,
+        get: function() {
+            return four;
+        }
+    });
+    var _interop_require_default = require("@swc/helpers/_/_interop_require_default");
+    var _path = /*#__PURE__*/ _interop_require_default._(require("path"));
+    _path.default.basename(__filename);
     var four = 4;
-    exports.four = four;
+
     })
     ",
         "<rootDir>/api-tests/fixture.ts",
       ],
       [
         "resolver",
-        "@babel/runtime/helpers/interopRequireDefault",
+        "@swc/helpers/_/_interop_require_default",
         "<rootDir>/api-tests/fixture.ts",
       ],
       [
         "loader",
-        "<rootDir>/node_modules/@babel/runtime/helpers/interopRequireDefault.js",
+        "<rootDir>/node_modules/@swc/helpers/cjs/_interop_require_default.cjs",
       ],
       [
         "runtimeEval",
-        "(function (exports, require, module, __filename, __dirname) { function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
+        "(function (exports, require, module, __filename, __dirname) { "use strict";
+
+    exports._ = exports._interop_require_default = _interop_require_default;
+    function _interop_require_default(obj) {
+        return obj && obj.__esModule ? obj : { default: obj };
     }
-    module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
     })
     ",
-        "<rootDir>/node_modules/@babel/runtime/helpers/interopRequireDefault.js",
+        "<rootDir>/node_modules/@swc/helpers/cjs/_interop_require_default.cjs",
       ],
       [
         "resolver",

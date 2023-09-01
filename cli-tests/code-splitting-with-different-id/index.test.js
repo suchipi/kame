@@ -64,8 +64,8 @@ test("works", async () => {
         "error": false,
         "stderr": "Files created:
       ",
-    <   "stdout": "dist/ea74def32cb1ed96794457e64b77a79d.js
-    >   "stdout": "dist/3e57e1969256dfe43ed3774ec04d6618.js
+    <   "stdout": "dist/db77225ac4584726c04425503fd4a31f.js
+    >   "stdout": "dist/c9def26683603b140b8462741097d0fb.js
       dist/index.js
       ",
       }"
@@ -76,12 +76,14 @@ test("works", async () => {
     > Second run
 
       Object {
-    <   "ea74def32cb1ed96794457e64b77a79d.js": "(function(global) {
-    >   "3e57e1969256dfe43ed3774ec04d6618.js": "(function(global) {
+    <   "db77225ac4584726c04425503fd4a31f.js": "(function(global) {
+    >   "c9def26683603b140b8462741097d0fb.js": "(function(global) {
 
       var modules = {
       /* --- src/other.js --- */
       \\"src/other.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+      \\"use strict\\";
+
       console.log(\\"hi from other\\");
       })
       /* --- end of modules --- */};
@@ -110,6 +112,8 @@ test("works", async () => {
       var modules = {
       /* --- src/index.js --- */
       \\"src/index.js\\": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+      \\"use strict\\";
+
       console.log(\\"hi\\");
       _kame_dynamic_import_(\\"src/other.js\\");
       })
@@ -153,8 +157,8 @@ test("works", async () => {
       	},
       	
       	chunkUrls: {
-    <   \\"src/other.js\\": \\"ea74def32cb1ed96794457e64b77a79d.js\\"
-    >   \\"src/other.js\\": \\"3e57e1969256dfe43ed3774ec04d6618.js\\"
+    <   \\"src/other.js\\": \\"db77225ac4584726c04425503fd4a31f.js\\"
+    >   \\"src/other.js\\": \\"c9def26683603b140b8462741097d0fb.js\\"
       },
       	loadChunk: function loadChunk(id) {
       		var resolve, reject;

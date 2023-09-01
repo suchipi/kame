@@ -82,13 +82,23 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
       if (code.match(/import\s*\(/)) {
         let babelResult: ReturnType<typeof babel.transformSync>;
         try {
+          let inputSourceMap = map;
+          if (typeof inputSourceMap === "string") {
+            try {
+              inputSourceMap = JSON.parse(inputSourceMap);
+            } catch (err) {
+              // ignored
+            }
+          }
+          inputSourceMap = inputSourceMap || undefined;
+
           babelResult = babel.transformSync(code, {
             babelrc: false,
             plugins: [require("babel-plugin-dynamic-import-node")],
             sourceType: "unambiguous",
             filename: filepath,
 
-            inputSourceMap: map ? map : undefined,
+            inputSourceMap,
 
             // Same effect as default value but silences warning
             compact: code.length > 500 * 1024,
@@ -110,7 +120,10 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         } catch (err) {
           console.warn(
             chalk.yellow(
-              `Warning: Kame runtime failed to convert dynamic imports to requires in the generated code for '${filepath}'\n${err}.`
+              `Warning: Kame runtime failed to convert dynamic imports to requires in the generated code for '${filepath}'\n${err}.\nInput source map was:\n${util.inspect(
+                map,
+                { colors: true, depth: 10 }
+              )}`
             )
           );
         }

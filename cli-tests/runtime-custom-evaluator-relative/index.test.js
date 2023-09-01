@@ -18,7 +18,9 @@ test("works", async () => {
       "error": false,
       "stderr": "",
       "stdout": "Code from index.js:
-    (function (exports, require, module, __filename, __dirname) { console.log("hi");
+    (function (exports, require, module, __filename, __dirname) { "use strict";
+    console.log("hi");
+
     })
 
 
