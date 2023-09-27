@@ -7,7 +7,12 @@ test("works", async () => {
   const run = firstBase.spawn(
     cli,
     ["bundle", "--input", "./index.js", "--output", "./dist/index.js"],
-    { cwd: __dirname }
+    {
+      cwd: __dirname,
+      env: Object.assign({}, process.env, {
+        KAME_ALLOW_UNRESOLVED: "true",
+      }),
+    }
   );
 
   await run.completion;
@@ -38,7 +43,7 @@ test("works", async () => {
 
     _kame_require_("external:node:fs");
     _kame_require_("external:quickjs:std");
-    _kame_require_("external:file:///tmp/something/somewhere");
+    _kame_require_("unresolved:index.js|file:///tmp/something/somewhere");
     _kame_require_("external:https://something.com/somewhere");
     }),
     /* --- external:node:fs --- */
@@ -71,20 +76,9 @@ test("works", async () => {
     	module.exports = {};
     }
     }),
-    /* --- external:file:///tmp/something/somewhere --- */
-    "external:file:///tmp/something/somewhere": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    if (typeof require === "function") {
-    	module.exports = require("file:///tmp/something/somewhere");
-    } else if (typeof fileTmpSomethingSomewhere !== "undefined") {
-    	module.exports = fileTmpSomethingSomewhere;
-    } else if (typeof FileTmpSomethingSomewhere !== "undefined") {
-    	module.exports = FileTmpSomethingSomewhere;
-    } else {
-    	if ("test" !== "production") {
-    		console.warn("Failed to load external " + "file:///tmp/something/somewhere" + ". An empty module will be used instead, but this might cause problems in your code. Consider using a custom resolver to shim this external.");
-    	}
-    	module.exports = {};
-    }
+    /* --- unresolved:index.js|file:///tmp/something/somewhere --- */
+    "unresolved:index.js|file:///tmp/something/somewhere": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    throw new Error("Module wasn't found at bundle time: Tried to load \\"file:///tmp/something/somewhere\\" from \\"index.js\\"");
     }),
     /* --- external:https://something.com/somewhere --- */
     "external:https://something.com/somewhere": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
