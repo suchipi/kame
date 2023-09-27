@@ -10,6 +10,10 @@ const allBuiltins = new Set(builtins);
 function defaultResolver(id: string, fromFilePath: string): string {
   debug(`Resolving '${id}' from '${fromFilePath}'`);
 
+  if (id.includes(":")) {
+    return "external:" + id;
+  }
+
   if (allBuiltins.has(id.split("/")[0])) {
     return "external:" + id;
   }
