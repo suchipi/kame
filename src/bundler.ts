@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import mkdirp from "mkdirp";
+import { mkdirp } from "mkdirp";
 import chalk from "chalk";
 import { uid } from "uid";
 import type { NodePath } from "@babel/core";

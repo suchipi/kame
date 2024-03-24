@@ -877,7 +877,6 @@ test("works", async () => {
             }
           }
         }
-
         function getWrappedName(outerType, innerType, wrapperName) {
           var displayName = outerType.displayName;
           if (displayName) {
@@ -952,7 +951,6 @@ test("works", async () => {
               // eslint-disable-next-line no-fallthrough
             }
           }
-
           return null;
         }
         var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -1446,7 +1444,6 @@ test("works", async () => {
           mapChildren(children, function () {
             n++; // Don't return anything
           });
-
           return n;
         }
 
@@ -1951,7 +1948,6 @@ test("works", async () => {
               });
               /* eslint-enable react-internal/no-production-logging */
             }
-
             disabledDepth++;
           }
         }
@@ -1991,7 +1987,6 @@ test("works", async () => {
               });
               /* eslint-enable react-internal/no-production-logging */
             }
-
             if (disabledDepth < 0) {
               error('disabledDepth fell below zero. ' + 'This is a bug in React. Please file an issue.');
             }

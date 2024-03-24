@@ -21,7 +21,7 @@ test("works", async () => {
     {
       "code": 0,
       "error": false,
-      "stderr": "[34mFiles created:[39m
+      "stderr": "Files created:
     ",
       "stdout": "dist/index.js
     ",

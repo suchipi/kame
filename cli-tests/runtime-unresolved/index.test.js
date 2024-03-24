@@ -35,7 +35,7 @@ test("works", async () => {
       at Object.<anonymous> (<cwd>/dist/cli/cmd-run.js:13:9)
       at Module._compile (node:internal)
 
-    Node.js v18.17.1
+    Node.js v20.11.1
     ",
       "stdout": "",
     }

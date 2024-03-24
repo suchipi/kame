@@ -138,7 +138,7 @@ test("works", async () => {
         at Module._compile (node:internal)
         at Module._extensions..js (node:internal)
 
-    Node.js v18.17.1
+    Node.js v20.11.1
     ",
       "stdout": "",
     }
