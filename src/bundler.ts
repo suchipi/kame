@@ -136,7 +136,6 @@ export default function makeBundler(config: Config): { new (): IBundler } {
             const currentValue = source.node.value;
 
             let resolverResult: string;
-            // prettier-ignore
             try {
               resolverResult = config.resolver(currentValue, filename);
             } catch (err: any) {
