@@ -19,3 +19,21 @@ test("works", async () => {
     }
   `);
 });
+
+test("works with unqualified path", async () => {
+  const run = firstBase.spawn(cli, ["run", "--input", "index.js"], {
+    cwd: __dirname,
+  });
+
+  await run.completion;
+
+  expect(run.result).toMatchInlineSnapshot(`
+    {
+      "code": 0,
+      "error": false,
+      "stderr": "",
+      "stdout": "hi
+    ",
+    }
+  `);
+});

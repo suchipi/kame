@@ -34,7 +34,7 @@ test("works", async () => {
       at Module._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:43:22)
       at Runtime._run (<cwd>/dist/runtime.js:134:53)
       at Runtime.load (<cwd>/dist/runtime.js:130:25)
-      at Object.<anonymous> (<cwd>/dist/cli/cmd-run.js:13:9)]
+      at Object.<anonymous> (<cwd>/dist/cli/cmd-run.js:18:9)]
 
     Node.js v20.11.1
     ",
