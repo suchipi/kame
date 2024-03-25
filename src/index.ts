@@ -26,4 +26,5 @@ export {
   IRuntime,
   Runtime,
   Bundler,
+  InputConfig as Config,
 };

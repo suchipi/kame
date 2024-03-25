@@ -1,9 +1,10 @@
 src
 .node-version
+.npm-version
 .prettierrc
 tsconfig.json
 yarn.lock
 api-tests
 cli-tests
-.eslintrc
-jest.config.js
+vitest.config.mts
+**/*.test.*
