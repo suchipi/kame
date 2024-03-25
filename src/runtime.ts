@@ -168,15 +168,15 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
     },
   };
 
+  function fallbackRequester() {
+    return path.join(process.cwd(), "__kame-runtime-load.js");
+  }
+
   class Runtime implements IRuntime {
     cache: { [key: string]: any } = {};
 
     load(filename: string): any {
-      const resolvedFilename = config.resolver(
-        filename,
-        path.join(process.cwd(), "__kame-runtime-load.js")
-      );
-
+      const resolvedFilename = config.resolver(filename, fallbackRequester());
       return this._run(resolvedFilename);
     }
 
@@ -207,6 +207,17 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         };
 
         originalLoad.call(this, filename);
+      };
+
+      // We also have to patch Module._resolveFilename to use kame's resolver.
+      NodeJSModule._resolveFilename = function _resolveFilename(
+        request: string,
+        parent: any,
+        _isMain: boolean,
+        _options: any
+      ) {
+        let requester = parent?.filename || parent?.id || fallbackRequester();
+        return config.resolver(request, requester);
       };
     }
   }
