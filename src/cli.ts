@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import path from "path";
-import chalk from "chalk";
+import kleur from "kleur";
 import chokidar from "chokidar";
 import child_process from "child_process";
 import * as childUtils from "./cli/child-process-utils";
@@ -24,17 +24,17 @@ function spawnWatchChild(
     );
 
     child.on("error", (error) => {
-      console.warn(chalk.yellow("    process errored:"));
+      console.warn(kleur.yellow("    process errored:"));
       console.warn(error);
 
-      console.warn(chalk.dim("    process will re-run on next file change."));
+      console.warn(kleur.dim("    process will re-run on next file change."));
     });
 
     child.on("close", (code, signal) => {
       console.warn(
-        chalk.cyan("    process exited: " + JSON.stringify({ code, signal }))
+        kleur.cyan("    process exited: " + JSON.stringify({ code, signal }))
       );
-      console.warn(chalk.dim("    process will re-run on next file change."));
+      console.warn(kleur.dim("    process will re-run on next file change."));
     });
   };
 
@@ -47,7 +47,7 @@ function spawnWatchChild(
       if (isRestarting) return;
       if (!filter(filepath)) return;
 
-      console.warn(chalk.cyan(`    ${eventName}: ${filepath}`));
+      console.warn(kleur.cyan(`    ${eventName}: ${filepath}`));
 
       isRestarting = true;
 

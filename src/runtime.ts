@@ -1,6 +1,6 @@
 import path from "path";
 import util from "util";
-import chalk from "chalk";
+import kleur from "kleur";
 import * as babel from "@babel/core";
 import { Module as CJSStandaloneModule } from "commonjs-standalone";
 import { Config } from "./config";
@@ -126,7 +126,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
           map = babelResult.map;
         } catch (err) {
           console.warn(
-            chalk.yellow(
+            kleur.yellow(
               `Warning: Kame runtime failed to convert dynamic imports to requires in the generated code for '${filepath}'\n${err}.\nInput source map was:\n${util.inspect(
                 map,
                 { colors: true, depth: 10 }

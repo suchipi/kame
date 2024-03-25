@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import path from "path";
-import chalk from "chalk";
+import kleur from "kleur";
 import { configure } from "../index";
 import parseArgv from "./parse-argv";
 
@@ -24,7 +24,7 @@ const { warnings, writtenFiles } = bundler.bundle({
 warnings.forEach((warning) => {
   console.warn(warning);
 });
-console.warn(chalk.blue("Files created:"));
+console.warn(kleur.blue("Files created:"));
 writtenFiles.forEach((file) => {
   console.log(path.relative(process.cwd(), file));
 });

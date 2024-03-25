@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { mkdirp } from "mkdirp";
-import chalk from "chalk";
+import kleur from "kleur";
 import { uid } from "uid";
 import type { NodePath } from "@babel/core";
 import * as t from "@babel/types";
@@ -118,7 +118,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
           if (isRequire || isImport) {
             if (!hasOneStringArg) {
               warnings.push(
-                chalk.yellow(
+                kleur.yellow(
                   `Found a non-static ${
                     isRequire ? "require" : "import"
                   } in '${filename}'. This cannot be bundled, and will be left as-is.`
@@ -141,7 +141,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
               resolverResult = config.resolver(currentValue, filename);
             } catch (err: any) {
               const newMessage =
-                `${chalk.red("Resolver failed in")} ${chalk.yellow(
+                `${kleur.red("Resolver failed in")} ${kleur.yellow(
                   "'" + filename + "'"
                 )}: ` +
                 err.message +
@@ -219,7 +219,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
           }
         } catch (err: any) {
           const newMessage =
-            `${chalk.red("Loader failed to load")} ${chalk.yellow(
+            `${kleur.red("Loader failed to load")} ${kleur.yellow(
               "'" + absFile + "'"
             )}: ` + err.message;
           Object.defineProperty(err, "message", { value: newMessage });
@@ -229,7 +229,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
           code = bakeNodeEnv(code, process.env.NODE_ENV || "production");
         } catch (err) {
           this._warnings.push(
-            chalk.yellow(
+            kleur.yellow(
               `Warning: Kame bundler failed to bake process.env.NODE_ENV into the generated code for '${absFile}'.\n${err}`
             )
           );
