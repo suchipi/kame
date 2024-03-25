@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import firstBase from "first-base";
-import { cli, path, read, write, remove } from "../test-util";
+import { cli, path, read, write, remove, cleanResult } from "../test-util";
 
 test("works", async () => {
   remove(__dirname, "dist");
@@ -115,11 +115,7 @@ test("works", async () => {
 
   await run2.completion;
 
-  run2.result.stderr = run2.result.stderr
-    .replace(new RegExp(process.cwd(), "g"), "<cwd>")
-    .replace(/\(node:internal[^\n]+/g, "(node:internal)");
-
-  expect(run2.result).toMatchInlineSnapshot(`
+  expect(cleanResult(run2.result)).toMatchInlineSnapshot(`
     {
       "code": 1,
       "error": false,
