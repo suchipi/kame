@@ -112,21 +112,15 @@ export function applySourceMapsToError(
     newFrameLines.push(output);
   }
 
-  const newError = new Error(error.message);
-
-  Object.defineProperty(newError, "name", {
-    value: error?.name || error?.constructor?.name || newError.name,
-  });
-
-  Object.defineProperty(newError, "stack", {
+  Object.defineProperty(error, "stack", {
     value: [
-      newError.name,
+      error.name,
       ": ",
-      newError.message,
+      error.message,
       "\n",
       newFrameLines.join("\n"),
     ].join(""),
   });
 
-  return newError;
+  return error;
 }
