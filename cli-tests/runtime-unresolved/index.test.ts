@@ -20,7 +20,7 @@ test("works", async () => {
     {
       "code": 1,
       "error": false,
-      "stderr": "<cwd>/dist/runtime.js:131
+      "stderr": "<cwd>/dist/runtime.js:134
                     throw (0, source_maps_1.applySourceMapsToError)(sourceMaps, err);
                     ^
 
@@ -32,9 +32,9 @@ test("works", async () => {
       at <cwd>/cli-tests/runtime-unresolved/index.js:1:1
       at Object.run (<cwd>/dist/runtime.js:118:13)
       at Module._load (<cwd>/node_modules/commonjs-standalone/dist/index.js:43:22)
-      at Runtime.load (<cwd>/dist/runtime.js:128:53)
-      at Object.<anonymous> (<cwd>/dist/cli/cmd-run.js:13:9)
-      at Module._compile (node:internal)
+      at Runtime._run (<cwd>/dist/runtime.js:131:53)
+      at Runtime.load (<cwd>/dist/runtime.js:127:25)
+      at Object.<anonymous> (<cwd>/dist/cli/cmd-run.js:13:9)]
 
     Node.js v20.11.1
     ",

@@ -2,7 +2,7 @@ import path from "path";
 import util from "util";
 import chalk from "chalk";
 import * as babel from "@babel/core";
-import { Module } from "commonjs-standalone";
+import { Module as CJSStandaloneModule } from "commonjs-standalone";
 import { Config } from "./config";
 import { applySourceMapsToError, SourceMap } from "./source-maps";
 import makeDebug from "debug";
@@ -26,8 +26,15 @@ type Delegate = {
 };
 
 export interface IRuntime {
+  /** The `require.cache` for files loaded by this Runtime. */
   cache: { [key: string]: any };
+  /** Run the file with the given name and return its exports. */
   load(filename: string): any;
+  /**
+   * Inject kame into Node's `require` mechanism, so that all future calls to
+   * `require` are handled by kame.
+   */
+  register(): void;
 }
 
 export default function makeRuntime(config: Config): { new (): IRuntime } {
@@ -170,11 +177,37 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         path.join(process.cwd(), "__kame-runtime-load.js")
       );
 
+      return this._run(resolvedFilename);
+    }
+
+    _run(filename: string): any {
       try {
-        return Module._load(resolvedFilename, delegate, this.cache);
+        return CJSStandaloneModule._load(filename, delegate, this.cache);
       } catch (err) {
         throw applySourceMapsToError(sourceMaps, err);
       }
+    }
+
+    register() {
+      const runtime = this;
+
+      // We patch Module.prototype.load instead of using `npm:pirates` because
+      // we want to affect *ALL* filename extensions, and pirates makes you
+      // specify which to hook.
+      const NodeJSModule = require("node:module").Module;
+      const originalLoad = NodeJSModule.prototype.load;
+      NodeJSModule.prototype.load = function load(this: any, filename: string) {
+        // Module._extensions[*] is expected to call _compile (the default '.js'
+        // loader does), so _compile is what we patch.
+        //
+        // Normally, _compile is where the module wrapper gets executed.
+        // Instead, we bypass that and defer everything to kame.
+        this._compile = function compile(this: any) {
+          this.exports = runtime._run(filename);
+        };
+
+        originalLoad.call(this, filename);
+      };
     }
   }
 
