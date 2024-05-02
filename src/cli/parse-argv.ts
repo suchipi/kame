@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import yargsParser from "yargs-parser";
+import * as clef from "clef-parse";
 import { InputConfig } from "../config";
 
 export type ParsedArgv = {
@@ -17,31 +17,24 @@ export type ParsedArgv = {
 };
 
 export default function parseArgv(input: Array<string>): ParsedArgv {
-  const argvObj = yargsParser(input, {
-    boolean: [
-      "help",
-      "h",
-      "version",
-      "v",
-      "watch",
-      "is-watch-child",
-      "isWatchChild",
-    ],
-    string: [
-      "input",
-      "output",
-      "global",
-      "loader",
-      "resolver",
-      "runtime-eval",
-      "runtimeEval",
-      "codeSplittingId",
-      "code-splitting-id",
-    ],
+  const { options, positionalArgs } = clef.parseArgv(input, {
+    help: Boolean,
+    h: Boolean,
+    version: Boolean,
+    v: Boolean,
+    watch: Boolean,
+    isWatchChild: Boolean,
+    input: String,
+    output: String,
+    global: String,
+    loader: String,
+    resolver: String,
+    runtimeEval: String,
+    codeSplittingId: String,
   });
 
   function getInput(): string {
-    let input = argvObj.input || argvObj._[1];
+    let input = options.input || positionalArgs[1];
 
     if (!input) {
       const pathsToTry = [
@@ -85,7 +78,7 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
   }
 
   function getOutput(shouldLog: boolean): string {
-    let output = argvObj.output || argvObj._[2];
+    let output = options.output || positionalArgs[2];
     if (!output) {
       output = path.join(process.cwd(), "dist", "index.js");
       if (shouldLog) {
@@ -99,17 +92,17 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
   }
 
   return {
-    cmd: argvObj._[0] ? String(argvObj._[0]) : undefined,
-    watch: argvObj.watch || false,
-    isWatchChild: argvObj.isWatchChild || false,
-    help: argvObj.help || argvObj.h || false,
-    version: argvObj.version || argvObj.v || false,
-    globalName: argvObj.global === "null" ? null : argvObj.global,
-    codeSplittingId: argvObj.codeSplittingId,
+    cmd: positionalArgs[0] ? String(positionalArgs[0]) : undefined,
+    watch: options.watch || false,
+    isWatchChild: options.isWatchChild || false,
+    help: options.help || options.h || false,
+    version: options.version || options.v || false,
+    globalName: options.global === "null" ? null : options.global,
+    codeSplittingId: options.codeSplittingId,
     inputConfig: {
-      loader: argvObj.loader,
-      resolver: argvObj.resolver,
-      runtimeEval: argvObj.runtimeEval,
+      loader: options.loader,
+      resolver: options.resolver,
+      runtimeEval: options.runtimeEval,
     },
     getInput,
     getOutput,

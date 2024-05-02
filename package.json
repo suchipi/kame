@@ -21,13 +21,13 @@
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "change-case": "^4.1.2",
     "chokidar": "^3.6.0",
+    "clef-parse": "^0.6.0",
     "commonjs-standalone": "^0.2.0",
     "debug": "^4.3.4",
     "kleur": "^4.1.5",
     "mime-types": "^2.1.35",
     "resolve": "^1.22.8",
-    "uid": "^2.0.2",
-    "yargs-parser": "^21.1.1"
+    "uid": "^2.0.2"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.5",
