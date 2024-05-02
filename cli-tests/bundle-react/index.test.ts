@@ -250,6 +250,9 @@ test("works", async () => {
         ReactCurrentBatchConfig: V,
         ReactCurrentOwner: K
       };
+    function X() {
+      throw Error("act(...) is not supported in production builds of React.");
+    }
     exports.Children = {
       map: S,
       forEach: function (a, b, e) {
@@ -281,6 +284,7 @@ test("works", async () => {
     exports.StrictMode = q;
     exports.Suspense = w;
     exports.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = W;
+    exports.act = X;
     exports.cloneElement = function (a, b, e) {
       if (null === a || void 0 === a) throw Error("React.cloneElement(...): The argument must be a React element, but you passed " + a + ".");
       var d = C({}, a.props),
@@ -369,9 +373,7 @@ test("works", async () => {
         V.transition = b;
       }
     };
-    exports.unstable_act = function () {
-      throw Error("act(...) is not supported in production builds of React.");
-    };
+    exports.unstable_act = X;
     exports.useCallback = function (a, b) {
       return U.current.useCallback(a, b);
     };
@@ -415,7 +417,7 @@ test("works", async () => {
     exports.useTransition = function () {
       return U.current.useTransition();
     };
-    exports.version = "18.2.0";
+    exports.version = "18.3.1";
     }),
     /* --- ../../node_modules/react/cjs/react.development.js --- */
     "../../node_modules/react/cjs/react.development.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
@@ -439,7 +441,7 @@ test("works", async () => {
         if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined' && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === 'function') {
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
         }
-        var ReactVersion = '18.2.0';
+        var ReactVersion = '18.3.1';
 
         // ATTENTION
         // When adding new symbols to this file,
@@ -2782,6 +2784,7 @@ test("works", async () => {
         exports.StrictMode = REACT_STRICT_MODE_TYPE;
         exports.Suspense = REACT_SUSPENSE_TYPE;
         exports.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactSharedInternals;
+        exports.act = act;
         exports.cloneElement = cloneElement$1;
         exports.createContext = createContext;
         exports.createElement = createElement$1;
