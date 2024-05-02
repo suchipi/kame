@@ -1,11 +1,11 @@
 import path from "path";
-import builtins from "builtin-modules";
 import nodeResolve from "resolve";
 import makeDebug from "debug";
+import { Module } from "module";
 
 const debug = makeDebug("kame/default-resolver");
 
-const allBuiltins = new Set(builtins);
+const allBuiltins = new Set(Module.builtinModules);
 
 function defaultResolver(id: string, fromFilePath: string): string {
   debug(`Resolving '${id}' from '${fromFilePath}'`);

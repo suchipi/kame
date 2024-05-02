@@ -42,10 +42,26 @@ test("works", async () => {
     // All of these should be considered externals except file://
     "use strict";
 
+    _kame_require_("external:events");
     _kame_require_("external:node:fs");
     _kame_require_("external:quickjs:std");
     _kame_require_("unresolved:index.js|file:///tmp/something/somewhere");
     _kame_require_("external:https://something.com/somewhere");
+    }),
+    /* --- external:events --- */
+    "external:events": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    if (typeof require === "function") {
+    	module.exports = require("events");
+    } else if (typeof events !== "undefined") {
+    	module.exports = events;
+    } else if (typeof Events !== "undefined") {
+    	module.exports = Events;
+    } else {
+    	if ("test" !== "production") {
+    		console.warn("Failed to load external " + "events" + ". An empty module will be used instead, but this might cause problems in your code. Consider using a custom resolver to shim this external.");
+    	}
+    	module.exports = {};
+    }
     }),
     /* --- external:node:fs --- */
     "external:node:fs": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {

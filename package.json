@@ -19,7 +19,6 @@
     "@swc/core": "^1.4.17",
     "@swc/helpers": "^0.5.11",
     "babel-plugin-dynamic-import-node": "^2.3.3",
-    "builtin-modules": "^3.3.0",
     "change-case": "^4.1.2",
     "chokidar": "^3.6.0",
     "commonjs-standalone": "^0.2.0",
