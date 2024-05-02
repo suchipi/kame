@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import { mkdirp } from "mkdirp";
 import kleur from "kleur";
 import { uid } from "uid";
 import type { NodePath } from "@babel/core";
@@ -293,7 +292,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
         output = path.resolve(pathsRelativeTo, output);
       }
 
-      mkdirp.sync(path.dirname(output));
+      fs.mkdirSync(path.dirname(output), { recursive: true });
 
       const relativeInput = makeRelative(pathsRelativeTo, input);
       const entryModules = this._gatherModules(relativeInput);
