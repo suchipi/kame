@@ -102,8 +102,26 @@ export default function makeBundler(config: Config): { new (): IBundler } {
       const warnings = this._warnings;
       const pathsRelativeTo = this._pathsRelativeTo;
 
-      const ast = parser.parse(code);
+      const ast = parser.parse(code, {
+        allowAwaitOutsideFunction: true,
+        allowImportExportEverywhere: true,
+        allowNewTargetOutsideFunction: true,
+        allowReturnOutsideFunction: true,
+        allowSuperOutsideMethod: true,
+        allowUndeclaredExports: true,
+        sourceType: "module",
+      });
       traverse(ast, {
+        ImportOrExportDeclaration(nodePath) {
+          const { node } = nodePath;
+          warnings.push(
+            kleur.yellow(
+              `Found ECMAScript module syntax in '${filename}' after it was processed by the loader. When using a custom loader, your loader needs to compile ECMAScript Module (ESM) syntax to CommonJS (CJS) syntax.`
+            ) +
+              "\n" +
+              codeFrameColumns(code, node.loc, { highlightCode: true })
+          );
+        },
         CallExpression(nodePath) {
           const { node } = nodePath;
 
