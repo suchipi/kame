@@ -13,7 +13,7 @@ function joinPath(...parts: Array<string>) {
 function remove(...parts: Array<string>) {
   const target = joinPath(...parts);
   if (fs.existsSync(target)) {
-    fs.rmSync(joinPath(...parts), { recursive: true });
+    fs.rmSync(target, { recursive: true });
   }
 }
 
