@@ -9,14 +9,14 @@
     "kame": "dist/cli.js"
   },
   "dependencies": {
-    "@babel/code-frame": "^7.24.2",
-    "@babel/core": "^7.24.5",
-    "@babel/generator": "^7.24.5",
-    "@babel/parser": "^7.24.5",
-    "@babel/traverse": "^7.24.5",
-    "@babel/types": "^7.24.5",
-    "@suchipi/error-utils": "^0.2.0",
-    "@swc/core": "^1.4.17",
+    "@babel/code-frame": "^7.24.6",
+    "@babel/core": "^7.24.6",
+    "@babel/generator": "^7.24.6",
+    "@babel/parser": "^7.24.6",
+    "@babel/traverse": "^7.24.6",
+    "@babel/types": "^7.24.6",
+    "@suchipi/error-utils": "^0.2.1",
+    "@swc/core": "^1.5.24",
     "@swc/helpers": "^0.5.11",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "change-case": "^4.1.2",
@@ -34,7 +34,7 @@
     "@types/debug": "^4.1.12",
     "@types/mime-types": "^2.1.4",
     "@types/mkdirp": "^1.0.2",
-    "@types/node": "^20.12.8",
+    "@types/node": "^20.12.13",
     "@types/resolve": "^1.20.6",
     "@types/webpack": "^5.28.5",
     "@types/yargs-parser": "^21.0.3",
@@ -44,9 +44,8 @@
     "node-gyp": "^10.1.0",
     "prettier": "^3.2.5",
     "react": "^18.3.1",
-    "rimraf": "^5.0.5",
     "typescript": "^5.4.5",
-    "vitest": "^1.5.3"
+    "vitest": "^1.6.0"
   },
   "repository": {
     "type": "git",

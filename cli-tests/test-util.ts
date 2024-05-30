@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import * as rimraf from "rimraf";
 
 const rootDir = (...parts: Array<string>) =>
   path.resolve(__dirname, "..", ...parts);
@@ -12,7 +11,10 @@ function joinPath(...parts: Array<string>) {
 }
 
 function remove(...parts: Array<string>) {
-  rimraf.sync(joinPath(...parts));
+  const target = joinPath(...parts);
+  if (fs.existsSync(target)) {
+    fs.rmSync(joinPath(...parts), { recursive: true });
+  }
 }
 
 function write(...parts: Array<string>) {
