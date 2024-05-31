@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import firstBase from "first-base";
-import { cli, path, read, write, remove, cleanResult } from "../test-util";
+import { cli, path, read, write, remove } from "../test-util";
 
 test("works", async () => {
   remove(__dirname, "dist");
@@ -115,25 +115,16 @@ test("works", async () => {
 
   await run2.completion;
 
-  expect(cleanResult(run2.result)).toMatchInlineSnapshot(`
+  expect(run2.cleanResult()).toMatchInlineSnapshot(`
     {
       "code": 1,
       "error": false,
-      "stderr": "<rootDir>/cli-tests/bundle-unresolved/dist/index.js:13
+      "stderr": "<rootDir>/cli-tests/bundle-unresolved/dist/index.js
     throw new Error("Module wasn't found at bundle time: Tried to load \\"./not-there\\" from \\"index.js\\"");
     ^
 
     Error: Module wasn't found at bundle time: Tried to load "./not-there" from "index.js"
-        at unresolved:index.js|./not-there (<rootDir>/cli-tests/bundle-unresolved/dist/index.js:13:7)
-        at Object.runModule (<rootDir>/cli-tests/bundle-unresolved/dist/index.js:48:25)
-        at require (<rootDir>/cli-tests/bundle-unresolved/dist/index.js:33:14)
-        at index.js (<rootDir>/cli-tests/bundle-unresolved/dist/index.js:9:1)
-        at Object.runModule (<rootDir>/cli-tests/bundle-unresolved/dist/index.js:48:25)
-        at factory (<rootDir>/cli-tests/bundle-unresolved/dist/index.js:57:17)
-        at <rootDir>/cli-tests/bundle-unresolved/dist/index.js:61:19
-        at Object.<anonymous> (<rootDir>/cli-tests/bundle-unresolved/dist/index.js:68:3)
-        at Module._compile (node:internal)
-        at Module._extensions..js (node:internal)
+        at somewhere
 
     Node.js v20.11.1
     ",

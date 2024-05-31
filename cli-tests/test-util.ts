@@ -41,31 +41,4 @@ function read(...parts: Array<string>) {
   }
 }
 
-function cleanStr(str: string) {
-  return (
-    str
-      // @ts-ignore change lib for replaceAll, but this file is excluded from tsconfig
-      .replaceAll(rootDir(), "<rootDir>")
-      .replaceAll(new RegExp(process.cwd(), "g"), "<cwd>")
-      .replaceAll(/\(node:internal[^\n]+/g, "(node:internal)")
-  );
-}
-
-function cleanResult(result: import("first-base").RunContext["result"]) {
-  return {
-    ...result,
-    stdout: cleanStr(result.stdout),
-    stderr: cleanStr(result.stderr),
-  };
-}
-
-export {
-  cli,
-  joinPath as path,
-  remove,
-  write,
-  read,
-  rootDir,
-  cleanStr,
-  cleanResult,
-};
+export { cli, joinPath as path, remove, write, read, rootDir };
