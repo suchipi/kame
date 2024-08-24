@@ -56,7 +56,6 @@ Of course, just saying "you can configure it to do what you want" isn't enough f
 
 - Seamless ESM/CommonJS interop
 - React, JSX support
-- Flow support (no typechecking, just strips out syntax)
 - TypeScript support (no typechecking, just strips out syntax)
 - Support for importing/requiring CSS files (same behavior as style-loader)
 - Support for importing/requiring JSON files (same behavior as node)
