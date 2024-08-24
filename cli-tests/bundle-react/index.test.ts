@@ -47,12 +47,12 @@ test("works", async () => {
     "../../node_modules/@swc/helpers/cjs/_interop_require_default.cjs": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     "use strict";
 
-    exports._ = exports._interop_require_default = _interop_require_default;
     function _interop_require_default(obj) {
       return obj && obj.__esModule ? obj : {
         default: obj
       };
     }
+    exports._ = _interop_require_default;
     }),
     /* --- ../../node_modules/react/index.js --- */
     "../../node_modules/react/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {

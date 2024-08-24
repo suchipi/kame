@@ -77,10 +77,10 @@ test("input config", () => {
         "runtimeEval",
         "(function (exports, require, module, __filename, __dirname) { "use strict";
 
-    exports._ = exports._interop_require_default = _interop_require_default;
     function _interop_require_default(obj) {
         return obj && obj.__esModule ? obj : { default: obj };
     }
+    exports._ = _interop_require_default;
 
     })
     ",
