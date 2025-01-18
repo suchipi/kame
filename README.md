@@ -180,15 +180,15 @@ kame run --input ./my-script.ts
 #  ./dist/index.js
 kame bundle
 
-# Bundles ./my-library.ts into ./dist/my-library, and sets up the bundle so
+# Bundles ./my-library.ts into ./dist/my-library.js, and sets up the bundle so
 # that if it's loaded in an environment without CommonJS/AMD (eg a browser),
 # the exports of ./my-library.ts are put on the global 'MyLibrary'
 kame bundle ./my-library.ts ./dist/my-library.js --global MyLibrary
 
-# Run ./my-script.ts, using a custom loader (see \`--loader\` below)
+# Run ./my-script.ts, using a custom loader
 kame run --loader ./my-loader.js --input ./my-script.ts
 
-# Bundle ./my-script.ts, using a custom loader (see \`--loader\` below)
+# Bundle ./my-script.ts, using a custom loader
 kame bundle --loader ./my-loader.js --input ./my-script.ts
 ```
 
