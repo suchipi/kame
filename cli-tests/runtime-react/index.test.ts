@@ -15,10 +15,9 @@ test("works", async () => {
       "error": false,
       "stderr": "",
       "stdout": "{
-      '$$typeof': Symbol(react.element),
+      '$$typeof': Symbol(react.transitional.element),
       type: 'div',
       key: null,
-      ref: null,
       props: {},
       _owner: null,
       _store: {}
