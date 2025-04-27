@@ -23,7 +23,7 @@ test("works", async () => {
     Error: Module not found: Tried to load "./not-there" from "<rootDir>/cli-tests/runtime-unresolved/index.js"
         at somewhere
 
-    Node.js v20.11.1
+    Node.js v22.15.0
     ",
       "stdout": "",
     }

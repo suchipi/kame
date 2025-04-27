@@ -22,7 +22,7 @@ test("works", async () => {
       someProperty: 65
     }
 
-    Node.js v20.11.1
+    Node.js v22.15.0
     ",
       "stdout": "",
     }
