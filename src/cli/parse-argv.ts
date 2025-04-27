@@ -31,6 +31,7 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     resolver: String,
     runtimeEval: String,
     codeSplittingId: String,
+    config: String,
   });
 
   function getInput(): string {
@@ -99,7 +100,7 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     version: options.version || options.v || false,
     globalName: options.global === "null" ? null : options.global,
     codeSplittingId: options.codeSplittingId,
-    inputConfig: {
+    inputConfig: options.config || {
       loader: options.loader,
       resolver: options.resolver,
       runtimeEval: options.runtimeEval,

@@ -77,6 +77,23 @@ ___ Options: ___
 
 
 
+--config: Use one module for --loader/--resolver/--runtime-eval.
+
+  Using:
+
+  --config <path>
+  
+  is the same as using:
+
+  --loader <path> --resolver <path> --runtime-eval <path>
+
+  except that kame won't error if the config doesn't contain all three exports
+  ("load", "resolve", and "evaluate").
+
+  For more information about --loader, --resolver, and --runtime-eval, read on.
+
+
+
 --loader: A custom loader function used to read/transform code.
 
   The path to a file that exports a loader function, which kame will use to

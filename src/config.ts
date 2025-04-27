@@ -15,11 +15,13 @@ export type Config = {
   runtimeEval: (code: string, filename: string) => any;
 };
 
-export type InputConfig = {
-  loader?: void | string | Config["loader"];
-  runtimeEval?: void | string | Config["runtimeEval"];
-  resolver?: void | string | Config["resolver"];
-};
+export type InputConfig =
+  | string
+  | {
+      loader?: void | string | Config["loader"];
+      runtimeEval?: void | string | Config["runtimeEval"];
+      resolver?: void | string | Config["resolver"];
+    };
 
 const configLoaderRuntime = new Runtime();
 
@@ -49,6 +51,38 @@ export function readConfig(inputConfig: InputConfig): Config {
 
   // @ts-ignore
   const config: Config = {};
+
+  if (typeof inputConfig === "string") {
+    const mod = loadFile(inputConfig);
+
+    let loader: Config["loader"] | undefined = undefined;
+    let resolver: Config["resolver"] | undefined = undefined;
+    let runtimeEval: Config["runtimeEval"] | undefined = undefined;
+
+    if (typeof mod === "object" && mod != null) {
+      if (typeof mod.load === "function") {
+        loader = mod.load;
+      }
+      if (typeof mod.resolve === "function") {
+        resolver = mod.resolve;
+      }
+      if (typeof mod.evaluate === "function") {
+        runtimeEval = mod.evaluate;
+      }
+    }
+
+    if (!(loader ?? resolver ?? runtimeEval)) {
+      throw new Error(
+        `'${inputConfig}' did not export a 'load', 'resolve', or 'evaluate' function as a named export. See \`kame --help\` for more info.`
+      );
+    }
+
+    inputConfig = {
+      loader,
+      resolver,
+      runtimeEval,
+    };
+  }
 
   if (typeof inputConfig.loader === "string") {
     const mod = loadFile(inputConfig.loader);
