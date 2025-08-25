@@ -92,6 +92,18 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     return output;
   }
 
+  let config = options.config;
+  const autoConfigPath = path.join(process.cwd(), "kame.config.js");
+  if (
+    !options.config &&
+    !options.loader &&
+    !options.resolver &&
+    !options.runtimeEval &&
+    fs.existsSync(autoConfigPath)
+  ) {
+    config = autoConfigPath;
+  }
+
   return {
     cmd: positionalArgs[0] ? String(positionalArgs[0]) : undefined,
     watch: options.watch || false,
@@ -100,7 +112,7 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     version: options.version || options.v || false,
     globalName: options.global === "null" ? null : options.global,
     codeSplittingId: options.codeSplittingId,
-    inputConfig: options.config || {
+    inputConfig: config || {
       loader: options.loader,
       resolver: options.resolver,
       runtimeEval: options.runtimeEval,

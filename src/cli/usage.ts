@@ -90,6 +90,10 @@ ___ Options: ___
   except that kame won't error if the config doesn't contain all three exports
   ("load", "resolve", and "evaluate").
 
+  If a file named kame.config.js exists in the current directory, and none of
+  --config, --loader, --resolver, or --runtime-eval were specified, kame will
+  behave as if '--config kame.config.js' was specified.
+
   For more information about --loader, --resolver, and --runtime-eval, read on.
 
 
