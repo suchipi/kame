@@ -446,7 +446,7 @@ test("works", async () => {
     exports.useTransition = function () {
       return ReactSharedInternals.H.useTransition();
     };
-    exports.version = "19.1.0";
+    exports.version = "19.1.1";
     }),
     /* --- ../../node_modules/react/cjs/react.development.js --- */
     "../../node_modules/react/cjs/react.development.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
@@ -880,13 +880,13 @@ test("works", async () => {
           return null;
         };
       deprecatedAPIs = {
-        "react-stack-bottom-frame": function (callStackForError) {
+        react_stack_bottom_frame: function (callStackForError) {
           return callStackForError();
         }
       };
       var specialPropKeyWarningShown, didWarnAboutOldJSXRuntime;
       var didWarnAboutElementRef = {};
-      var unknownOwnerDebugStack = deprecatedAPIs["react-stack-bottom-frame"].bind(deprecatedAPIs, UnknownOwner)();
+      var unknownOwnerDebugStack = deprecatedAPIs.react_stack_bottom_frame.bind(deprecatedAPIs, UnknownOwner)();
       var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
       var didWarnAboutMaps = !1,
         userProvidedKeyEscapeRegex = /\\/+/g,
@@ -1229,7 +1229,7 @@ test("works", async () => {
       exports.useTransition = function () {
         return resolveDispatcher().useTransition();
       };
-      exports.version = "19.1.0";
+      exports.version = "19.1.1";
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
     }();
     })
