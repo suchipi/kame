@@ -23,7 +23,16 @@ function defaultResolver(id: string, fromFilePath: string): string {
     result = nodeResolve.sync(id, {
       basedir: path.dirname(fromFilePath),
       preserveSymlinks: false,
-      extensions: [".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", ".node"],
+      extensions: [
+        ".js",
+        ".json",
+        ".mjs",
+        ".cjs",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".node",
+      ],
     });
   } catch (err) {
     // TODO make this a CLI option or something, or at least document it
