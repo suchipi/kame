@@ -126,7 +126,7 @@ test("works", async () => {
     Error: Module wasn't found at bundle time: Tried to load "./not-there" from "index.js"
         at somewhere
 
-    Node.js v24.11.1
+    Node.js v24.6.0
     ",
       "stdout": "",
     }
