@@ -39,9 +39,9 @@ test("works", async () => {
     var modules = {
     /* --- index.js --- */
     "index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
-    // All of these should be considered externals except file://
     "use strict";
 
+    // All of these should be considered externals except file://
     _kame_require_("external:events");
     _kame_require_("external:node:fs");
     _kame_require_("external:quickjs:std");
