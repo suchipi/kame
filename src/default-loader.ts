@@ -3,6 +3,7 @@ import path from "path";
 import mime from "mime-types";
 import * as swc from "@swc/core";
 import makeDebug from "debug";
+import { hasESMSyntax } from "mlly";
 
 const debug = makeDebug("kame/default-loader");
 
@@ -160,7 +161,12 @@ function defaultLoader(
         (extension === ".js" || extension === ".cjs") &&
         filename.match(/node_modules/)
       ) {
-        return loadJsUncompiled(filename);
+        const rawCode = loadJsUncompiled(filename);
+        if (hasESMSyntax(rawCode)) {
+          return loadJsCompiled(filename, { target });
+        } else {
+          return rawCode;
+        }
       } else {
         return loadJsCompiled(filename, { target });
       }

@@ -1,5 +1,4 @@
-import path from "path";
-import nodeResolve from "resolve";
+import { resolveModulePath } from "exsolve";
 import makeDebug from "debug";
 import { Module } from "module";
 
@@ -20,9 +19,8 @@ function defaultResolver(id: string, fromFilePath: string): string {
 
   let result: string;
   try {
-    result = nodeResolve.sync(id, {
-      basedir: path.dirname(fromFilePath),
-      preserveSymlinks: false,
+    result = resolveModulePath(id, {
+      from: fromFilePath,
       extensions: [
         ".js",
         ".json",

@@ -39,20 +39,28 @@ test("works", async () => {
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    var _interop_require_default = _kame_require_("../../node_modules/@swc/helpers/cjs/_interop_require_default.cjs");
+    var _interop_require_default = _kame_require_("../../node_modules/@swc/helpers/esm/_interop_require_default.js");
     var _react = /*#__PURE__*/_interop_require_default._(_kame_require_("../../node_modules/react/index.js"));
     console.log(/*#__PURE__*/_react.default.createElement("div", null));
     }),
-    /* --- ../../node_modules/@swc/helpers/cjs/_interop_require_default.cjs --- */
-    "../../node_modules/@swc/helpers/cjs/_interop_require_default.cjs": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
+    /* --- ../../node_modules/@swc/helpers/esm/_interop_require_default.js --- */
+    "../../node_modules/@swc/helpers/esm/_interop_require_default.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
     "use strict";
 
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    Object.defineProperty(exports, "_", {
+      enumerable: true,
+      get: function () {
+        return _interop_require_default;
+      }
+    });
     function _interop_require_default(obj) {
       return obj && obj.__esModule ? obj : {
         default: obj
       };
     }
-    exports._ = _interop_require_default;
     }),
     /* --- ../../node_modules/react/index.js --- */
     "../../node_modules/react/index.js": (function (exports, _kame_require_, module, __filename, __dirname, _kame_dynamic_import_) {
