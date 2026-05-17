@@ -31,6 +31,7 @@ function defaultResolver(id: string, fromFilePath: string): string {
         ".tsx",
         ".node",
       ],
+      suffixes: ["", "/index"],
     });
   } catch (err) {
     // TODO make this a CLI option or something, or at least document it
