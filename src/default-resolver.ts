@@ -1,4 +1,5 @@
-import { resolveModulePath } from "exsolve";
+import path from "path";
+import nodeResolve from "resolve";
 import makeDebug from "debug";
 import { Module } from "module";
 
@@ -19,8 +20,9 @@ function defaultResolver(id: string, fromFilePath: string): string {
 
   let result: string;
   try {
-    result = resolveModulePath(id, {
-      from: fromFilePath,
+    result = nodeResolve.sync(id, {
+      basedir: path.dirname(fromFilePath),
+      preserveSymlinks: false,
       extensions: [
         ".js",
         ".json",
@@ -31,7 +33,6 @@ function defaultResolver(id: string, fromFilePath: string): string {
         ".tsx",
         ".node",
       ],
-      suffixes: ["", "/index"],
     });
   } catch (err) {
     // TODO make this a CLI option or something, or at least document it

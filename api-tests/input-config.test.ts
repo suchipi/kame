@@ -71,29 +71,20 @@ test("input config", () => {
       ],
       [
         "loader",
-        "<rootDir>/node_modules/@swc/helpers/esm/_interop_require_default.js",
+        "<rootDir>/node_modules/@swc/helpers/cjs/_interop_require_default.cjs",
       ],
       [
         "runtimeEval",
         "(function (exports, require, module, __filename, __dirname) { "use strict";
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    Object.defineProperty(exports, "_", {
-        enumerable: true,
-        get: function() {
-            return _interop_require_default;
-        }
-    });
+
     function _interop_require_default(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
+        return obj && obj.__esModule ? obj : { default: obj };
     }
+    exports._ = _interop_require_default;
 
     })
     ",
-        "<rootDir>/node_modules/@swc/helpers/esm/_interop_require_default.js",
+        "<rootDir>/node_modules/@swc/helpers/cjs/_interop_require_default.cjs",
       ],
       [
         "resolver",
