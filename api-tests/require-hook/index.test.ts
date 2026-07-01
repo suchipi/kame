@@ -10,7 +10,8 @@ test("works", async () => {
     {
       "code": 0,
       "error": false,
-      "stderr": "",
+      "stderr": "Config provided resolve function via the 'resolver' key, which is deprecated. Please use the key 'resolve'.
+    ",
       "stdout": "{ potato: [Getter] }
     ",
     }

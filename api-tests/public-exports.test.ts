@@ -28,6 +28,7 @@ test("public exports", () => {
       "defaultRuntimeEval": {
         "evaluate": [Function],
       },
+      "defineConfig": [Function],
     }
   `);
 });
