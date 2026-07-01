@@ -45,7 +45,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
 
   const delegate: Delegate = {
     resolve(id, fromFilePath) {
-      return config.resolver(id, fromFilePath);
+      return config.resolve(id, fromFilePath);
     },
 
     read(filepath) {
@@ -67,7 +67,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         );`;
       }
 
-      const loaderResult = config.loader(filepath);
+      const loaderResult = config.load(filepath);
       debug(
         `Loader result for ${filepath}: ---------\n${util.inspect(
           loaderResult,
@@ -151,7 +151,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         return;
       }
 
-      const wrapper = config.runtimeEval(
+      const wrapper = config.evaluate(
         "(function (exports, require, module, __filename, __dirname) { " +
           code +
           "\n})\n",
@@ -176,7 +176,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
     cache: { [key: string]: any } = {};
 
     load(filename: string): any {
-      const resolvedFilename = config.resolver(filename, fallbackRequester());
+      const resolvedFilename = config.resolve(filename, fallbackRequester());
       return this._run(resolvedFilename);
     }
 
@@ -217,7 +217,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
         _options: any
       ) {
         let requester = parent?.filename || parent?.id || fallbackRequester();
-        return config.resolver(request, requester);
+        return config.resolve(request, requester);
       };
     }
   }

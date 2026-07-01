@@ -23,7 +23,8 @@ test("works", async () => {
     {
       "code": 0,
       "error": false,
-      "stderr": "",
+      "stderr": "--resolver is deprecated; use --config instead.
+    ",
       "stdout": "hi
     hi from something
     ",

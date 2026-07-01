@@ -24,11 +24,11 @@ kame bundle
 # the exports of ./my-library.ts are put on the global 'MyLibrary'
 kame bundle ./my-library.ts ./dist/my-library.js --global MyLibrary
 
-# Run ./my-script.ts, using a custom loader (see \`--loader\` below)
-kame run --loader ./my-loader.js --input ./my-script.ts
+# Run ./my-script.ts, using a custom config (see \`--config\` below)
+kame run --config ./my-config.js --input ./my-script.ts
 
-# Bundle ./my-script.ts, using a custom loader (see \`--loader\` below)
-kame bundle --loader ./my-loader.js --input ./my-script.ts
+# Bundle ./my-script.ts, using a custom config (see \`--config\` below)
+kame bundle --config ./my-config.js --input ./my-script.ts
 
 
 ___ Options: ___
@@ -77,50 +77,44 @@ ___ Options: ___
 
 
 
---config: Use one module for --loader/--resolver/--runtime-eval.
+--config: Specify a custom load/resolve/evaluate config.
 
-  Using:
+  A kame config can export three functions:
 
-  --config <path>
-  
-  is the same as using:
+  - load: A custom loader function used to read/transform code.
+  - resolve: A custom resolver function used to resolve imports and requires.
+  - evaluate: A custom eval function used to run code.
 
-  --loader <path> --resolver <path> --runtime-eval <path>
+  Each is documented in more detail below.
 
-  except that kame won't error if the config doesn't contain all three exports
-  ("load", "resolve", and "evaluate").
+  If a file named kame.config.js exists in the current directory, and --config
+  was not specified, kame will behave as if '--config kame.config.js' was
+  specified.
 
-  If a file named kame.config.js exists in the current directory, and none of
-  --config, --loader, --resolver, or --runtime-eval were specified, kame will
-  behave as if '--config kame.config.js' was specified.
+  === load ===
 
-  For more information about --loader, --resolver, and --runtime-eval, read on.
+  A function which kame will use to read modules from disk and convert
+  them to JavaScript.
 
-
-
---loader: A custom loader function used to read/transform code.
-
-  The path to a file that exports a loader function, which kame will use to
-  read modules from disk and convert them to JavaScript.
-
-  A loader module should export a function named "load" that receives a string
+  A kame config may export a function named "load" that receives a string
   (the file to load), and returns either a string (the code to execute) or a
   { code: string, map: any } object (containing both the code to execute and a
-  sourcemap). Loader functions must be synchronous, because they're called when
+  sourcemap). Load functions must be synchronous, because they're called when
   'require' is called.
 
-  Note: source maps returned from loader modules not yet supported by
+  Note: source maps returned from load functions are not yet supported by
   \`kame bundle\`, only by \`kame run\`.
 
-  Defaults to 'node_modules/kame/dist/default-loader.js', which supports
-  ES2020, React, TypeScript, Flow, CSS, images, and more.
+  By default, 'require("kame").defaultConfig.load' is used, which supports
+  ES2020+, React, TypeScript, Flow, CSS, images, and more.
 
-  If you want to write a loader that adds additional functionality on top of
-  the default loader, or overrides functionality of the default loader, you can
-  require the default loader into your loader module and call it as desired:
+  If you want to write a load function that adds additional functionality on
+  top of the default one, or which overrides functionality of the default load
+  function, you can require the default config into your config and call it as
+  desired:
 
   \`\`\`
-  const {defaultLoader} = require("kame");
+  const {defaultConfig} = require("kame");
 
   exports.load = function myLoad(file) {
     // whatever custom logic you want.
@@ -130,37 +124,34 @@ ___ Options: ___
     }
 
     // and then default handling for everything else:
-    return defaultLoader.load(file);
+    return defaultConfig.load(file);
   };
   \`\`\`
 
+  === resolve ===
 
+  A function which kame will use to convert the strings appearing in requires
+  and imports into absolute paths to files on disk.
 
---resolver: A custom resolver function used to resolve imports and requires.
-
-  The path to a file that exports a resolver function, which kame will use to
-  convert the strings appearing in requires and imports into absolute paths to
-  files on disk.
-
-  A resolver module should export a function named "resolve" that receives two
+  A kame config may export a function named "resolve" that receives two
   arguments:
   - The string that appeared in the require/import
   - The absolute path to the file that that require/import was found in
 
-  Defaults to 'node_modules/kame/dist/default-resolver.js', which implements
+  By default, 'require("kame").defaultConfig.resolve' is used, which implements
   node's module resolution algorithm, and supports omitting the extension in
   the import/require for any of these filetypes:
 
     ".js", ".json", ".mjs", ".jsx", ".ts", ".tsx", ".node"
 
-  If you want to write a resolver that adds additional functionality on top of
-  the default resolver, or overrides functionality of the default resolver, you
-  can require the default resolver into your resolver module and call it as
-  desired:
+  If you want to write a resolve function that adds additional functionality on
+  top of the default one, or which overrides functionality of the default
+  resolve function, you can require the default config into your config and
+  call it as desired:
 
   \`\`\`
   const path = require("path");
-  const {defaultResolver} = require("kame");
+  const {defaultConfig} = require("kame");
 
   exports.resolve = function myResolve(source, fromFile) {
     // whatever custom logic you want. in this example, a path alias
@@ -168,21 +159,18 @@ ___ Options: ___
       source = path.join(__dirname, source.replace("~", ""));
     }
 
-    return defaultResolver.resolve(source, fromFile);
+    return defaultConfig.resolve(source, fromFile);
   };
   \`\`\`
 
+  === evaluate ===
 
+  A function which kame will use to execute code.
 
---runtime-eval: A custom eval function used to run code.
-
-  This option is only used when running code via \`kame run\`, not when
+  This function is only used when running code via \`kame run\`, not when
   bundling code via \`kame bundle\`.
 
-  The path to a file that exports an 'evaluate' function, which kame will use
-  to execute code (in run mode only).
-
-  An eval module should export a function named "evaluate" that receives two
+  A kame config may export a function named "evaluate" that receives two
   arguments:
   - A code string (it will always be an expression)
   - The absolute path to the file where the code came from
@@ -190,19 +178,19 @@ ___ Options: ___
   And should return:
   - The result of evaluating the code string
 
-  Defaults to 'node_modules/kame/dist/default-runtime-eval.js', which uses
+  By default, 'require("kame").defaultConfig.evaluate' is used, which uses
   node's builtin \`vm\` module to run code.
 
-  If you want to write an eval module that adds additional functionality on top
-  of the default eval module, or overrides functionality of the default eval
-  module, you can require the default eval module into yours and call it as
-  desired:
+  If you want to write an evaluate function that adds additional functionality
+  on top of the default one, or which overrides functionality of the default
+  evaluate function, you can require the default config into your config and
+  call it as desired:
 
   \`\`\`
-  const {defaultRuntimeEval} = require("kame");
+  const {defaultConfig} = require("kame");
 
   exports.evaluate = function myEval(code, filepath) {
-    return defaultRuntimeEval.evaluate("var ENV = 'dev'; " + code, filepath);
+    return defaultConfig.evaluate("var ENV = 'dev'; " + code, filepath);
   };
   \`\`\`
 
@@ -242,6 +230,12 @@ ___ Options: ___
   want your chunks to be separately cacheable for browsers (so that unchanged
   chunks don't need to be redownloaded), you'll need to set your own
   code-splitting id.
+
+
+
+--loader: Deprecated method for specifying 'load' function. Use \`--config\` instead.
+--resolver: Deprecated method for specifying 'resolve' function. Use \`--config\` instead.
+--runtime-eval: Deprecated method for specifying 'evaluate' function. Use \`--config\` instead.
 `;
 
 export default usage;

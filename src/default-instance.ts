@@ -1,15 +1,6 @@
 import makeBundler from "./bundler";
 import makeRuntime from "./runtime";
-import type { Config } from "./config";
-import * as defaultLoader from "./default-loader";
-import * as defaultResolver from "./default-resolver";
-import * as defaultRuntimeEval from "./default-runtime-eval";
+import { defaultConfig } from "./default-config";
 
-const config: Config = {
-  loader: defaultLoader.load,
-  resolver: defaultResolver.resolve,
-  runtimeEval: defaultRuntimeEval.evaluate,
-};
-
-export const Runtime = makeRuntime(config);
-export const Bundler = makeBundler(config);
+export const Runtime = makeRuntime(defaultConfig);
+export const Bundler = makeBundler(defaultConfig);

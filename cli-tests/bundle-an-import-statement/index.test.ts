@@ -25,7 +25,8 @@ test("works", async () => {
     {
       "code": 0,
       "error": false,
-      "stderr": "Found ECMAScript module syntax in 'index.js' after it was processed by the loader. When using a custom loader, your loader needs to compile ECMAScript Module (ESM) syntax to CommonJS (CJS) syntax.
+      "stderr": "--loader is deprecated; use --config instead.
+    Found ECMAScript module syntax in 'index.js' after it was processed by the loader. When using a custom loader, your loader needs to compile ECMAScript Module (ESM) syntax to CommonJS (CJS) syntax.
     > 1 | import { something } from "somewhere";
         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     Files created:

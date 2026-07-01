@@ -16,6 +16,8 @@ export type ParsedArgv = {
   getOutput: (shouldLog: boolean) => string;
 };
 
+let hasWarnedDeprecatedFlagStatus: Record<string, boolean> = {};
+
 export default function parseArgv(input: Array<string>): ParsedArgv {
   const { options, positionalArgs } = clef.parseArgv(input, {
     help: Boolean,
@@ -104,6 +106,19 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     config = autoConfigPath;
   }
 
+  if (options.loader && !hasWarnedDeprecatedFlagStatus.loader) {
+    console.warn("--loader is deprecated; use --config instead.");
+    hasWarnedDeprecatedFlagStatus.loader = true;
+  }
+  if (options.resolver && !hasWarnedDeprecatedFlagStatus.resolver) {
+    console.warn("--resolver is deprecated; use --config instead.");
+    hasWarnedDeprecatedFlagStatus.resolver = true;
+  }
+  if (options.runtimeEval && !hasWarnedDeprecatedFlagStatus.runtimeEval) {
+    console.warn("--runtime-eval is deprecated; use --config instead.");
+    hasWarnedDeprecatedFlagStatus.runtimeEval = true;
+  }
+
   return {
     cmd: positionalArgs[0] ? String(positionalArgs[0]) : undefined,
     watch: options.watch || false,
@@ -113,9 +128,9 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     globalName: options.global === "null" ? null : options.global,
     codeSplittingId: options.codeSplittingId,
     inputConfig: config || {
-      loader: options.loader,
-      resolver: options.resolver,
-      runtimeEval: options.runtimeEval,
+      load: options.loader,
+      resolve: options.resolver,
+      evalaute: options.runtimeEval,
     },
     getInput,
     getOutput,

@@ -25,7 +25,8 @@ test("works", async () => {
     {
       "code": 0,
       "error": false,
-      "stderr": "Files created:
+      "stderr": "--loader is deprecated; use --config instead.
+    Files created:
     ",
       "stdout": "dist/index.js
     ",

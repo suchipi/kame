@@ -8,6 +8,11 @@ test("public exports", () => {
       "Bundler": [Function],
       "Runtime": [Function],
       "configure": [Function],
+      "defaultConfig": {
+        "evaluate": [Function],
+        "load": [Function],
+        "resolve": [Function],
+      },
       "defaultLoader": {
         "load": [Function],
         "loadCss": [Function],

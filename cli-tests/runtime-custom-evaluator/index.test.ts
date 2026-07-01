@@ -23,14 +23,9 @@ test("works", async () => {
     {
       "code": 0,
       "error": false,
-      "stderr": "",
-      "stdout": "Code from index.js:
-    (function (exports, require, module, __filename, __dirname) { "use strict";
-    console.log("hi");
-
-    })
-
-
+      "stderr": "--runtime-eval is deprecated; use --config instead.
+    ",
+      "stdout": "hi
     ",
     }
   `);

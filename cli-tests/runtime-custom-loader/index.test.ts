@@ -23,7 +23,8 @@ test("works", async () => {
     {
       "code": 0,
       "error": false,
-      "stderr": "",
+      "stderr": "--loader is deprecated; use --config instead.
+    ",
       "stdout": "yo
     ",
     }

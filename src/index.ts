@@ -4,6 +4,7 @@ import { InputConfig, readConfig } from "./config";
 import * as defaultLoader from "./default-loader";
 import * as defaultResolver from "./default-resolver";
 import * as defaultRuntimeEval from "./default-runtime-eval";
+import { defaultConfig } from "./default-config";
 import { Runtime, Bundler } from "./default-instance";
 
 function configure(inputConfig: InputConfig = {}) {
@@ -22,6 +23,7 @@ export {
   defaultLoader,
   defaultResolver,
   defaultRuntimeEval,
+  defaultConfig,
   IBundler,
   IRuntime,
   Runtime,

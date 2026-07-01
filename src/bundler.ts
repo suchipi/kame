@@ -154,7 +154,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
 
             let resolverResult: string;
             try {
-              resolverResult = config.resolver(currentValue, filename);
+              resolverResult = config.resolve(currentValue, filename);
             } catch (err: any) {
               const newMessage =
                 `${kleur.red("Resolver failed in")} ${kleur.yellow(
@@ -227,7 +227,7 @@ export default function makeBundler(config: Config): { new (): IBundler } {
         let code: string;
         // prettier-ignore
         try {
-          const result = config.loader(absFile);
+          const result = config.load(absFile);
           if (typeof result === "string") {
             code = result;
           } else {
