@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import * as clef from "clef-parse";
 import { InputConfig } from "../config";
+import { warnOnce } from "../warn-once";
 
 export type ParsedArgv = {
   cmd: string | undefined;
@@ -15,8 +16,6 @@ export type ParsedArgv = {
   getInput: () => string;
   getOutput: (shouldLog: boolean) => string;
 };
-
-let hasWarnedDeprecatedFlagStatus: Record<string, boolean> = {};
 
 export default function parseArgv(input: Array<string>): ParsedArgv {
   const { options, positionalArgs } = clef.parseArgv(input, {
@@ -95,28 +94,32 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
   }
 
   let config = options.config;
-  const autoConfigPath = path.join(process.cwd(), "kame.config.js");
+  const autoConfigPaths = [
+    path.join(process.cwd(), "kame.config.js"),
+    path.join(process.cwd(), "kame.config.ts"),
+  ];
   if (
     !options.config &&
     !options.loader &&
     !options.resolver &&
-    !options.runtimeEval &&
-    fs.existsSync(autoConfigPath)
+    !options.runtimeEval
   ) {
-    config = autoConfigPath;
+    const existingConfigAtAutoConfigPath = autoConfigPaths.find(
+      (autoConfigPath) => fs.existsSync(autoConfigPath)
+    );
+    if (existingConfigAtAutoConfigPath != null) {
+      config = existingConfigAtAutoConfigPath;
+    }
   }
 
-  if (options.loader && !hasWarnedDeprecatedFlagStatus.loader) {
-    console.warn("--loader is deprecated; use --config instead.");
-    hasWarnedDeprecatedFlagStatus.loader = true;
+  if (options.loader) {
+    warnOnce("--loader is deprecated; use --config instead.");
   }
-  if (options.resolver && !hasWarnedDeprecatedFlagStatus.resolver) {
-    console.warn("--resolver is deprecated; use --config instead.");
-    hasWarnedDeprecatedFlagStatus.resolver = true;
+  if (options.resolver) {
+    warnOnce("--resolver is deprecated; use --config instead.");
   }
-  if (options.runtimeEval && !hasWarnedDeprecatedFlagStatus.runtimeEval) {
-    console.warn("--runtime-eval is deprecated; use --config instead.");
-    hasWarnedDeprecatedFlagStatus.runtimeEval = true;
+  if (options.runtimeEval) {
+    warnOnce("--runtime-eval is deprecated; use --config instead.");
   }
 
   return {

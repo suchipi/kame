@@ -33,14 +33,14 @@ For more information behind the inspiration and design, see [./RATIONALE.md](./R
 
 ## Starter Config
 
-The default config is usually good enough, but if you need to stub out certain modules or find-and-replace content in certain modules, you'll want to define your own config. Generally, it makes sense to use the default config as a starting point. Kame relies on function composition to combine configs, so you'll want to require the default behavior and call it:
+The default config is usually good enough, but if you need to stub out certain modules or find-and-replace content in certain modules, you'll want to define your own config. Generally, it makes sense to use the default config behavior as a fallback. Kame relies on function composition to combine configs, so you'll want to require the default behavior and call it:
 
-`kame-config.js`
+`kame.config.ts`
 
 ```js
-const { defaultConfig } = require("kame");
+import { defineConfig, defaultConfig } from "kame";
 
-module.exports = {
+export default defineConfig({
   resolve(id, fromFilePath) {
     // Add your own override logic here via early returns
 
@@ -55,18 +55,18 @@ module.exports = {
     // Override, or rely on the default behavior:
     return defaultConfig.evaluate(code, filename);
   },
-};
+});
 ```
+
+> Note: `defineConfig` is an optional pass-through function which provides type/intellisense autocomplete. You don't have to use it; you can export the object you pass into it directly instead.
+
+Kame automatically picks up files named `kame.config.js` or `kame.config.ts` when present in the current working directory where kame was invoked from. To use a different path, specify the config via the `--config` flag.
 
 ## Runtime usage example (CLI)
 
-Using the default config:
-
-`npx kame run src/my-entrypoint.ts`
-
-Or, specify `--config` to override the config using a config file:
-
-`npx kame run --config my-config.js src/my-entrypoint.ts`
+```sh
+npx kame run src/my-entrypoint.ts
+```
 
 ## Runtime usage example (Node API)
 
@@ -87,13 +87,9 @@ runtime.register();
 
 ## Bundler usage example (CLI)
 
-Using the default config:
-
-`npx kame bundle src/my-entrypoint.ts dist/my-bundle.js`
-
-Or, specify `--config` to override the config using a config file:
-
-`npx kame run --config my-config.js src/my-entrypoint.ts dist/my-bundle.js`
+```sh
+npx kame bundle src/my-entrypoint.ts dist/my-bundle.js
+```
 
 ## Bundler usage example (API)
 
@@ -107,7 +103,7 @@ const Bundler = kame.Bundler;
 const bundler = new Bundler();
 
 const { warnings, writtenFiles } = bundler.bundle({
-  input: "my-entrypoint.js";
+  input: "src/my-entrypoint.js";
   output: "dist/my-bundle.js";
 });
 ```

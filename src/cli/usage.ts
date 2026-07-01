@@ -95,9 +95,9 @@ ___ Options: ___
 
   Each is documented in more detail below.
 
-  If a file named kame.config.js exists in the current directory, and --config
-  was not specified, kame will behave as if '--config kame.config.js' was
-  specified.
+  If a file named kame.config.js or kame.config.ts exists in the current
+  directory, and --config was not specified, kame will behave as if
+  '--config kame.config.js' or '--config kame.config.ts' was specified.
 
   === load ===
 
