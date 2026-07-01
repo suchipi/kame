@@ -63,6 +63,14 @@ ___ Options: ___
 
 
 
+--watch: Watch for changes and re-run/re-bundle when a change occurs.
+
+  This option will automatically re-run \`kame run\` or \`kame bundle\` when
+  any file which is a child of the current working directory changes (except
+  for the bundle output file).
+
+
+
 --global: The library global name for the UMD wrapper.
 
   This option is only used when bundling code via \`kame bundle\`, not when
