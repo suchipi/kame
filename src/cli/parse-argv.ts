@@ -130,7 +130,7 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
     inputConfig: config || {
       load: options.loader,
       resolve: options.resolver,
-      evalaute: options.runtimeEval,
+      evaluate: options.runtimeEval,
     },
     getInput,
     getOutput,
