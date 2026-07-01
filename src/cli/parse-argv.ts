@@ -95,8 +95,8 @@ export default function parseArgv(input: Array<string>): ParsedArgv {
 
   let config = options.config;
   const autoConfigPaths = [
-    path.join(process.cwd(), "kame.config.js"),
     path.join(process.cwd(), "kame.config.ts"),
+    path.join(process.cwd(), "kame.config.js"),
   ];
   if (
     !options.config &&
