@@ -106,9 +106,9 @@ ___ Options: ___
 
   A kame config may export a function named "load" that receives a string
   (the file to load), and returns either a string (the code to execute) or a
-  { code: string, map: any } object (containing both the code to execute and a
-  sourcemap). Load functions must be synchronous, because they're called when
-  'require' is called.
+  { code: string, map: import("kame").SourceMap } object (containing both the
+  code to execute and a sourcemap). Load functions must be synchronous, because
+  they're called when 'require' is called.
 
   Note: source maps returned from load functions are not yet supported by
   \`kame bundle\`, only by \`kame run\`.

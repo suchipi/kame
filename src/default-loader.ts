@@ -3,6 +3,7 @@ import path from "path";
 import mime from "mime-types";
 import * as swc from "@swc/core";
 import makeDebug from "debug";
+import type { SourceMap } from "./source-maps";
 
 const debug = makeDebug("kame/default-loader");
 
@@ -132,7 +133,7 @@ function defaultLoader(
       | "es2022"
       | "esnext";
   } = {}
-): string | { code: string; map: any } {
+): string | { code: string; map: SourceMap } {
   debug(`Loading ${filename}`);
   const extension = path.extname(filename);
 

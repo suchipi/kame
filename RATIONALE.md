@@ -80,7 +80,7 @@ export type Config = {
    * file, transforms it into JS (if necessary), and returns a string
    * containing JS source code (and, optionally, a source map).
    */
-  loader: (filename: string) => string | { code: string; map: any };
+  loader: (filename: string) => string | { code: string; map: import("kame").SourceMap };
 
   /*
    * (USED BY RUNTIME ONLY, NOT BUNDLER)

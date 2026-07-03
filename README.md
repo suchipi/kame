@@ -18,7 +18,7 @@ type Config = {
    * file, transforms it into JS (if necessary), and returns a string
    * containing JS source code (and, optionally, a source map).
    */
-  load: (filename: string) => string | { code: string; map: any };
+  load: (filename: string) => string | { code: string; map: import("kame").SourceMap };
 
   /*
    * A function that, given a JS source code expression and the filename it

@@ -76,7 +76,7 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
       );
 
       let code: string;
-      let map: any;
+      let map: string | SourceMap | undefined | null;
 
       if (typeof loaderResult === "string") {
         code = loaderResult;
@@ -89,12 +89,12 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
       if (code.match(/import\s*\(/)) {
         let babelResult: ReturnType<typeof babel.transformSync>;
         try {
-          let inputSourceMap = map;
+          let inputSourceMap: SourceMap | undefined | null = map;
           if (typeof inputSourceMap === "string") {
             try {
               inputSourceMap = JSON.parse(inputSourceMap);
             } catch (err) {
-              // ignored
+              inputSourceMap = undefined;
             }
           }
           inputSourceMap = inputSourceMap || undefined;
@@ -105,6 +105,8 @@ export default function makeRuntime(config: Config): { new (): IRuntime } {
             sourceType: "unambiguous",
             filename: filepath,
 
+            // @ts-ignore Babel source map type disallows null in sources but
+            // spec allows it. In practice runtime handles it fine
             inputSourceMap,
 
             // Same effect as default value but silences warning

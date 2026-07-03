@@ -2,11 +2,11 @@ import util from "util";
 import {
   ParsedError,
   applySourceMapsToParsedError,
-  SourceMap,
+  SourceMap as SourceMapNamespace,
   isError,
 } from "@suchipi/error-utils";
 
-export type { SourceMap };
+export type SourceMap = SourceMapNamespace.SpecCompliant;
 
 export function applySourceMapsToError(
   sourceMaps: { [key: string]: SourceMap },

@@ -6,6 +6,7 @@ import * as defaultResolver from "./default-resolver";
 import * as defaultRuntimeEval from "./default-runtime-eval";
 import { defaultConfig } from "./default-config";
 import { Runtime, Bundler } from "./default-instance";
+import type { SourceMap } from "./source-maps";
 
 function configure(inputConfig: InputConfig = {}) {
   const config = readConfig(inputConfig);
@@ -35,4 +36,5 @@ export {
   Bundler,
   InputConfig as Config,
   defineConfig,
+  type SourceMap,
 };
